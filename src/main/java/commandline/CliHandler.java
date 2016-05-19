@@ -12,13 +12,21 @@ public class CliHandler {
 
     private HashMap<String, FileHandler> fileHandlerHashMap;
 
-    public CliHandler(Map<String, FileHandler> fileHandlers) {
-        this.fileHandlerHashMap = (HashMap<String, FileHandler>) fileHandlers;
+    public CliHandler() {
+    }
+
+    public CliHandler addOption(String arg, FileHandler fileHandler) {
+        if (fileHandlerHashMap == null)
+            fileHandlerHashMap = new HashMap<String, FileHandler>();
+        if (fileHandler == null || arg == null)
+            return this;
+        fileHandlerHashMap.put(arg, fileHandler);
+        return this;
     }
 
     public void handleArgument(String arg) {
         FileHandler fileHandler = fileHandlerHashMap.get(arg);
-        if(fileHandler == null)
+        if (fileHandler == null)
             showOptions();
     }
 

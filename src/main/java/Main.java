@@ -1,4 +1,6 @@
 import commandline.CliHandler;
+import filehandlers.Decryptor;
+import filehandlers.Encryptor;
 
 /**
  * Created by Mor on 5/18/2016.
@@ -12,11 +14,9 @@ public class Main {
      * @param args
      */
     public static void main(String args[]) {
-        System.out.println(args[0]);
-        CliHandler cliHandler = new CliHandler()
-    }
-
-    void showOptions() {
+        CliHandler cliHandler = new CliHandler();
+        cliHandler.addOption("-d", new Decryptor())
+                .addOption("-e", new Encryptor()).handleArgument(args[0]);
 
     }
 
