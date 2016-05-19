@@ -1,3 +1,5 @@
+package boot;
+
 import commandline.CliHandler;
 import filehandlers.Decryptor;
 import filehandlers.Encryptor;
@@ -14,9 +16,9 @@ public class Main {
      * @param args
      */
     public static void main(String args[]) {
-        CliHandler cliHandler = new CliHandler();
+        CliHandler cliHandler = CliHandler.getInstance();
         cliHandler.addOption("-d", new Decryptor())
-                .addOption("-e", new Encryptor()).handleArgument(args[0]);
+                .addOption("-e", new Encryptor()).handleArguments(args);
 
     }
 
