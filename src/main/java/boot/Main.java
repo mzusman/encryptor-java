@@ -1,8 +1,8 @@
 package boot;
 
 import commandline.CliHandler;
-import filehandlers.Decryptor;
-import filehandlers.Encryptor;
+import filehandlers.FileDecryption;
+import filehandlers.FileEncryption;
 
 /**
  * Created by Mor on 5/18/2016.
@@ -17,8 +17,8 @@ public class Main {
      */
     public static void main(String args[]) {
         CliHandler cliHandler = CliHandler.getInstance();
-        cliHandler.addOption("-d", new Decryptor())
-                .addOption("-e", new Encryptor()).handleArguments(args);
+        cliHandler.addOption("-d", new FileDecryption())
+                .addOption("-e", new FileEncryption()).handleArguments(args);
 
     }
 

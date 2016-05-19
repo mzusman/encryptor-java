@@ -3,6 +3,8 @@ package commandline;
 import com.sun.istack.internal.NotNull;
 import filehandlers.FileHandler;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,19 +33,28 @@ public class CliHandler {
     }
 
     public void handleArguments(@NotNull String[] arg) {
-        if (arg.length == 0) {
+        if (arg.length != 2) {
             showOptions();
             return;
         }
+
+        File file = new File(arg[1]);
+        if (!file.isFile()) System.out.println("error: not a file");
+        else if (!file.exists()) System.out.println("error: file does not exists");
+        else if (!file.canRead()) System.out.println("don't have permission to read");
+        else if (!file.canWrite()) System.out.println("don't have permission to write");
+
         FileHandler fileHandler = fileHandlerHashMap.get(arg[0]);
         if (fileHandler == null) {
             showOptions();
-            System.out.println("no handlers are available");
+            return;
         }
+
+        fileHandler.handleFile(file);
     }
 
     public void showOptions() {
-        System.out.println("Usage:... <option>\nOptions:");
+        System.out.println("usage: ... <option> <file>\nOptions:");
         if (fileHandlerHashMap.size() == 0) {
             System.out.println("no handlers are available");
             return;
