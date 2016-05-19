@@ -1,10 +1,12 @@
 package commandline;
 
-import filehandlers.FileDecryption;
-import filehandlers.FileEncryption;
+import filehandlers.Decryption;
+import filehandlers.Encryption;
+import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -13,26 +15,28 @@ import static org.mockito.Mockito.*;
  * Created by Mor on 5/19/2016.
  */
 public class CliHandlerTest {
-    private FileDecryption fileDecryption = mock(FileDecryption.class);
-    private FileEncryption fileEncryption = mock(FileEncryption.class);
+    private Decryption decryption = mock(Decryption.class);
+    private Encryption encryption = mock(Encryption.class);
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void addOption() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
-        assertEquals(cliHandler, cliHandler.addOption("-d", fileDecryption));
-        assertEquals(cliHandler, cliHandler.addOption("-e", fileEncryption));
+        assertEquals(cliHandler, cliHandler.addOption("-d", decryption));
+        assertEquals(cliHandler, cliHandler.addOption("-e", encryption));
         assertEquals(cliHandler, cliHandler.addOption(null, null));
         assertEquals(cliHandler, cliHandler.addOption("-e", null));
-        assertEquals(cliHandler, cliHandler.addOption(null, fileDecryption));
+        assertEquals(cliHandler, cliHandler.addOption(null, decryption));
     }
 
     @Test
     public void handleArguments() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
-        cliHandler.addOption("-e", fileEncryption);
-        cliHandler.handleArguments(new String[0]);
-        cliHandler.handleArguments(new String[]{"-e","~/Documents/hello.txt"});
-
+        File file = temporaryFolder.newFile();
+        cliHandler.addOption("-e", encryption);
+        cliHandler.handleArguments(new String[]{"-e",file.getPath()});
+        verify(encryption,times(1)).handleFile(file);
     }
 
     @Test
@@ -42,7 +46,7 @@ public class CliHandlerTest {
         cliHandler.addOption(null, null);
         cliHandler.showOptions();
         cliHandler.addOption(null, null);
-        cliHandler.addOption("-d", fileDecryption);
+        cliHandler.addOption("-d", decryption);
         cliHandler.showOptions();
     }
 

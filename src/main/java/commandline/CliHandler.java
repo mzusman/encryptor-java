@@ -5,8 +5,11 @@ import filehandlers.FileHandler;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -39,8 +42,8 @@ public class CliHandler {
         }
 
         File file = new File(arg[1]);
-        if (!file.isFile()) System.out.println("error: not a file");
-        else if (!file.exists()) System.out.println("error: file does not exists");
+        if (!file.exists() || !file.isFile()) handleNotFoundFile(file.getPath());
+        else if (!file.isFile()) System.out.println("error: not a file");
         else if (!file.canRead()) System.out.println("don't have permission to read");
         else if (!file.canWrite()) System.out.println("don't have permission to write");
 
@@ -51,6 +54,13 @@ public class CliHandler {
         }
 
         fileHandler.handleFile(file);
+
+    }
+
+    public String handleNotFoundFile(String path) {
+        System.out.printf("file at %s was not found or does not exist\n", path);
+        System.out.println("Enter the path again:");
+        return System.console().readLine();
     }
 
     public void showOptions() {
@@ -59,10 +69,8 @@ public class CliHandler {
             System.out.println("no handlers are available");
             return;
         }
-        for (Map.Entry<String, FileHandler> entry :
-                fileHandlerHashMap.entrySet()) {
-            System.out.printf("%s - %s\n", entry.getKey(), entry.getValue().getDescription());
-        }
+        fileHandlerHashMap.forEach((s, f)
+                -> System.out.printf("%s - %s\n", s, f.getDescription()));
     }
 
 
