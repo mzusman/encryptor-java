@@ -1,6 +1,6 @@
 package commandline;
 
-import com.sun.istack.internal.NotNull;
+
 import filehandlers.FileHandler;
 
 import java.io.File;
@@ -26,16 +26,14 @@ public class CliHandler {
     private CliHandler() {
     }
 
-    public
-    @NotNull
-    CliHandler addOption(String arg, FileHandler fileHandler) {
+    public CliHandler addOption(String arg, FileHandler fileHandler) {
         if (fileHandler == null || arg == null)
             return this;
         fileHandlerHashMap.put(arg, fileHandler);
         return this;
     }
 
-    public void handleArguments(@NotNull String[] arg) {
+    public void handleArguments(String[] arg) {
         if (arg.length != 2) {
             showOptions();
             return;
