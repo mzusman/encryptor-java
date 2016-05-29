@@ -27,12 +27,13 @@ public class Decryption implements Operation {
     public File act(File file, CipherAlgorithm algorithm) throws IOException {
 
         String[] filename = file.getPath().split("\\.", 2);
-        System.out.println(filename.length);
-
-        StringBuilder sp = new StringBuilder(filename[0])
-                .append(decrypted).append(".").append(filename[1]);
+        StringBuilder sp;
+        if (filename.length > 1)
+            sp = new StringBuilder(filename[0])
+                    .append(decrypted).append(".").append(filename[1]);
+        else sp = new StringBuilder(filename[0]).
+                append(decrypted);
         File outputFile = new File(sp.toString());
-        System.out.println(sp.toString());
         outputFile.createNewFile();
         @Cleanup FileInputStream fis = new FileInputStream(file);
         @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);

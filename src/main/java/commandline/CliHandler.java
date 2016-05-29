@@ -8,6 +8,7 @@ import lombok.NonNull;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -56,7 +57,8 @@ public class CliHandler {
     public String handleNotFoundFile(@NonNull String path) {
         System.out.printf("file at %s was not found or does not exist\n", path);
         System.out.println("Enter the path again:");
-        return System.console().readLine();
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 
     public void showOptions() {
@@ -72,7 +74,8 @@ public class CliHandler {
 
     public int getKey() {
         System.out.println("Enter a key");
-        String key = System.console().readLine();
+        Scanner scanner = new Scanner(System.in);
+        String key = scanner.nextLine();
         if (key.matches("\\d+$"))
             return Integer.parseInt(key);
         else return getKey();

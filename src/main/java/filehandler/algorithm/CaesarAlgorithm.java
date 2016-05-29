@@ -14,7 +14,7 @@ public class CaesarAlgorithm implements CipherAlgorithm {
 
 
     @Override
-    public void encrypt(InputStream in, OutputStream out,int key) {
+    public void encrypt(InputStream in, OutputStream out, int key) {
         try {
             int raw;
             byte enc;
@@ -29,7 +29,7 @@ public class CaesarAlgorithm implements CipherAlgorithm {
     }
 
     @Override
-    public void decrypt(InputStream in, OutputStream out,int key) {
+    public void decrypt(InputStream in, OutputStream out, int key) {
         try {
             int raw;
             byte dec;

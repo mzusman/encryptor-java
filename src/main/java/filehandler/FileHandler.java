@@ -24,7 +24,9 @@ public class FileHandler {
 
     public void handleFile() {
         try {
-            operation.act(file, new CaesarAlgorithm());
+            file = operation.act(file, new CaesarAlgorithm());
+            if (file != null)
+                showFile();
         } catch (IOException e) {
             String path = CliHandler.getInstance().handleNotFoundFile(file.getPath());
             file = new File(path);

@@ -9,5 +9,5 @@ import java.io.OutputStream;
 public interface CipherAlgorithm {
     void encrypt(InputStream in, OutputStream out, int key);
 
-    void decrypt(InputStream in, OutputStream out, int key);
+    void decrypt(InputStream in, OutputStream out, int key );
 }
