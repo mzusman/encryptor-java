@@ -6,6 +6,7 @@ import filehandler.Operation;
 import lombok.NonNull;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.HashMap;
 
 /**
@@ -48,7 +49,7 @@ public class CliHandler {
             return;
         }
         FileHandler fileHandler = new FileHandler(operation, file);
-        fileHandler.showFile();
+        fileHandler.handleFile();
 
     }
 
@@ -69,4 +70,11 @@ public class CliHandler {
     }
 
 
+    public int getKey() {
+        System.out.println("Enter a key");
+        String key = System.console().readLine();
+        if (key.matches("\\d+$"))
+            return Integer.parseInt(key);
+        else return getKey();
+    }
 }

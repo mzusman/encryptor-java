@@ -3,11 +3,13 @@ package commandline;
 import filehandler.Decryption;
 import filehandler.Encryption;
 import filehandler.FileHandler;
+import filehandler.algorithm.CaesarAlgorithm;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -38,7 +40,7 @@ public class CliHandlerTest {
         File file = temporaryFolder.newFile();
         cliHandler.addOption("-e", encryption);
         cliHandler.handleArguments(new String[]{"-e",file.getPath()});
-        verify(encryption,times(0)).handleFile(file);
+        verify(encryption,times(0)).act(file,new CaesarAlgorithm());
     }
 
     @Test

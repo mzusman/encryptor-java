@@ -1,10 +1,12 @@
 package filehandler;
 
 import commandline.CliHandler;
+import filehandler.algorithm.CaesarAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 
 import java.io.*;
+import java.util.Random;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -21,15 +23,19 @@ public class FileHandler {
     }
 
     public void handleFile() {
-        operation.act(file);
+        try {
+            operation.act(file, new CaesarAlgorithm());
+        } catch (IOException e) {
+            String path = CliHandler.getInstance().handleNotFoundFile(file.getPath());
+            file = new File(path);
+        }
     }
 
     public void showFile() {
-        FileInputStream fis = null;
         try {
             @Cleanup BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             bufferedReader.lines().forEach(System.out::println);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             do {
                 String path = CliHandler.getInstance().handleNotFoundFile(file.getPath());
                 file = new File(path);
