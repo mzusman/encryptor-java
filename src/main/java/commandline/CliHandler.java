@@ -1,15 +1,12 @@
 package commandline;
 
 
-import filehandlers.FileHandler;
+import filehandler.FileHandler;
+import filehandler.Operation;
+import lombok.NonNull;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -21,19 +18,19 @@ public class CliHandler {
         return instance;
     }
 
-    private HashMap<String, FileHandler> fileHandlerHashMap = new HashMap<String, FileHandler>();
+    private HashMap<String, Operation> operationFactory = new HashMap<String, Operation>();
 
     private CliHandler() {
     }
 
-    public CliHandler addOption(String arg, FileHandler fileHandler) {
-        if (fileHandler == null || arg == null)
+    public CliHandler addOption(String arg, Operation operation) {
+        if (operation == null || arg == null)
             return this;
-        fileHandlerHashMap.put(arg, fileHandler);
+        operationFactory.put(arg, operation);
         return this;
     }
 
-    public void handleArguments(String[] arg) {
+    public void handleArguments(@NonNull String[] arg) {
         if (arg.length != 2) {
             showOptions();
             return;
@@ -45,17 +42,17 @@ public class CliHandler {
         else if (!file.canRead()) System.out.println("don't have permission to read");
         else if (!file.canWrite()) System.out.println("don't have permission to write");
 
-        FileHandler fileHandler = fileHandlerHashMap.get(arg[0]);
-        if (fileHandler == null) {
+        Operation operation = operationFactory.get(arg[0]);
+        if (operation == null) {
             showOptions();
             return;
         }
-
-        fileHandler.handleFile(file);
+        FileHandler fileHandler = new FileHandler(operation, file);
+        fileHandler.showFile();
 
     }
 
-    public String handleNotFoundFile(String path) {
+    public String handleNotFoundFile(@NonNull String path) {
         System.out.printf("file at %s was not found or does not exist\n", path);
         System.out.println("Enter the path again:");
         return System.console().readLine();
@@ -63,28 +60,13 @@ public class CliHandler {
 
     public void showOptions() {
         System.out.println("usage: ... <option> <file>\nOptions:");
-        if (fileHandlerHashMap.size() == 0) {
+        if (operationFactory.size() == 0) {
             System.out.println("no handlers are available");
             return;
         }
-        fileHandlerHashMap.forEach((s, f)
+        operationFactory.forEach((s, f)
                 -> System.out.printf("%s - %s\n", s, f.getDescription()));
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CliHandler)) return false;
-
-        CliHandler that = (CliHandler) o;
-
-        return fileHandlerHashMap != null ? fileHandlerHashMap.equals(that.fileHandlerHashMap) : that.fileHandlerHashMap == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return fileHandlerHashMap != null ? fileHandlerHashMap.hashCode() : 0;
-    }
 }

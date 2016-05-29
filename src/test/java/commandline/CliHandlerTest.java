@@ -1,7 +1,8 @@
 package commandline;
 
-import filehandlers.Decryption;
-import filehandlers.Encryption;
+import filehandler.Decryption;
+import filehandler.Encryption;
+import filehandler.FileHandler;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -33,10 +34,11 @@ public class CliHandlerTest {
     @Test
     public void handleArguments() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
+        FileHandler fileHandler = mock(FileHandler.class);
         File file = temporaryFolder.newFile();
         cliHandler.addOption("-e", encryption);
         cliHandler.handleArguments(new String[]{"-e",file.getPath()});
-        verify(encryption,times(1)).handleFile(file);
+        verify(encryption,times(0)).handleFile(file);
     }
 
     @Test

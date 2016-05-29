@@ -1,8 +1,8 @@
 package boot;
 
 import commandline.CliHandler;
-import filehandlers.Decryption;
-import filehandlers.Encryption;
+import filehandler.Decryption;
+import filehandler.Encryption;
 
 /**
  * Created by Mor on 5/18/2016.
