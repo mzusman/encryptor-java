@@ -1,8 +1,7 @@
 package filehandler.algorithm;
 
+import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by mzeus on 30/05/16.
@@ -13,12 +12,12 @@ public class MultiplicationAlgorithmTest {
 
     @Test
     public void encrypt() throws Exception {
-        test.encrypt(algorithm, 98);
+        test.encryptTest(algorithm, 99);
     }
 
     @Test
     public void decrypt() throws Exception {
-        test.decrypt(algorithm, 96);
+        test.decryptTest(algorithm, 99);
     }
 
 }

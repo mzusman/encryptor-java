@@ -1,11 +1,12 @@
 package filehandler;
 
+import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
+import filehandler.operations.Encryption;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 
 /**
  * Created by mzeus on 30/05/16.
@@ -23,7 +24,7 @@ public class FileHandlerTest {
     @Test
     public void handleFile() throws Exception {
 
-        new FileHandler(new Encryption(), folder.newFile()).handleFile();
+        new FileHandler(new Encryption(), folder.newFile()).handleFile(new MultiplicationAlgorithm());
     }
 
     @Test

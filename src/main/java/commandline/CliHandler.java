@@ -2,12 +2,12 @@ package commandline;
 
 
 import filehandler.FileHandler;
-import filehandler.Operation;
+import filehandler.operations.Operation;
+import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
 import lombok.NonNull;
 
 import java.io.File;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -22,6 +22,7 @@ public class CliHandler {
     }
 
     private HashMap<String, Operation> operationFactory = new HashMap<String, Operation>();
+    private HashMap<String, CipherAlgorithm> algorithmFactory = new HashMap<>();
 
     private CliHandler() {
     }
@@ -32,6 +33,14 @@ public class CliHandler {
         operationFactory.put(arg, operation);
         return this;
     }
+
+    public CliHandler addAlgorithm(String arg, CipherAlgorithm algorithm) {
+        if (algorithm == null || arg == null)
+            return this;
+        algorithmFactory.put(arg, algorithm);
+        return this;
+    }
+
 
     public void handleArguments(@NonNull String[] arg) {
         if (arg.length != 2) {
@@ -50,9 +59,19 @@ public class CliHandler {
             showOptions();
             return;
         }
-        FileHandler fileHandler = new FileHandler(operation, file);
-        fileHandler.handleFile();
+        CipherAlgorithm algorithm = selectAlgorithm();
 
+        FileHandler fileHandler = new FileHandler(operation, file);
+        fileHandler.handleFile(algorithm);
+
+    }
+
+    private CipherAlgorithm selectAlgorithm() {
+        System.out.println("Select an algorithm:");
+        algorithmFactory.forEach((s, c) ->
+                System.out.printf("%s - %s", s, c.getDescription()));
+        @Cleanup Scanner scanner = new Scanner(System.in);
+        return algorithmFactory.get(scanner.nextLine());// todo: have to make it more safety
     }
 
     public String handleNotFoundFile(@NonNull String path) {
@@ -80,6 +99,8 @@ public class CliHandler {
         if (key.matches("\\d+$") && Integer.parseInt(key) < 256
                 && Integer.parseInt(key) > 0)
             return Integer.parseInt(key);
-        else return getKey();
+        else {
+            return getKey();
+        }
     }
 }

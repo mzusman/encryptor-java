@@ -1,15 +1,14 @@
 package filehandler;
 
-import filehandler.algorithm.CaesarAlgorithm;
+import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
+import filehandler.operations.Encryption;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
-import java.util.Random;
 
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
 /**

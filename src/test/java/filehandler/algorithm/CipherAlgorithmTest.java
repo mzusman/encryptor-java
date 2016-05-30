@@ -1,6 +1,6 @@
 package filehandler.algorithm;
 
-import org.junit.Test;
+import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 
 import java.io.*;
 
@@ -13,8 +13,8 @@ public class CipherAlgorithmTest {
 
     byte[] bytes;
 
-    @Test
-    public void encrypt(CipherAlgorithm algorithm, int key) throws Exception {
+
+    public void encryptTest(CipherAlgorithm algorithm, int key) throws IOException {
 
         PipedOutputStream pout = new PipedOutputStream();
         InputStream in = new PipedInputStream(pout);
@@ -35,10 +35,10 @@ public class CipherAlgorithmTest {
      * decryption test - encrypt the information and then decrypt it to check if
      * the information is still the same
      */
-    @Test
-    public void decrypt(CipherAlgorithm algorithm, int key) throws Exception {
 
-        encrypt(algorithm, key);
+    public void decryptTest(CipherAlgorithm algorithm, int key) throws IOException {
+
+        encryptTest(algorithm, key);
         PipedOutputStream pout = new PipedOutputStream();
         InputStream in = new PipedInputStream(pout);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -51,5 +51,4 @@ public class CipherAlgorithmTest {
         assertEquals("test", (baos.toString()));
 
     }
-
 }

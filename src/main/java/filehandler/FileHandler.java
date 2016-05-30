@@ -1,12 +1,12 @@
 package filehandler;
 
 import commandline.CliHandler;
-import filehandler.algorithm.CaesarAlgorithm;
+import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
+import filehandler.operations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 
 import java.io.*;
-import java.util.Random;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -22,9 +22,9 @@ public class FileHandler {
         return operation.getDescription();
     }
 
-    public void handleFile() {
+    public void handleFile(CipherAlgorithm algorithm) {
         try {
-            file = operation.act(file, new CaesarAlgorithm());
+            file = operation.act(file, algorithm);
             if (file != null)
                 showFile();
         } catch (IOException e) {
