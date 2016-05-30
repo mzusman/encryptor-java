@@ -12,7 +12,7 @@ import java.io.OutputStream;
  */
 public interface CipherAlgorithm extends Selectable, KeyAlgorithm{
 
-    byte decryptionOperation(int raw, int key) throws KeyException;
+    byte decryptionOperation(int raw, int key) ;
 
     byte encryptionOperation(int raw, int key);
 

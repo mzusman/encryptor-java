@@ -20,8 +20,7 @@ public class AlgorithmOnce extends Algorithm {
     }
 
     @Override
-    public byte decryptionOperation(int raw, int key) throws KeyException {
-
+    public byte decryptionOperation(int raw, int key) {
         return algorithm.decryptionOperation(raw, key);
     }
 

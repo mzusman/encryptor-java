@@ -7,7 +7,7 @@ import exceptions.UnsupportedKeyNumberException;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class MultiplicationAlgorithm implements CipherAlgorithm{
+public class MultiplicationAlgorithm implements CipherAlgorithm {
 
 
     private byte procedureMwo(int raw, int key) {
@@ -20,7 +20,7 @@ public class MultiplicationAlgorithm implements CipherAlgorithm{
     }
 
     @Override
-    public byte decryptionOperation(int raw, int key) throws KeyException {
+    public byte decryptionOperation(int raw, int key) {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
 
