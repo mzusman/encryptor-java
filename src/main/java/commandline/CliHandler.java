@@ -77,7 +77,8 @@ public class CliHandler {
         System.out.println("Enter a key");
         @Cleanup Scanner scanner = new Scanner(System.in);
         String key = scanner.nextLine();
-        if (key.matches("\\d+$"))
+        if (key.matches("\\d+$") && Integer.parseInt(key) < 256
+                && Integer.parseInt(key) > 0)
             return Integer.parseInt(key);
         else return getKey();
     }

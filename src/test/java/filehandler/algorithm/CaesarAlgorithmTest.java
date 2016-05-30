@@ -14,38 +14,23 @@ import static org.junit.Assert.*;
  */
 public class CaesarAlgorithmTest {
     CaesarAlgorithm caesarAlgorithm = new CaesarAlgorithm();
-    byte[] bytes;
+    CipherAlgorithmTest test = new CipherAlgorithmTest();
 
     @Test
     public void encrypt() throws Exception {
-        PipedOutputStream pout = new PipedOutputStream();
-        InputStream in = new PipedInputStream(pout);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(baos);
-        pout.write("test".getBytes());
-        System.out.println("test".getBytes());
-        pout.flush();
-        pout.close();
-        caesarAlgorithm.encrypt(in, out,129);
-        System.out.println(baos.toByteArray());
-        bytes = baos.toByteArray();
-        assertNotEquals("test", (baos.toString()));
-
+        for (int i = 1; i < 256; i++) {
+            System.out.println(i);
+            test.encrypt(caesarAlgorithm, i);
+        }
     }
 
     @Test
     public void decrypt() throws Exception {
-        encrypt();
-        PipedOutputStream pout = new PipedOutputStream();
-        InputStream in = new PipedInputStream(pout);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream out = new PrintStream(baos);
-        pout.write(bytes);
-        pout.flush();
-        pout.close();
-        caesarAlgorithm.decrypt(in, out,129);
-        System.out.println(baos.toString());
-        assertEquals("test", (baos.toString()));
+        for (int i = 1; i < 256; i++) {
+            System.out.println(i);
+            test.decrypt(caesarAlgorithm, i);
+
+        }
     }
 
 }
