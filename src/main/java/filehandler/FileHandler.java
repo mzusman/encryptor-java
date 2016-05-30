@@ -38,10 +38,8 @@ public class FileHandler {
             @Cleanup BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             bufferedReader.lines().forEach(System.out::println);
         } catch (IOException e) {
-            do {
-                String path = CliHandler.getInstance().handleNotFoundFile(file.getPath());
-                file = new File(path);
-            } while (!file.exists() || !file.isFile());
+            String path = CliHandler.getInstance().handleNotFoundFile(file.getPath());
+            file = new File(path);
         }
     }
 }

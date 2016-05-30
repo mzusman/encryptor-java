@@ -3,6 +3,7 @@ package commandline;
 
 import filehandler.FileHandler;
 import filehandler.Operation;
+import lombok.Cleanup;
 import lombok.NonNull;
 
 import java.io.File;
@@ -57,7 +58,7 @@ public class CliHandler {
     public String handleNotFoundFile(@NonNull String path) {
         System.out.printf("file at %s was not found or does not exist\n", path);
         System.out.println("Enter the path again:");
-        Scanner scanner = new Scanner(System.in);
+        @Cleanup Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();
     }
 
@@ -74,7 +75,7 @@ public class CliHandler {
 
     public int getKey() {
         System.out.println("Enter a key");
-        Scanner scanner = new Scanner(System.in);
+        @Cleanup Scanner scanner = new Scanner(System.in);
         String key = scanner.nextLine();
         if (key.matches("\\d+$"))
             return Integer.parseInt(key);
