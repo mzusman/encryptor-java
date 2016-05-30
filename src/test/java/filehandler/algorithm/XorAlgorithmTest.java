@@ -12,10 +12,11 @@ public class XorAlgorithmTest {
 
     @Test
     public void encrypt() throws Exception {
-        for (int i = 1; i < 256; i++) {
-            System.out.println(i);
-            algorithm.encryptTest(xorAlgorithm, i);
-        }
+//        for (int i = 1; i < 256; i++) {
+//            System.out.println(i);
+//            algorithm.encryptTest(xorAlgorithm, i);
+//        }
+        System.out.println((byte)256);
     }
 
     @Test

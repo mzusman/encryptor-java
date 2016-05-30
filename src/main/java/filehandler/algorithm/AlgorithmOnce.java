@@ -1,6 +1,9 @@
 package filehandler.algorithm;
 
+import exceptions.KeyException;
+import exceptions.UnsupportedKeyNumberException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
+
 
 /**
  * Created by mzeus on 30/05/16.
@@ -17,12 +20,19 @@ public class AlgorithmOnce extends Algorithm {
     }
 
     @Override
-    public byte decryptionOperation(int raw, int key) {
+    public byte decryptionOperation(int raw, int key) throws KeyException {
+
         return algorithm.decryptionOperation(raw, key);
     }
 
     @Override
     public byte encryptionOperation(int raw, int key) {
         return algorithm.encryptionOperation(raw, key);
+    }
+
+
+    @Override
+    public void checkKey(int key) throws KeyException {
+        algorithm.checkKey(key);
     }
 }

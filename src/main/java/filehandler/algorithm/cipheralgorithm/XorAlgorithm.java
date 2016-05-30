@@ -1,5 +1,8 @@
 package filehandler.algorithm.cipheralgorithm;
 
+import exceptions.KeyException;
+import exceptions.UnsupportedKeyNumberException;
+
 /**
  * Created by mzeus on 30/05/16.
  */
@@ -19,5 +22,11 @@ public class XorAlgorithm implements CipherAlgorithm {
     @Override
     public byte encryptionOperation(int raw, int key) {
         return (byte) ((byte) (raw ^ key) & 0xff);
+    }
+
+    @Override
+    public void checkKey(int key) throws KeyException {
+        if ((byte) key == 0)
+            throw new UnsupportedKeyNumberException(key);
     }
 }

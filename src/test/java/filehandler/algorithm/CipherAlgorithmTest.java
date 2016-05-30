@@ -1,5 +1,6 @@
 package filehandler.algorithm;
 
+import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 
 import java.io.*;
@@ -14,7 +15,7 @@ public class CipherAlgorithmTest {
     byte[] bytes;
 
 
-    public void encryptTest(CipherAlgorithm algorithm, int key) throws IOException {
+    public void encryptTest(CipherAlgorithm algorithm, int key) throws IOException, KeyException {
 
         PipedOutputStream pout = new PipedOutputStream();
         InputStream in = new PipedInputStream(pout);
@@ -24,7 +25,8 @@ public class CipherAlgorithmTest {
         System.out.println("test".getBytes());
         pout.flush();
         pout.close();
-        algorithm.encrypt(in, out, key);
+        Algorithm algorithm1 = new AlgorithmOnce(algorithm);
+        algorithm1.encrypt(in, out, key);
         System.out.println(baos.toByteArray());
         bytes = baos.toByteArray();
         assertNotEquals("test", (baos.toString()));
@@ -36,7 +38,7 @@ public class CipherAlgorithmTest {
      * the information is still the same
      */
 
-    public void decryptTest(CipherAlgorithm algorithm, int key) throws IOException {
+    public void decryptTest(CipherAlgorithm algorithm, int key) throws IOException, KeyException {
 
         encryptTest(algorithm, key);
         PipedOutputStream pout = new PipedOutputStream();
@@ -46,7 +48,8 @@ public class CipherAlgorithmTest {
         pout.write(bytes);
         pout.flush();
         pout.close();
-        algorithm.decrypt(in, out, key);
+        Algorithm algorithm1 = new AlgorithmOnce(algorithm);
+        algorithm1.decrypt(in, out, key);
         System.out.println(baos.toString());
         assertEquals("test", (baos.toString()));
 

@@ -1,6 +1,7 @@
 package filehandler.operations;
 
 import commandline.CliHandler;
+import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.AlgorithmOnce;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
@@ -25,7 +26,7 @@ public class Decryption implements Operation {
 
 
     @Override
-    public File act(File file, CipherAlgorithm cipherAlgorithm) throws IOException {
+    public File act(File file, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
 
         String[] filename = file.getPath().split("\\.", 2);
         StringBuilder sp;

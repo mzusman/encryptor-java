@@ -1,5 +1,6 @@
 package filehandler.operations;
 
+import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.AlgorithmOnce;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
@@ -24,7 +25,7 @@ public class Encryption implements Operation {
     }
 
     @Override
-    public File act(File file, CipherAlgorithm cipherAlgorithm) throws IOException {
+    public File act(File file, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
         System.out.printf("key for encryption is : %d\n", key);
         File outputFile = new File(file.getPath() + encrypted);
         outputFile.createNewFile();

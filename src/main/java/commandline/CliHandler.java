@@ -1,6 +1,8 @@
 package commandline;
 
 
+import exceptions.KeyException;
+import exceptions.UnsupportedKeyNumberException;
 import filehandler.FileHandler;
 import filehandler.operations.Operation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
@@ -62,7 +64,11 @@ public class CliHandler {
         CipherAlgorithm algorithm = selectAlgorithm();
 
         FileHandler fileHandler = new FileHandler(operation, file);
-        fileHandler.handleFile(algorithm);
+        try {
+            fileHandler.handleFile(algorithm);
+        } catch (KeyException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 

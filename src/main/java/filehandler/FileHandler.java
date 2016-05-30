@@ -1,6 +1,7 @@
 package filehandler;
 
 import commandline.CliHandler;
+import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.operations.Operation;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class FileHandler {
         return operation.getDescription();
     }
 
-    public void handleFile(CipherAlgorithm algorithm) {
+    public void handleFile(CipherAlgorithm algorithm) throws KeyException {
         try {
             file = operation.act(file, algorithm);
             if (file != null)

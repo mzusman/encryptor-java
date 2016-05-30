@@ -1,9 +1,13 @@
 package filehandler.algorithm.cipheralgorithm;
 
+import exceptions.KeyException;
+import exceptions.UnsupportedKeyNumberException;
+
+
 /**
  * Created by mzeus on 30/05/16.
  */
-public class MultiplicationAlgorithm implements CipherAlgorithm {
+public class MultiplicationAlgorithm implements CipherAlgorithm{
 
 
     private byte procedureMwo(int raw, int key) {
@@ -16,7 +20,7 @@ public class MultiplicationAlgorithm implements CipherAlgorithm {
     }
 
     @Override
-    public byte decryptionOperation(int raw, int key) {
+    public byte decryptionOperation(int raw, int key) throws KeyException {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
 
@@ -34,5 +38,11 @@ public class MultiplicationAlgorithm implements CipherAlgorithm {
     @Override
     public byte encryptionOperation(int raw, int key) {
         return procedureMwo(raw, key);
+    }
+
+    @Override
+    public void checkKey(int key) throws KeyException {
+        if ((byte) key == 0 || key % 2 == 0)
+            throw new UnsupportedKeyNumberException(key);
     }
 }

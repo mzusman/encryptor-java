@@ -1,5 +1,6 @@
 package filehandler.algorithm;
 
+import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.AllArgsConstructor;
 
@@ -15,8 +16,8 @@ public abstract class Algorithm implements CipherAlgorithm {
     CipherAlgorithm algorithm;
 
 
-    public void encrypt(InputStream in, OutputStream out, int key) {
-
+    public void encrypt(InputStream in, OutputStream out, int key) throws KeyException {
+        checkKey(key);
         try {
             int raw;
             byte enc;
@@ -30,8 +31,8 @@ public abstract class Algorithm implements CipherAlgorithm {
 
     }
 
-    public void decrypt(InputStream in, OutputStream out, int key) {
-
+    public void decrypt(InputStream in, OutputStream out, int key) throws KeyException {
+        checkKey(key);
         try {
             int raw;
             byte dec;
@@ -44,7 +45,6 @@ public abstract class Algorithm implements CipherAlgorithm {
         }
 
     }
-
 
 
 }
