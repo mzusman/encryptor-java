@@ -69,7 +69,7 @@ public class CliHandlerTest {
         File file = temporaryFolder.newFile();
         cliHandler.addOption("-e", encryption);
         cliHandler.handleArguments(new String[]{"-e", file.getPath()});
-        verify(encryption, times(1)).act(file, new CaesarAlgorithm());
+        verify(encryption, times(1)).act(file, new CaesarAlgorithm(), System.out::println);
     }
 
     @Test

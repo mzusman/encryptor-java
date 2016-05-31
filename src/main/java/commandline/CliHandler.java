@@ -8,8 +8,9 @@ import filehandler.operations.Operation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
 import lombok.NonNull;
+import utils.DisplayMessage;
 
-import java.io.File;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,6 +26,13 @@ public class CliHandler {
 
     private HashMap<String, Operation> operationFactory = new HashMap<String, Operation>();
     private HashMap<String, CipherAlgorithm> algorithmFactory = new HashMap<>();
+
+    DisplayMessage displayMessage = new DisplayMessage() {
+        @Override
+        public void display(String message) {
+            System.out.println(message);
+        }
+    };
 
     private CliHandler() {
     }
@@ -62,29 +70,33 @@ public class CliHandler {
             return;
         }
         CipherAlgorithm algorithm = selectAlgorithm();
-
-        FileHandler fileHandler = new FileHandler(operation, file);
+        FileHandler fileHandler = new FileHandler(operation, file, displayMessage);
         try {
             fileHandler.handleFile(algorithm);
         } catch (KeyException e) {
             System.out.println(e.getMessage());
+        } catch (IOException e) {
+            handleNotFoundFile(e.getMessage());
         }
 
     }
 
+    Console console = System.console();
+
     private CipherAlgorithm selectAlgorithm() {
         System.out.println("Select an algorithm:");
         algorithmFactory.forEach((s, c) ->
-                System.out.printf("%s - %s", s, c.getDescription()));
-        @Cleanup Scanner scanner = new Scanner(System.in);
-        return algorithmFactory.get(scanner.nextLine());// todo: have to make it more safety
+                System.out.printf("%s - %s\n", s, c.getDescription()));
+        String input = console.readLine("enter:");
+        return algorithmFactory.get(input);// todo: have to make it more safety
     }
 
-    public String handleNotFoundFile(@NonNull String path) {
-        System.out.printf("file at %s was not found or does not exist\n", path);
-        System.out.println("Enter the path again:");
-        @Cleanup Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+    private String handleNotFoundFile(String message) {
+        if (message != null)
+            System.out.println(message);
+        else
+            System.out.println("Error with files!");
+        return console.readLine("Enter the path again:");
     }
 
     public void showOptions() {
@@ -99,9 +111,7 @@ public class CliHandler {
 
 
     public int getKey() {
-        System.out.println("Enter a key");
-        @Cleanup Scanner scanner = new Scanner(System.in);
-        String key = scanner.nextLine();
+        String key = console.readLine("Enter the key that used for encryption: ");
         if (key.matches("\\d+$") && Integer.parseInt(key) < 256
                 && Integer.parseInt(key) > 0)
             return Integer.parseInt(key);
@@ -109,4 +119,6 @@ public class CliHandler {
             return getKey();
         }
     }
+
+
 }

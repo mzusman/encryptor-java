@@ -17,12 +17,15 @@ public abstract class Algorithm implements CipherAlgorithm {
 
 
     public void encrypt(InputStream in, OutputStream out, int key) throws KeyException, IOException {
-        checkKey(key);
         int raw;
         byte enc;
-        while ((raw = in.read()) != -1) {
-            enc = encryptionOperation(raw, key);
-            out.write(enc);
+        try {
+            while ((raw = in.read()) != -1) {
+                enc = encryptionOperation(raw, key);
+                out.write(enc);
+            }
+        } catch (IOException e) {
+            throw new IOException("Error reading from file");
         }
     }
 
@@ -30,9 +33,13 @@ public abstract class Algorithm implements CipherAlgorithm {
         checkKey(key);
         int raw;
         byte dec;
-        while ((raw = in.read()) != -1) {
-            dec = decryptionOperation(raw, key);
-            out.write(dec);
+        try {
+            while ((raw = in.read()) != -1) {
+                dec = decryptionOperation(raw, key);
+                out.write(dec);
+            }
+        } catch (IOException e) {
+            throw new IOException("Error reading from file");
         }
 
     }

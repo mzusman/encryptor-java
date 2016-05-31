@@ -32,7 +32,7 @@ public class DecryptionTest {
         File file = temporaryFolder.newFile("test.encrypted");
         InputStream inputStream = new ByteArrayInputStream("42\n".getBytes());
         System.setIn(inputStream);
-        Assert.assertNotEquals(decryption.act(file, new CaesarAlgorithm()), file);
+        Assert.assertNotEquals(decryption.act(file, new CaesarAlgorithm(), System.out::println), file);
     }
 
 }

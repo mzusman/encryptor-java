@@ -34,4 +34,9 @@ public class AlgorithmOnce extends Algorithm {
     public void checkKey(int key) throws KeyException {
         algorithm.checkKey(key);
     }
+
+    @Override
+    public int createKey() {
+        return algorithm.createKey();
+    }
 }

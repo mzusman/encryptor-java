@@ -1,6 +1,8 @@
 package filehandler;
 
+import exceptions.UnsupportedKeyNumberException;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
+import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.Encryption;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,8 +25,7 @@ public class FileHandlerTest {
 
     @Test
     public void handleFile() throws Exception {
-
-        new FileHandler(new Encryption(), folder.newFile()).handleFile(new MultiplicationAlgorithm());
+        new FileHandler(new Encryption(), folder.newFile(), System.out::println).handleFile(new XorAlgorithm());
     }
 
     @Test

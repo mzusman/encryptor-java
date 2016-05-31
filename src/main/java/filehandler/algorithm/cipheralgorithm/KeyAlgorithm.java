@@ -8,4 +8,5 @@ import exceptions.KeyException;
  */
 interface KeyAlgorithm {
     void checkKey(int key) throws KeyException;
+    int createKey() ;
 }

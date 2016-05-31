@@ -6,6 +6,7 @@ import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.AlgorithmOnce;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
+import utils.DisplayMessage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +27,7 @@ public class Decryption implements Operation {
 
 
     @Override
-    public File act(File file, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
+    public File act(File file, CipherAlgorithm cipherAlgorithm, DisplayMessage displayMessage) throws KeyException, IOException {
 
         String[] filename = file.getPath().split("\\.", 2);
         StringBuilder sp;
@@ -36,7 +37,11 @@ public class Decryption implements Operation {
         else sp = new StringBuilder(filename[0]).
                 append(decrypted);
         File outputFile = new File(sp.toString());
-        outputFile.createNewFile();
+        try {
+            outputFile.createNewFile();
+        } catch (IOException e) {
+            throw new IOException("cannot create new file for decryption");
+        }
         @Cleanup FileInputStream fis = new FileInputStream(file);
         @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
         int key = CliHandler.getInstance().getKey();

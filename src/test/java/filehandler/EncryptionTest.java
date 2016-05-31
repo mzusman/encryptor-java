@@ -23,7 +23,7 @@ public class EncryptionTest {
     @Test
     public void act() throws Exception {
         File file = temporaryFolder.newFile();
-        Assert.assertNotEquals(file, encryption.act(file,new CaesarAlgorithm()));
+        Assert.assertNotEquals(file, encryption.act(file, new CaesarAlgorithm(), System.out::println));
     }
 
     @Test

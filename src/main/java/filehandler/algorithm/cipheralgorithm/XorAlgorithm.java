@@ -3,6 +3,8 @@ package filehandler.algorithm.cipheralgorithm;
 import exceptions.KeyException;
 import exceptions.UnsupportedKeyNumberException;
 
+import java.util.Random;
+
 /**
  * Created by mzeus on 30/05/16.
  */
@@ -28,5 +30,10 @@ public class XorAlgorithm implements CipherAlgorithm {
     public void checkKey(int key) throws KeyException {
         if ((byte) key == 0)
             throw new UnsupportedKeyNumberException(key);
+    }
+
+    @Override
+    public int createKey() {
+        return new Random().nextInt(255) + 1;
     }
 }

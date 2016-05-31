@@ -4,8 +4,8 @@ import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.AlgorithmOnce;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import jdk.internal.util.xml.impl.Input;
 import lombok.Cleanup;
+import utils.DisplayMessage;
 
 import java.io.*;
 import java.util.Random;
@@ -17,7 +17,6 @@ import java.util.function.BiFunction;
 public class Encryption implements Operation {
 
     private static final String encrypted = ".encrypted";
-    private final int key = new Random().nextInt(100);
 
     @Override
     public String getDescription() {
@@ -25,8 +24,9 @@ public class Encryption implements Operation {
     }
 
     @Override
-    public File act(File file, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
-        System.out.printf("key for encryption is : %d\n", key);
+    public File act(File file, CipherAlgorithm cipherAlgorithm, DisplayMessage message) throws IOException, KeyException {
+        int key = cipherAlgorithm.createKey();
+        message.display(String.format("Key for encryption is : %d , Save it for future use!", key));
         File outputFile = new File(file.getPath() + encrypted);
         outputFile.createNewFile();
         @Cleanup FileInputStream fis = new FileInputStream(file);
