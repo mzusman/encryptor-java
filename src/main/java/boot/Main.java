@@ -1,6 +1,10 @@
 package boot;
 
 import commandline.CliHandler;
+import filehandler.algorithm.DoubleAlgorithm;
+import filehandler.algorithm.NormalAlgorithm;
+import filehandler.algorithm.ReverseAlgorithm;
+import filehandler.algorithm.SplitAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
@@ -20,11 +24,15 @@ public class Main {
      */
     public static void main(String args[]) {
         CliHandler cliHandler = CliHandler.getInstance();
-        cliHandler.addOption("-d", new Decryption())
-                .addOption("-e", new Encryption())
-                .addAlgorithm("1", new CaesarAlgorithm())
-                .addAlgorithm("2", new XorAlgorithm())
-                .addAlgorithm("3", new MultiplicationAlgorithm())
+        cliHandler.addOption(new Decryption())
+                .addOption(new Encryption())
+                .addWrapAlgorithm(new DoubleAlgorithm())
+                .addWrapAlgorithm(new ReverseAlgorithm())
+                .addWrapAlgorithm(new SplitAlgorithm())
+                .addWrapAlgorithm(new NormalAlgorithm())
+                .addAlgorithm(new CaesarAlgorithm())
+                .addAlgorithm(new XorAlgorithm())
+                .addAlgorithm(new MultiplicationAlgorithm())
                 .handleArguments(args);
 
     }

@@ -1,12 +1,10 @@
 package filehandler;
 
-import commandline.CliHandler;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.AlgorithmOnce;
+import filehandler.algorithm.NormalAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.operations.Operation;
-import filehandler.operations.Operator;
 import filehandler.operations.OperatorWithMsg;
 import lombok.AllArgsConstructor;
 import lombok.Cleanup;
@@ -29,8 +27,7 @@ public class FileHandler {
         return operation.getDescription();
     }
 
-    public void handleFile(CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
-        Algorithm algorithm = new AlgorithmOnce(cipherAlgorithm);
+    public void handleFile(Algorithm algorithm) throws KeyException, IOException {
         OperatorWithMsg operator = new OperatorWithMsg(operation, displayMessage);
         file = operator.act(file, algorithm);
 //        if (file != null)
@@ -42,7 +39,7 @@ public class FileHandler {
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         } catch (FileNotFoundException e) {
-            throw new IOException("file not found");
+            throw new IOException("ERROR: file not found");
         }
         bufferedReader.lines().forEach(System.out::println);
     }

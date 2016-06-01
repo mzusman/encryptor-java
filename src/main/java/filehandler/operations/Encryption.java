@@ -2,19 +2,9 @@ package filehandler.operations;
 
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.AlgorithmOnce;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
-import utils.DisplayMessage;
 
 import java.io.*;
-import java.sql.Time;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.Random;
-import java.util.function.BiFunction;
 
 /**
  * Created by Mor on 5/19/2016.

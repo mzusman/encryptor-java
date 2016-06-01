@@ -6,8 +6,6 @@ import org.mockito.Mockito;
 
 import java.io.*;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by mzeus on 31/05/16.
  */
@@ -16,7 +14,7 @@ public class AlgorithmTest {
     public void encrypt() throws Exception {
 
         CipherAlgorithm cipherAlgorithm = Mockito.mock(CipherAlgorithm.class);
-        Algorithm algorithm = new AlgorithmOnce(cipherAlgorithm);
+        Algorithm algorithm = new NormalAlgorithm(cipherAlgorithm);
         for (int i = 255; i > 0; i--) {
             PipedOutputStream pipedIn = new PipedOutputStream();
             InputStream in = new PipedInputStream(pipedIn);
@@ -35,7 +33,7 @@ public class AlgorithmTest {
     public void decrypt() throws Exception {
 
         CipherAlgorithm cipherAlgorithm = Mockito.mock(CipherAlgorithm.class);
-        Algorithm algorithm = new AlgorithmOnce(cipherAlgorithm);
+        Algorithm algorithm = new NormalAlgorithm(cipherAlgorithm);
         for (int i = 255; i > 0; i--) {
             PipedOutputStream pipedIn = new PipedOutputStream();
             InputStream in = new PipedInputStream(pipedIn);

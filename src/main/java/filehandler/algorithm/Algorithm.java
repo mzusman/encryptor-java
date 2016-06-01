@@ -4,6 +4,7 @@ import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,8 +15,13 @@ import java.io.OutputStream;
  */
 @AllArgsConstructor
 public abstract class Algorithm implements CipherAlgorithm {
-    @Getter CipherAlgorithm algorithm;
+    @Getter
+    @Setter
+    CipherAlgorithm algorithm;
 
+    public Algorithm() {
+
+    }
 
     public void encrypt(InputStream in, OutputStream out, int key) throws KeyException, IOException {
         int raw;

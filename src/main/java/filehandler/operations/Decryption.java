@@ -3,10 +3,7 @@ package filehandler.operations;
 import commandline.CliHandler;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.AlgorithmOnce;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
-import utils.DisplayMessage;
 
 import java.io.File;
 import java.io.FileInputStream;

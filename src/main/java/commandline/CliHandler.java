@@ -4,13 +4,16 @@ package commandline;
 import exceptions.KeyException;
 import exceptions.UnsupportedKeyNumberException;
 import filehandler.FileHandler;
+import filehandler.algorithm.Algorithm;
 import filehandler.operations.Operation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
 import lombok.NonNull;
 import utils.DisplayMessage;
+import utils.Selectable;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -24,73 +27,80 @@ public class CliHandler {
         return instance;
     }
 
-    private HashMap<String, Operation> operationFactory = new HashMap<String, Operation>();
-    private HashMap<String, CipherAlgorithm> algorithmFactory = new HashMap<>();
+    private ArrayList<Selectable> operationFactory = new ArrayList<>();
+    private ArrayList<Selectable> algorithmFactory = new ArrayList<>();
+    private ArrayList<Selectable> wrapAlgorithmFactory = new ArrayList<>();
     private DisplayMessage displayMessage = System.out::println;
 
     private CliHandler() {
     }
 
-    public CliHandler addOption(String arg, Operation operation) {
-        if (operation == null || arg == null)
+    public CliHandler addOption(Operation operation) {
+        if (operation == null)
             return this;
-        operationFactory.put(arg, operation);
+        operationFactory.add(operation);
         return this;
     }
 
-    public CliHandler addAlgorithm(String arg, CipherAlgorithm algorithm) {
-        if (algorithm == null || arg == null)
+    public CliHandler addAlgorithm(CipherAlgorithm algorithm) {
+        if (algorithm == null)
             return this;
-        algorithmFactory.put(arg, algorithm);
+        algorithmFactory.add(algorithm);
         return this;
     }
 
 
-    public void handleArguments(@NonNull String[] arg) {
-        if (arg.length != 2) {
+    public CliHandler addWrapAlgorithm(Algorithm algorithm) {
+        if (algorithm == null)
+            return this;
+        wrapAlgorithmFactory.add(algorithm);
+        return this;
+    }
+
+
+    public void handleArguments(String[] args) {
+        if (args.length != 1) {
             showOptions();
             return;
         }
 
-        File file = new File(arg[1]);
+        File file = new File(args[0]);
         if (!file.exists() || !file.isFile()) try {
             handleNotFoundFile(file.getPath());
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
-        else if (!file.isFile()) System.out.println("error: not a file");
-        else if (!file.canRead()) System.out.println("don't have permission to read");
-        else if (!file.canWrite()) System.out.println("don't have permission to write");
-
-        Operation operation = operationFactory.get(arg[0]);
-        if (operation == null) {
-            showOptions();
-            return;
-        }
+        else if (!file.isFile()) System.err.println("error: not a file");
+        else if (!file.canRead()) System.err.println("don't have permission to read");
+        else if (!file.canWrite()) System.err.println("don't have permission to write");
         try {
-            CipherAlgorithm algorithm = selectAlgorithm();
+            Operation operation = (Operation) selectSelectable(operationFactory, "Operation");
+            Algorithm algorithm = (Algorithm) selectSelectable(wrapAlgorithmFactory, "Algorithm type");
+            CipherAlgorithm cipherAlgorithm = (CipherAlgorithm) selectSelectable(algorithmFactory, "Algorithm");
+            algorithm.setAlgorithm(cipherAlgorithm);
+
             FileHandler fileHandler = new FileHandler(operation, file, displayMessage);
             fileHandler.handleFile(algorithm);
         } catch (KeyException e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         } catch (IOException e) {
             try {
                 handleNotFoundFile(e.getMessage());
             } catch (IOException e1) {
-                System.out.println(e1.getMessage());
+                System.err.println(e1.getMessage());
             }
         }
     }
 
-
-    private CipherAlgorithm selectAlgorithm() throws IOException {
-        System.out.println("Select an algorithm:");
-        algorithmFactory.forEach((s, c) ->
-                System.out.printf("%s - %s\n", s, c.getDescription()));
+    private Selectable selectSelectable(ArrayList<Selectable> list, String type) throws IOException {
+        System.out.printf("Select an %s:\n", type);
+        list.forEach((s) ->
+                System.out.printf("%s - %s\n", list.indexOf(s), (s).getDescription()));
         System.out.println("enter :");
         String input = getStringFromUser();
-        return algorithmFactory.get(input);// todo: have to make it more safety
+        return list.get(Integer.parseInt(input));// todo: have to make it more safety
     }
+
 
     private String handleNotFoundFile(String message) throws IOException {
         if (message != null)
@@ -101,14 +111,12 @@ public class CliHandler {
         return getStringFromUser();
     }
 
-    public void showOptions() {
-        System.out.println("usage: ... <option> <file>\nOptions:");
+    private void showOptions() {
+        System.out.println("usage: ... <file>\n");
         if (operationFactory.size() == 0) {
             System.out.println("no handlers are available");
             return;
         }
-        operationFactory.forEach((s, f)
-                -> System.out.printf("%s - %s\n", s, f.getDescription()));
     }
 
 

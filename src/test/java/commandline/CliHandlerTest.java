@@ -36,10 +36,10 @@ public class CliHandlerTest {
     @Test
     public void addAlgorithm() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
-        assertEquals(cliHandler, cliHandler.addAlgorithm("-d", algorithm));
-        assertEquals(cliHandler, cliHandler.addAlgorithm(null, null));
-        assertEquals(cliHandler, cliHandler.addAlgorithm("-d", algorithm));
-        assertEquals(cliHandler, cliHandler.addAlgorithm("-e", algorithm));
+        assertEquals(cliHandler, cliHandler.addAlgorithm(algorithm));
+        assertEquals(cliHandler, cliHandler.addAlgorithm(null));
+        assertEquals(cliHandler, cliHandler.addAlgorithm(algorithm));
+        assertEquals(cliHandler, cliHandler.addAlgorithm(algorithm));
     }
 
 
@@ -60,11 +60,9 @@ public class CliHandlerTest {
     @Test
     public void addOption() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
-        assertEquals(cliHandler, cliHandler.addOption("-d", decryption));
-        assertEquals(cliHandler, cliHandler.addOption("-e", encryption));
-        assertEquals(cliHandler, cliHandler.addOption(null, null));
-        assertEquals(cliHandler, cliHandler.addOption("-e", null));
-        assertEquals(cliHandler, cliHandler.addOption(null, decryption));
+        assertEquals(cliHandler, cliHandler.addOption(decryption));
+        assertEquals(cliHandler, cliHandler.addOption(encryption));
+        assertEquals(cliHandler, cliHandler.addOption(null));
     }
 
     @Test
@@ -73,22 +71,12 @@ public class CliHandlerTest {
         FileHandler fileHandler = mock(FileHandler.class);
         File file = temporaryFolder.newFile();
         CaesarAlgorithm algorithm = new CaesarAlgorithm();
-        cliHandler.addOption("-e", encryption);
-        cliHandler.addAlgorithm("1", algorithm);
+        cliHandler.addOption(encryption);
+        cliHandler.addAlgorithm(algorithm);
         System.setIn(new ByteArrayInputStream("1".getBytes()));
-        cliHandler.handleArguments(new String[]{"-e", file.getPath()});
+        cliHandler.handleArguments(file.getPath());
         verify(encryption, times(1)).act(any(File.class), any(Algorithm.class));
     }
 
-    @Test
-    public void showOptions() throws Exception {
-        CliHandler cliHandler = CliHandler.getInstance();
-        cliHandler.showOptions();
-        cliHandler.addOption(null, null);
-        cliHandler.showOptions();
-        cliHandler.addOption(null, null);
-        cliHandler.addOption("-d", decryption);
-        cliHandler.showOptions();
-    }
 
 }

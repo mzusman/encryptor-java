@@ -1,6 +1,6 @@
 package filehandler;
 
-import filehandler.algorithm.AlgorithmOnce;
+import filehandler.algorithm.NormalAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.operations.Decryption;
 import org.junit.Assert;
@@ -33,8 +33,8 @@ public class DecryptionTest {
         File file = temporaryFolder.newFile("test.encrypted");
         InputStream inputStream = new ByteArrayInputStream("42".getBytes());
         System.setIn(inputStream);
-        AlgorithmOnce algorithmOnce = new AlgorithmOnce(new CaesarAlgorithm());
-        Assert.assertNotEquals(decryption.act(file, algorithmOnce), file);
+        NormalAlgorithm normalAlgorithm = new NormalAlgorithm(new CaesarAlgorithm());
+        Assert.assertNotEquals(decryption.act(file, normalAlgorithm), file);
     }
 
 }

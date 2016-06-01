@@ -25,7 +25,7 @@ public class CipherAlgorithmTest {
         System.out.println("test".getBytes());
         pout.flush();
         pout.close();
-        Algorithm algorithm1 = new AlgorithmOnce(algorithm);
+        Algorithm algorithm1 = new NormalAlgorithm(algorithm);
         algorithm1.encrypt(in, out, key);
         System.out.println(baos.toByteArray());
         bytes = baos.toByteArray();
@@ -48,7 +48,7 @@ public class CipherAlgorithmTest {
         pout.write(bytes);
         pout.flush();
         pout.close();
-        Algorithm algorithm1 = new AlgorithmOnce(algorithm);
+        Algorithm algorithm1 = new NormalAlgorithm(algorithm);
         algorithm1.decrypt(in, out, key);
         System.out.println(baos.toString());
         assertEquals("test", (baos.toString()));

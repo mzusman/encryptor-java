@@ -8,15 +8,18 @@ import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class AlgorithmOnce extends Algorithm {
+public class NormalAlgorithm extends Algorithm {
+    public NormalAlgorithm() {
 
-    public AlgorithmOnce(CipherAlgorithm algorithm) {
+    }
+
+    public NormalAlgorithm(CipherAlgorithm algorithm) {
         super(algorithm);
     }
 
     @Override
     public String getDescription() {
-        return algorithm.getDescription();
+        return "perform a normal algorithm";
     }
 
     @Override
