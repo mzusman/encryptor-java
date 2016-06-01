@@ -8,6 +8,11 @@ import lombok.Cleanup;
 import utils.DisplayMessage;
 
 import java.io.*;
+import java.sql.Time;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Random;
 import java.util.function.BiFunction;
 
@@ -17,6 +22,8 @@ import java.util.function.BiFunction;
 public class Encryption implements Operation {
 
     private static final String encrypted = ".encrypted";
+    private long startTime = 0;
+    private long endTime = 0;
 
     @Override
     public String getDescription() {
@@ -24,15 +31,26 @@ public class Encryption implements Operation {
     }
 
     @Override
-    public File act(File file, CipherAlgorithm cipherAlgorithm, DisplayMessage message) throws IOException, KeyException {
-        int key = cipherAlgorithm.createKey();
-        message.display(String.format("Key for encryption is : %d , Save it for future use!", key));
+    public File act(File file, Algorithm algorithm, DisplayMessage displayMessage) throws KeyException, IOException {
+        int key = algorithm.getAlgorithm().createKey();
+        displayMessage.display(String.format("Key for encryption is : %d , Save it for future use!", key));
         File outputFile = new File(file.getPath() + encrypted);
-        outputFile.createNewFile();
+        try {
+            outputFile.createNewFile();
+        } catch (IOException e) {
+            throw new IOException("cannot create a new file for encryption");
+        }
+
         @Cleanup FileInputStream fis = new FileInputStream(file);
         @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        Algorithm algorithm = new AlgorithmOnce(cipherAlgorithm);
+        startTime = new Date().getTime();
         algorithm.encrypt(fis, fos, key);
+        endTime = new Date().getTime();
+        displayMessage.display(String.format("action took : %d ms", endTime - startTime));
+
+
         return outputFile;
     }
+
+
 }

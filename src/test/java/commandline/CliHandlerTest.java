@@ -1,5 +1,6 @@
 package commandline;
 
+import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.Decryption;
 import filehandler.operations.Encryption;
@@ -8,9 +9,12 @@ import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.PipedOutputStream;
 import java.util.NoSuchElementException;
 
 import static org.hamcrest.core.Is.is;
@@ -38,16 +42,16 @@ public class CliHandlerTest {
     }
 
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void getKey() throws Exception {
-
         for (int i = 1; i < 256; i++) {
-            System.setIn(new ByteArrayInputStream(String.valueOf(i).getBytes()));
+            System.setIn(new ByteArrayInputStream((String.valueOf(i) + "\n").getBytes()));
+            System.out.println(i);
             assertEquals(CliHandler.getInstance().getKey(), i);
-        }
 
-        System.setIn(new ByteArrayInputStream(String.valueOf(0).getBytes()));
-        assertNotEquals(CliHandler.getInstance().getKey(), 0);
+        }
+//        System.setIn(new ByteArrayInputStream(String.valueOf(0).getBytes()));
+//        assertNotEquals(CliHandler.getInstance().getKey(), 0);
 
     }
 
@@ -62,14 +66,17 @@ public class CliHandlerTest {
         assertEquals(cliHandler, cliHandler.addOption(null, decryption));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void handleArguments() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
         FileHandler fileHandler = mock(FileHandler.class);
         File file = temporaryFolder.newFile();
+        CaesarAlgorithm algorithm = new CaesarAlgorithm();
         cliHandler.addOption("-e", encryption);
+        cliHandler.addAlgorithm("1", algorithm);
+        System.setIn(new ByteArrayInputStream("1".getBytes()));
         cliHandler.handleArguments(new String[]{"-e", file.getPath()});
-        verify(encryption, times(1)).act(file, new CaesarAlgorithm(), System.out::println);
+        verify(encryption, times(1)).act(any(File.class), any(CipherAlgorithm.class), anyObject());
     }
 
     @Test

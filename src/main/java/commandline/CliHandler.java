@@ -26,13 +26,7 @@ public class CliHandler {
 
     private HashMap<String, Operation> operationFactory = new HashMap<String, Operation>();
     private HashMap<String, CipherAlgorithm> algorithmFactory = new HashMap<>();
-
-    DisplayMessage displayMessage = new DisplayMessage() {
-        @Override
-        public void display(String message) {
-            System.out.println(message);
-        }
-    };
+    private DisplayMessage displayMessage = System.out::println;
 
     private CliHandler() {
     }
@@ -59,7 +53,11 @@ public class CliHandler {
         }
 
         File file = new File(arg[1]);
-        if (!file.exists() || !file.isFile()) handleNotFoundFile(file.getPath());
+        if (!file.exists() || !file.isFile()) try {
+            handleNotFoundFile(file.getPath());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
         else if (!file.isFile()) System.out.println("error: not a file");
         else if (!file.canRead()) System.out.println("don't have permission to read");
         else if (!file.canWrite()) System.out.println("don't have permission to write");
@@ -69,34 +67,38 @@ public class CliHandler {
             showOptions();
             return;
         }
-        CipherAlgorithm algorithm = selectAlgorithm();
-        FileHandler fileHandler = new FileHandler(operation, file, displayMessage);
         try {
+            CipherAlgorithm algorithm = selectAlgorithm();
+            FileHandler fileHandler = new FileHandler(operation, file, displayMessage);
             fileHandler.handleFile(algorithm);
         } catch (KeyException e) {
             System.out.println(e.getMessage());
         } catch (IOException e) {
-            handleNotFoundFile(e.getMessage());
+            try {
+                handleNotFoundFile(e.getMessage());
+            } catch (IOException e1) {
+                System.out.println(e1.getMessage());
+            }
         }
-
     }
 
-    Console console = System.console();
 
-    private CipherAlgorithm selectAlgorithm() {
+    private CipherAlgorithm selectAlgorithm() throws IOException {
         System.out.println("Select an algorithm:");
         algorithmFactory.forEach((s, c) ->
                 System.out.printf("%s - %s\n", s, c.getDescription()));
-        String input = console.readLine("enter:");
+        System.out.println("enter :");
+        String input = getStringFromUser();
         return algorithmFactory.get(input);// todo: have to make it more safety
     }
 
-    private String handleNotFoundFile(String message) {
+    private String handleNotFoundFile(String message) throws IOException {
         if (message != null)
             System.out.println(message);
         else
             System.out.println("Error with files!");
-        return console.readLine("Enter the path again:");
+        System.out.println("Enter the path again:");
+        return getStringFromUser();
     }
 
     public void showOptions() {
@@ -110,13 +112,26 @@ public class CliHandler {
     }
 
 
-    public int getKey() {
-        String key = console.readLine("Enter the key that used for encryption: ");
+    public int getKey() throws IOException {
+        System.out.println("Enter the key that used for encryption:");
+        String key = getStringFromUser();
         if (key.matches("\\d+$") && Integer.parseInt(key) < 256
                 && Integer.parseInt(key) > 0)
             return Integer.parseInt(key);
         else {
             return getKey();
+        }
+    }
+
+    private String getStringFromUser() throws IOException {
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            String in = console.readLine();
+            if (in == null)
+                return "";
+            return in;
+        } catch (IOException e) {
+            throw new IOException("cannot read from console");
         }
     }
 

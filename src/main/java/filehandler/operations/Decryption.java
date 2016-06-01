@@ -47,8 +47,10 @@ public class Decryption implements Operation {
         int key = CliHandler.getInstance().getKey();
         Algorithm algorithm = new AlgorithmOnce(cipherAlgorithm);
         algorithm.decrypt(fis, fos, key);
+
         return outputFile;
 
     }
+
 
 }
