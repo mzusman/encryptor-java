@@ -19,6 +19,7 @@ import java.io.IOException;
 public class Decryption implements Operation {
 
     public String decrypted = "_decrypted";
+    int key = 0;
 
     @Override
     public String getDescription() {
@@ -27,7 +28,7 @@ public class Decryption implements Operation {
 
 
     @Override
-    public File act(File file, CipherAlgorithm cipherAlgorithm, DisplayMessage displayMessage) throws KeyException, IOException {
+    public File act(File file, Algorithm algorithm) throws KeyException, IOException {
 
         String[] filename = file.getPath().split("\\.", 2);
         StringBuilder sp;
@@ -44,12 +45,18 @@ public class Decryption implements Operation {
         }
         @Cleanup FileInputStream fis = new FileInputStream(file);
         @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        int key = CliHandler.getInstance().getKey();
-        Algorithm algorithm = new AlgorithmOnce(cipherAlgorithm);
-        algorithm.decrypt(fis, fos, key);
+        algorithm.decrypt(fis, fos, getKey(algorithm));
 
         return outputFile;
 
+    }
+
+    @Override
+    public int getKey(Algorithm algorithm) throws IOException {
+        if (key == 0) {
+            key = CliHandler.getInstance().getKey();
+        }
+        return key;
     }
 
 

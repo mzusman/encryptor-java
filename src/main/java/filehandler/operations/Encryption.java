@@ -22,8 +22,7 @@ import java.util.function.BiFunction;
 public class Encryption implements Operation {
 
     private static final String encrypted = ".encrypted";
-    private long startTime = 0;
-    private long endTime = 0;
+    private int key = 0;
 
     @Override
     public String getDescription() {
@@ -31,9 +30,8 @@ public class Encryption implements Operation {
     }
 
     @Override
-    public File act(File file, Algorithm algorithm, DisplayMessage displayMessage) throws KeyException, IOException {
-        int key = algorithm.getAlgorithm().createKey();
-        displayMessage.display(String.format("Key for encryption is : %d , Save it for future use!", key));
+    public File act(File file, Algorithm algorithm) throws KeyException, IOException {
+        key = getKey(algorithm);
         File outputFile = new File(file.getPath() + encrypted);
         try {
             outputFile.createNewFile();
@@ -43,13 +41,17 @@ public class Encryption implements Operation {
 
         @Cleanup FileInputStream fis = new FileInputStream(file);
         @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        startTime = new Date().getTime();
         algorithm.encrypt(fis, fos, key);
-        endTime = new Date().getTime();
-        displayMessage.display(String.format("action took : %d ms", endTime - startTime));
 
 
         return outputFile;
+    }
+
+    @Override
+    public int getKey(Algorithm algorithm) {
+        if (key == 0)
+            key = algorithm.createKey();
+        return key;
     }
 
 

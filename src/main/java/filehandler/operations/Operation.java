@@ -16,6 +16,8 @@ import java.io.OutputStream;
  * Created by mzeus on 29/05/16.
  */
 public interface Operation extends Selectable {
-    File act(File file, Algorithm algorithm, DisplayMessage displayMessage) throws IOException, KeyException;
+    File act(File file, Algorithm algorithm) throws IOException, KeyException;
+
+    int getKey(Algorithm algorithm) throws IOException;
 
 }

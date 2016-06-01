@@ -1,5 +1,6 @@
 package commandline;
 
+import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.Decryption;
@@ -76,7 +77,7 @@ public class CliHandlerTest {
         cliHandler.addAlgorithm("1", algorithm);
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         cliHandler.handleArguments(new String[]{"-e", file.getPath()});
-        verify(encryption, times(1)).act(any(File.class), any(CipherAlgorithm.class), anyObject());
+        verify(encryption, times(1)).act(any(File.class), any(Algorithm.class));
     }
 
     @Test

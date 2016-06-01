@@ -1,5 +1,6 @@
 package filehandler;
 
+import filehandler.algorithm.AlgorithmOnce;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.operations.Encryption;
 import org.junit.Assert;
@@ -23,7 +24,7 @@ public class EncryptionTest {
     @Test
     public void act() throws Exception {
         File file = temporaryFolder.newFile();
-        Assert.assertNotEquals(file, encryption.act(file, new CaesarAlgorithm(), System.out::println));
+        Assert.assertNotEquals(file, encryption.act(file, new AlgorithmOnce(new CaesarAlgorithm())));
     }
 
     @Test
