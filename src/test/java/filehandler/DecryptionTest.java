@@ -1,6 +1,5 @@
 package filehandler;
 
-import filehandler.algorithm.NormalAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.operations.Decryption;
 import org.junit.Assert;

@@ -1,8 +1,5 @@
 package filehandler;
 
-import exceptions.UnsupportedKeyNumberException;
-import filehandler.algorithm.NormalAlgorithm;
-import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.Encryption;
 import org.junit.Rule;

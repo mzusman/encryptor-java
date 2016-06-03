@@ -1,22 +1,16 @@
 package commandline;
 
 import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.Decryption;
 import filehandler.operations.Encryption;
-import filehandler.FileHandler;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.PipedOutputStream;
-import java.util.NoSuchElementException;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;

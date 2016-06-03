@@ -2,20 +2,16 @@ package commandline;
 
 
 import exceptions.KeyException;
-import exceptions.UnsupportedKeyNumberException;
-import filehandler.FileHandler;
 import filehandler.algorithm.Algorithm;
 import filehandler.operations.Operation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import lombok.Cleanup;
-import lombok.NonNull;
+import filehandler.operations.Operator;
 import utils.DisplayMessage;
 import utils.Selectable;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.List;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -27,9 +23,9 @@ public class CliHandler {
         return instance;
     }
 
-    private ArrayList<Selectable> operationFactory = new ArrayList<>();
-    private ArrayList<Selectable> algorithmFactory = new ArrayList<>();
-    private ArrayList<Selectable> wrapAlgorithmFactory = new ArrayList<>();
+    private ArrayList<Operation> operationFactory = new ArrayList<>();
+    private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
+    private ArrayList<Algorithm> wrapAlgorithmFactory = new ArrayList<>();
     private DisplayMessage displayMessage = System.out::println;
 
     private CliHandler() {
@@ -73,14 +69,14 @@ public class CliHandler {
         else if (!file.isFile()) System.err.println("error: not a file");
         else if (!file.canRead()) System.err.println("don't have permission to read");
         else if (!file.canWrite()) System.err.println("don't have permission to write");
+
+
         try {
             Operation operation = (Operation) selectSelectable(operationFactory, "Operation");
-            Algorithm algorithm = (Algorithm) selectSelectable(wrapAlgorithmFactory, "Algorithm type");
-            CipherAlgorithm cipherAlgorithm = (CipherAlgorithm) selectSelectable(algorithmFactory, "Algorithm");
-            algorithm.setAlgorithm(cipherAlgorithm);
+            List<CipherAlgorithm> list = new ArrayList<>();
 
-            FileHandler fileHandler = new FileHandler(operation, file, displayMessage);
-            fileHandler.handleFile(algorithm);
+            Operator operator = new Operator(operation);
+            operation.act(displayMessage,file,list);
         } catch (KeyException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
@@ -92,7 +88,9 @@ public class CliHandler {
         }
     }
 
-    private Selectable selectSelectable(ArrayList<Selectable> list, String type) throws IOException {
+
+
+    private Selectable selectSelectable(ArrayList<? extends Selectable> list, String type) throws IOException {
         System.out.printf("Select an %s:\n", type);
         list.forEach((s) ->
                 System.out.printf("%s - %s\n", list.indexOf(s), (s).getDescription()));

@@ -2,8 +2,7 @@ package boot;
 
 import commandline.CliHandler;
 import filehandler.algorithm.DoubleAlgorithm;
-import filehandler.algorithm.NormalAlgorithm;
-import filehandler.algorithm.ReverseAlgorithm;
+import filehandler.algorithm.cipheralgorithm.ReverseAlgorithm;
 import filehandler.algorithm.SplitAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
@@ -26,10 +25,9 @@ public class Main {
         CliHandler cliHandler = CliHandler.getInstance();
         cliHandler.addOption(new Decryption())
                 .addOption(new Encryption())
-                .addWrapAlgorithm(new DoubleAlgorithm())
-                .addWrapAlgorithm(new ReverseAlgorithm())
-                .addWrapAlgorithm(new SplitAlgorithm())
-                .addWrapAlgorithm(new NormalAlgorithm())
+                .addAlgorithm(new DoubleAlgorithm())
+                .addAlgorithm(new ReverseAlgorithm())
+                .addAlgorithm(new SplitAlgorithm())
                 .addAlgorithm(new CaesarAlgorithm())
                 .addAlgorithm(new XorAlgorithm())
                 .addAlgorithm(new MultiplicationAlgorithm())

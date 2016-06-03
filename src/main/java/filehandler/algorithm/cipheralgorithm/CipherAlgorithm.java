@@ -10,9 +10,9 @@ import java.io.OutputStream;
 /**
  * Created by mzeus on 29/05/16.
  */
-public interface CipherAlgorithm extends Selectable, KeyAlgorithm{
+public interface CipherAlgorithm extends Selectable, KeyAlgorithm {
 
-    byte decryptionOperation(int raw, int key) ;
+    byte decryptionOperation(int raw, int key);
 
     byte encryptionOperation(int raw, int key);
 

@@ -3,20 +3,23 @@ package filehandler.operations;
 import commandline.CliHandler;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
+import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
+import utils.DisplayMessage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.List;
+
+import static java.lang.System.in;
+import static java.lang.System.out;
 
 /**
  * Created by Mor on 5/19/2016.
  */
-public class Decryption implements Operation {
+public class Decryption implements Operation, FileHandler {
 
     public String decrypted = "_decrypted";
-    int key = 0;
+    private int key = 0;
 
     @Override
     public String getDescription() {
@@ -25,8 +28,44 @@ public class Decryption implements Operation {
 
 
     @Override
-    public File act(File file, Algorithm algorithm) throws KeyException, IOException {
+    public File act(DisplayMessage message, File file, List<CipherAlgorithm> algorithms) throws KeyException, IOException {
 
+        File outputFile = createNewFile(file);
+        @Cleanup FileInputStream fis = new FileInputStream(file);
+        @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
+        for (CipherAlgorithm algorithm :
+                algorithms) {
+            decrypt(fis, fos, getKey(algorithm), algorithm);
+        }
+        return outputFile;
+
+    }
+
+    private void decrypt(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
+        cipherAlgorithm.checkKey(key);
+        int raw;
+        byte dec;
+        try {
+            while ((raw = in.read()) != -1) {
+                dec = cipherAlgorithm.decryptionOperation(raw, key);
+                out.write(dec);
+            }
+        } catch (IOException e) {
+            throw new IOException("Error reading from file");
+        }
+    }
+
+    @Override
+    public int getKey(CipherAlgorithm cipherAlgorithm) throws IOException {
+        if (key == 0) {
+            key = CliHandler.getInstance().getKey();
+        }
+        return key;
+    }
+
+
+    @Override
+    public File createNewFile(File file) throws IOException {
         String[] filename = file.getPath().split("\\.", 2);
         StringBuilder sp;
         if (filename.length > 1)
@@ -37,24 +76,9 @@ public class Decryption implements Operation {
         File outputFile = new File(sp.toString());
         try {
             outputFile.createNewFile();
+            return outputFile;
         } catch (IOException e) {
             throw new IOException("cannot create new file for decryption");
         }
-        @Cleanup FileInputStream fis = new FileInputStream(file);
-        @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        algorithm.decrypt(fis, fos, getKey(algorithm));
-
-        return outputFile;
-
     }
-
-    @Override
-    public int getKey(Algorithm algorithm) throws IOException {
-        if (key == 0) {
-            key = CliHandler.getInstance().getKey();
-        }
-        return key;
-    }
-
-
 }
