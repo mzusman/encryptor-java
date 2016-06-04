@@ -2,27 +2,19 @@ package filehandler.operations;
 
 import commandline.CliHandler;
 import exceptions.KeyException;
-import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.ReverseAlgorithm;
-import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import lombok.Cleanup;
 import utils.DisplayMessage;
 
 import java.io.*;
-import java.util.List;
-
-import static java.lang.System.in;
-import static java.lang.System.out;
 
 /**
  * Created by Mor on 5/19/2016.
  */
-public class Decryption extends Operation {
+public class DecryptionOperation extends AbstractOperation {
 
     private String decrypted = "_decrypted";
 
-    public Decryption() {
+    public DecryptionOperation() {
 
     }
 
@@ -33,7 +25,7 @@ public class Decryption extends Operation {
 
 
     @Override
-    void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
+    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
         cipherAlgorithm.checkKey(key);
         int raw;
         byte dec;

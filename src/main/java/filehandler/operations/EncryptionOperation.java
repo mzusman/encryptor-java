@@ -1,26 +1,18 @@
 package filehandler.operations;
 
-import commandline.CliHandler;
-import exceptions.KeyException;
-import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.DoubleAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import lombok.Cleanup;
 import utils.DisplayMessage;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Mor on 5/19/2016.
  */
-public class Encryption extends Operation {
+public class EncryptionOperation extends AbstractOperation {
 
     private static final String encrypted = ".encrypted";
 
-    public Encryption() {
+    public EncryptionOperation() {
 
     }
 
@@ -43,7 +35,7 @@ public class Encryption extends Operation {
     }
 
     @Override
-    void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException {
+    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException {
         int raw;
         byte enc;
         try {

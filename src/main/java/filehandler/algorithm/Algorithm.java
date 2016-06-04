@@ -4,6 +4,7 @@ import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -12,11 +13,12 @@ import java.util.List;
 /**
  * Created by mzeus on 30/05/16.
  */
-@AllArgsConstructor
+@NoArgsConstructor
 public class Algorithm implements CipherAlgorithm {
     @Getter
     @Setter
     List<CipherAlgorithm> algorithms = new ArrayList<>();
+
 
     public Algorithm addAlgorithm(CipherAlgorithm cipherAlgorithm) {
         algorithms.add(cipherAlgorithm);
@@ -25,10 +27,6 @@ public class Algorithm implements CipherAlgorithm {
 
     public int exceptedSize() {
         return 1;
-    }
-
-    public Algorithm() {
-
     }
 
 

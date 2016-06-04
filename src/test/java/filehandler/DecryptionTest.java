@@ -2,7 +2,7 @@ package filehandler;
 
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
-import filehandler.operations.Decryption;
+import filehandler.operations.DecryptionOperation;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,12 +20,12 @@ public class DecryptionTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
-    private Decryption decryption = new Decryption();
+    private DecryptionOperation decryptionOperation = new DecryptionOperation();
 
     @Test
     public void getDescription() throws Exception {
 
-        Assert.assertNotNull(decryption.getDescription());
+        Assert.assertNotNull(decryptionOperation.getDescription());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class DecryptionTest {
         InputStream inputStream = new ByteArrayInputStream("42".getBytes());
         System.setIn(inputStream);
         Algorithm normalAlgorithm = new Algorithm().addAlgorithm(new CaesarAlgorithm());
-        Assert.assertNotEquals(decryption.act(System.out::println, file, normalAlgorithm), file);
+        Assert.assertNotEquals(decryptionOperation.init(System.out::println, file, normalAlgorithm), file);
     }
 
 }

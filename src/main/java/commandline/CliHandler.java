@@ -3,7 +3,7 @@ package commandline;
 
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import filehandler.operations.Operation;
+import filehandler.operations.AbstractOperation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.operations.Operator;
 import utils.DisplayMessage;
@@ -23,17 +23,17 @@ public class CliHandler implements UserInterface {
         return instance;
     }
 
-    private ArrayList<Operation> operationFactory = new ArrayList<>();
+    private ArrayList<AbstractOperation> abstractOperationFactory = new ArrayList<>();
     private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
     private DisplayMessage displayMessage = System.out::println;
 
     private CliHandler() {
     }
 
-    public CliHandler addOption(Operation operation) {
-        if (operation == null)
+    public CliHandler addOption(AbstractOperation abstractOperation) {
+        if (abstractOperation == null)
             return this;
-        operationFactory.add(operation);
+        abstractOperationFactory.add(abstractOperation);
         return this;
     }
 
@@ -66,13 +66,13 @@ public class CliHandler implements UserInterface {
 
 
         try {
-            Operation operation = (Operation) selectSelectable(operationFactory, "Operation");
+            AbstractOperation abstractOperation = (AbstractOperation) selectSelectable(abstractOperationFactory, "AbstractOperation");
             Algorithm algorithm = (Algorithm) selectSelectable(algorithmFactory, "Algorithm");
             if (algorithm.exceptedSize() > 1 || algorithm.getAlgorithms().size() == 0)
                 furtherSelect(algorithm);
 
-            Operator operator = new Operator(operation);
-            operator.act(displayMessage, file, algorithm);
+            Operator operator = new Operator(abstractOperation);
+            operator.init(displayMessage, file, algorithm);
         } catch (KeyException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
@@ -119,7 +119,7 @@ public class CliHandler implements UserInterface {
 
     public void showOptions() {
         System.out.println("usage: ... <file>\n");
-        if (operationFactory.size() == 0) {
+        if (abstractOperationFactory.size() == 0) {
             System.out.println("no handlers are available");
             return;
         }

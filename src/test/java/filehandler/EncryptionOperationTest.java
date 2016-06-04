@@ -1,34 +1,31 @@
 package filehandler;
 
-import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
-import filehandler.operations.Encryption;
+import filehandler.operations.EncryptionOperation;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
-import java.io.File;
 
 import static org.mockito.Mockito.verify;
 
 /**
  * Created by Mor on 5/19/2016.
  */
-public class EncryptionTest {
+public class EncryptionOperationTest {
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
-    private Encryption encryption = new Encryption();
+    private EncryptionOperation encryptionOperation = new EncryptionOperation();
 
 //    @Test
 //    public void act() throws Exception {
 //        File file = temporaryFolder.newFile();
-//        Assert.assertNotEquals(file, encryption.act(file, new NormalAlgorithm(new CaesarAlgorithm())));
+//        Assert.assertNotEquals(file, encryptionOperation.act(file, new NormalAlgorithm(new CaesarAlgorithm())));
 //    }
 
     @Test
     public void getDescription() throws Exception {
-        Assert.assertNotNull(encryption.getDescription());
+        Assert.assertNotNull(encryptionOperation.getDescription());
     }
 
 

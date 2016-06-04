@@ -2,8 +2,8 @@ package commandline;
 
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
-import filehandler.operations.Decryption;
-import filehandler.operations.Encryption;
+import filehandler.operations.DecryptionOperation;
+import filehandler.operations.EncryptionOperation;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.operations.Operator;
 import org.junit.Rule;
@@ -22,8 +22,8 @@ import static org.mockito.Mockito.*;
  * Created by Mor on 5/19/2016.
  */
 public class CliHandlerTest {
-    private Decryption decryption = mock(Decryption.class);
-    private Encryption encryption = mock(Encryption.class);
+    private DecryptionOperation decryptionOperation = mock(DecryptionOperation.class);
+    private EncryptionOperation encryptionOperation = mock(EncryptionOperation.class);
     private XorAlgorithm algorithm = mock(XorAlgorithm.class);
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -55,8 +55,8 @@ public class CliHandlerTest {
     @Test
     public void addOption() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
-        assertEquals(cliHandler, cliHandler.addOption(decryption));
-        assertEquals(cliHandler, cliHandler.addOption(encryption));
+        assertEquals(cliHandler, cliHandler.addOption(decryptionOperation));
+        assertEquals(cliHandler, cliHandler.addOption(encryptionOperation));
         assertEquals(cliHandler, cliHandler.addOption(null));
     }
 
@@ -66,11 +66,11 @@ public class CliHandlerTest {
         Operator fileHandler = mock(Operator.class);
         File file = temporaryFolder.newFile();
         CaesarAlgorithm algorithm = new CaesarAlgorithm();
-        cliHandler.addOption(encryption);
+        cliHandler.addOption(encryptionOperation);
         cliHandler.addAlgorithm(algorithm);
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         cliHandler.handleArguments(new String[]{file.getPath()});
-        verify(encryption, times(1)).act(System.out::println, any(File.class), any(Algorithm.class));
+        verify(encryptionOperation, times(1)).init(System.out::println, any(File.class), any(Algorithm.class));
     }
 
 

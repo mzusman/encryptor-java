@@ -8,8 +8,8 @@ import filehandler.algorithm.SplitAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
-import filehandler.operations.Decryption;
-import filehandler.operations.Encryption;
+import filehandler.operations.DecryptionOperation;
+import filehandler.operations.EncryptionOperation;
 
 /**
  * Created by Mor on 5/18/2016.
@@ -24,8 +24,8 @@ public class Main {
      */
     public static void main(String args[]) {
         CliHandler cliHandler = CliHandler.getInstance();
-        cliHandler.addOption(new Decryption())
-                .addOption(new Encryption())
+        cliHandler.addOption(new DecryptionOperation())
+                .addOption(new EncryptionOperation())
                 .addAlgorithm(new DoubleAlgorithm())
                 .addAlgorithm(new ReverseAlgorithm())
                 .addAlgorithm(new SplitAlgorithm())

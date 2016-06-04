@@ -3,40 +3,32 @@ package filehandler.operations;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import lombok.Cleanup;
 import utils.DisplayMessage;
 
 import java.io.*;
-import java.util.List;
 
 /**
  * Created by mzeus on 01/06/16.
  */
-public class Operator extends Operation {
-    private Operation operation;
+public class Operator extends AbstractOperation {
+    private AbstractOperation abstractOperation;
     private long startTime = 0;
     private long endTime = 0;
     DisplayMessage displayMessage;
 
-    public Operator(Operation operation) {
-        this.operation = operation;
+    public Operator(AbstractOperation abstractOperation) {
+        this.abstractOperation = abstractOperation;
     }
 
     @Override
-    public File act(DisplayMessage displayMessage, File file, Algorithm algorithm) throws IOException, KeyException {
-
-
-//        for (CipherAlgorithm cipherAlgorithm :
-//                algorithm.getAlgorithms()) {
-//            displayMessage.display();
-//        }
+    public File init(DisplayMessage displayMessage, File file, Algorithm algorithm) throws IOException, KeyException {
 
         this.displayMessage = displayMessage;
         startTime = System.currentTimeMillis();
         displayMessage.display("Action started!");
 
 
-        File operationFile = operation.act(displayMessage, file, algorithm);
+        File operationFile = abstractOperation.init(displayMessage, file, algorithm);
 
         displayMessage.display("Action ended!");
         endTime = System.currentTimeMillis();
@@ -45,22 +37,22 @@ public class Operator extends Operation {
     }
 
     @Override
-    void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
-        operation.run(in, out, key, cipherAlgorithm);
+    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
+        abstractOperation.run(message, in, out, key, cipherAlgorithm);
     }
 
     @Override
     public int getKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-        return operation.getKey(cipherAlgorithm);
+        return abstractOperation.getKey(cipherAlgorithm);
     }
 
     @Override
     public String getDescription() {
-        return operation.getDescription();
+        return abstractOperation.getDescription();
     }
 
     /**
-     * @return time took for the operation , 0 if the operation was'nt started
+     * @return time took for the abstractOperation , 0 if the abstractOperation was'nt started
      */
     private long getElapsedTime() {
         return endTime - startTime;
@@ -68,6 +60,6 @@ public class Operator extends Operation {
 
     @Override
     public File createNewFile(File file) throws IOException {
-        return operation.createNewFile(file);
+        return abstractOperation.createNewFile(file);
     }
 }

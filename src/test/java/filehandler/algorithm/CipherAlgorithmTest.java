@@ -3,8 +3,8 @@ package filehandler.algorithm;
 import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import filehandler.operations.Decryption;
-import filehandler.operations.Encryption;
+import filehandler.operations.DecryptionOperation;
+import filehandler.operations.EncryptionOperation;
 
 import java.io.*;
 
@@ -28,9 +28,9 @@ public class CipherAlgorithmTest {
         System.out.println("test".getBytes());
         pout.flush();
         pout.close();
-        Encryption encryption = new Encryption();
+        EncryptionOperation encryptionOperation = new EncryptionOperation();
         Algorithm algorithm1 = new Algorithm().addAlgorithm(new CaesarAlgorithm());
-        encryption.encrypt(in,out,key,algorithm1);
+        encryptionOperation.run(System.out::println, in, out, key, algorithm1);
         System.out.println(baos.toByteArray());
         bytes = baos.toByteArray();
         assertNotEquals("test", (baos.toString()));
@@ -53,8 +53,8 @@ public class CipherAlgorithmTest {
         pout.flush();
         pout.close();
         Algorithm algorithm1 = new Algorithm().addAlgorithm(new CaesarAlgorithm());
-        Decryption decryption = new Decryption();
-        decryption.decrypt(in,out,key,algorithm1);
+        DecryptionOperation decryptionOperation = new DecryptionOperation();
+        decryptionOperation.run(System.out::println, in, out, key, algorithm1);
         System.out.println(baos.toString());
         assertEquals("test", (baos.toString()));
 
