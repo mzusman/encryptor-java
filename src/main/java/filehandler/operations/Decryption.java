@@ -23,7 +23,7 @@ public class Decryption implements Operation, FileHandler {
     private String decrypted = "_decrypted";
     private int key = 0;
 
-    Decryption() {
+    public Decryption() {
 
     }
 

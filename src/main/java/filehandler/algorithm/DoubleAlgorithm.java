@@ -11,5 +11,24 @@ import java.util.ArrayList;
  */
 public class DoubleAlgorithm extends Algorithm {
 
+    @Override
+    public byte encryptionOperation(int raw, int key) {
+        byte newValue = 0;
+        for (CipherAlgorithm cipherAlgorithm :
+                algorithms) {
+            newValue = cipherAlgorithm.encryptionOperation(raw,key);
+        }
+        return newValue;
+    }
+
+    @Override
+    public byte decryptionOperation(int raw, int key) {
+        byte newValue = 0;
+        for (CipherAlgorithm cipherAlgorithm :
+                algorithms) {
+            newValue = cipherAlgorithm.decryptionOperation(raw,key);
+        }
+        return newValue;
+    }
 
 }

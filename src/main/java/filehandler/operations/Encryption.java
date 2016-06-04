@@ -20,7 +20,7 @@ public class Encryption implements Operation {
     private static final String encrypted = ".encrypted";
     private int key = 0;
 
-    Encryption() {
+    public Encryption() {
 
     }
 

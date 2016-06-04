@@ -1,32 +1,25 @@
 package commandline;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import filehandler.operations.Operation;
+import utils.Selectable;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by mzeus on 01/06/16.
  */
-public interface UserInterface<T, K, F> {
-    UserInterface addOption(String arg, F f);
+public interface UserInterface {
 
-    UserInterface addAlgorithm(String arg, T t);
 
-    UserInterface addAlgorithmWrapper(String arg, K k);
-
-    void handleOptions(String[] arg);
-
-    void handleAlgorithms(String[] arg);
-
-    void handleAlgorithmWrappers(String[] arg);
+    void handleArguments(String[] arg);
 
     void showOptions();
 
-    void selectAlgorithms();
+    Selectable selectSelectable(List<? extends Selectable> selectables, String s) throws IOException;
 
-    void selectAlgorithmWrappers();
-
-    void handleErrors();
 
 
 }

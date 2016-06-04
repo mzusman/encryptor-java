@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class CliHandler {
+public class CliHandler implements UserInterface {
     private static CliHandler instance = new CliHandler();
 
     public static CliHandler getInstance() {
@@ -42,14 +42,6 @@ public class CliHandler {
         if (algorithm == null)
             return this;
         algorithmFactory.add(algorithm);
-        return this;
-    }
-
-
-    public CliHandler addWrapAlgorithm(Algorithm algorithm) {
-        if (algorithm == null)
-            return this;
-        wrapAlgorithmFactory.add(algorithm);
         return this;
     }
 
@@ -80,7 +72,7 @@ public class CliHandler {
             }
 
             Operator operator = new Operator(operation);
-            operator.act(displayMessage,file,algorithm);
+            operator.act(displayMessage, file, algorithm);
         } catch (KeyException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
@@ -92,8 +84,8 @@ public class CliHandler {
         }
     }
 
-
-    private Selectable selectSelectable(ArrayList<? extends Selectable> list, String type) throws IOException {
+    @Override
+    public Selectable selectSelectable(List<? extends Selectable> list, String type) throws IOException {
         System.out.printf("Select an %s:\n", type);
         list.forEach((s) ->
                 System.out.printf("%s - %s\n", list.indexOf(s), (s).getDescription()));
@@ -112,7 +104,7 @@ public class CliHandler {
         return getStringFromUser();
     }
 
-    private void showOptions() {
+    public void showOptions() {
         System.out.println("usage: ... <file>\n");
         if (operationFactory.size() == 0) {
             System.out.println("no handlers are available");
