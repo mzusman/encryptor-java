@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +13,19 @@ import java.util.List;
  * Created by mzeus on 30/05/16.
  */
 @AllArgsConstructor
-public class Algorithm implements CipherAlgorithm{
+public class Algorithm implements CipherAlgorithm {
     @Getter
     @Setter
-    CipherAlgorithm algorithm;
+    List<CipherAlgorithm> algorithms = new ArrayList<>();
+
+    public Algorithm addAlgorithm(CipherAlgorithm cipherAlgorithm) {
+        algorithms.add(cipherAlgorithm);
+        return this;
+    }
+
+    public int exceptedSize() {
+        return 1;
+    }
 
     public Algorithm() {
 
@@ -28,26 +34,26 @@ public class Algorithm implements CipherAlgorithm{
 
     @Override
     public byte decryptionOperation(int raw, int key) {
-        return algorithm.decryptionOperation(raw,key);
+        return algorithms.get(0).decryptionOperation(raw, key);
     }
 
     @Override
     public byte encryptionOperation(int raw, int key) {
-        return algorithm.encryptionOperation(raw,key);
+        return algorithms.get(0).encryptionOperation(raw, key);
     }
 
     @Override
     public void checkKey(int key) throws KeyException {
-        algorithm.checkKey(key);
+        algorithms.get(0).checkKey(key);
     }
 
     @Override
     public int createKey() {
-        return algorithm.createKey();
+        return algorithms.get(0).createKey();
     }
 
     @Override
     public String getDescription() {
-        return algorithm.getDescription();
+        return algorithms.get(0).getDescription();
     }
 }

@@ -17,10 +17,9 @@ import java.util.List;
  * Created by mzeus on 29/05/16.
  */
 public interface Operation extends Selectable {
-    File act(DisplayMessage message, File file, List<CipherAlgorithm> algorithms) throws IOException, KeyException;
+    File act(DisplayMessage message, File file, Algorithm algorithm) throws IOException, KeyException;
 
     int getKey(CipherAlgorithm algorithm) throws IOException;
-
 
 
 }

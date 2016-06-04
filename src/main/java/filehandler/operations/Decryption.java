@@ -3,6 +3,8 @@ package filehandler.operations;
 import commandline.CliHandler;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
+import filehandler.algorithm.ReverseAlgorithm;
+import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import lombok.Cleanup;
 import utils.DisplayMessage;
@@ -18,8 +20,12 @@ import static java.lang.System.out;
  */
 public class Decryption implements Operation, FileHandler {
 
-    public String decrypted = "_decrypted";
+    private String decrypted = "_decrypted";
     private int key = 0;
+
+    Decryption() {
+
+    }
 
     @Override
     public String getDescription() {
@@ -28,17 +34,16 @@ public class Decryption implements Operation, FileHandler {
 
 
     @Override
-    public File act(DisplayMessage message, File file, List<CipherAlgorithm> algorithms) throws KeyException, IOException {
+    public File act(DisplayMessage message, File file, Algorithm algorithm) throws KeyException, IOException {
 
         File outputFile = createNewFile(file);
         @Cleanup FileInputStream fis = new FileInputStream(file);
         @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        for (CipherAlgorithm algorithm :
-                algorithms) {
+        for (CipherAlgorithm cipherAlgorithm :
+                algorithm.getAlgorithms()) {
             decrypt(fis, fos, getKey(algorithm), algorithm);
         }
         return outputFile;
-
     }
 
     private void decrypt(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {

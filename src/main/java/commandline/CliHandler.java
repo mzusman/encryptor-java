@@ -73,10 +73,14 @@ public class CliHandler {
 
         try {
             Operation operation = (Operation) selectSelectable(operationFactory, "Operation");
-            List<CipherAlgorithm> list = new ArrayList<>();
+            Algorithm algorithm = (Algorithm) selectSelectable(algorithmFactory, "Algorithm");
+            for (int i = 0; i < algorithm.exceptedSize(); i++) {
+                algorithm.addAlgorithm((CipherAlgorithm)
+                        selectSelectable(algorithmFactory, "Algorithm"));
+            }
 
             Operator operator = new Operator(operation);
-            operation.act(displayMessage,file,list);
+            operator.act(displayMessage,file,algorithm);
         } catch (KeyException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
@@ -87,7 +91,6 @@ public class CliHandler {
             }
         }
     }
-
 
 
     private Selectable selectSelectable(ArrayList<? extends Selectable> list, String type) throws IOException {

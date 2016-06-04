@@ -1,8 +1,9 @@
 package boot;
 
 import commandline.CliHandler;
+import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.DoubleAlgorithm;
-import filehandler.algorithm.cipheralgorithm.ReverseAlgorithm;
+import filehandler.algorithm.ReverseAlgorithm;
 import filehandler.algorithm.SplitAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
@@ -28,9 +29,9 @@ public class Main {
                 .addAlgorithm(new DoubleAlgorithm())
                 .addAlgorithm(new ReverseAlgorithm())
                 .addAlgorithm(new SplitAlgorithm())
-                .addAlgorithm(new CaesarAlgorithm())
-                .addAlgorithm(new XorAlgorithm())
-                .addAlgorithm(new MultiplicationAlgorithm())
+                .addAlgorithm(new Algorithm().addAlgorithm(new CaesarAlgorithm()))
+                .addAlgorithm(new Algorithm().addAlgorithm(new XorAlgorithm()))
+                .addAlgorithm(new Algorithm().addAlgorithm(new MultiplicationAlgorithm()))
                 .handleArguments(args);
 
     }

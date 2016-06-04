@@ -13,28 +13,28 @@ import java.util.List;
  * Created by mzeus on 01/06/16.
  */
 public class Operator implements Operation {
-    Operation operation;
+    private Operation operation;
     private long startTime = 0;
     private long endTime = 0;
 
     public Operator(Operation operation) {
-
+        this.operation = operation;
     }
 
     @Override
-    public File act(DisplayMessage displayMessage, File file, List<CipherAlgorithm> algorithms) throws IOException, KeyException {
+    public File act(DisplayMessage displayMessage, File file, Algorithm algorithm) throws IOException, KeyException {
 
-        for (CipherAlgorithm algorithm :
-                algorithms) {
+        for (CipherAlgorithm cipherAlgorithm :
+                algorithm.getAlgorithms()) {
             displayMessage.display(String.format("%s: using key: %d , save it for future use!",
-                    algorithm.getDescription(), getKey(new NormalAlgorithm(algorithm))));
+                    algorithm.getDescription(), getKey(cipherAlgorithm)));
         }
 
         startTime = System.currentTimeMillis();
         displayMessage.display("Action started!");
 
 
-        File operationFile = operation.act(file, algorithms);
+        File operationFile = operation.act(displayMessage, file, algorithm);
 
         displayMessage.display("Action ended!");
         endTime = System.currentTimeMillis();
@@ -43,19 +43,19 @@ public class Operator implements Operation {
     }
 
     @Override
-    public int getKey(Algorithm algorithm) throws IOException {
-        return 0;
+    public int getKey(CipherAlgorithm cipherAlgorithm) throws IOException {
+        return operation.getKey(cipherAlgorithm);
     }
 
     @Override
     public String getDescription() {
-        return null;
+        return operation.getDescription();
     }
 
     /**
      * @return time took for the operation , 0 if the operation was'nt started
      */
-    public long getElapsedTime() {
+    private long getElapsedTime() {
         return endTime - startTime;
     }
 }

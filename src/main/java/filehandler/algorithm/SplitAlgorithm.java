@@ -15,6 +15,11 @@ public class SplitAlgorithm extends Algorithm {
     }
 
     @Override
+    public int exceptedSize() {
+        return 2;
+    }
+
+    @Override
     public String getDescription() {
         return "perform split algorithm";
     }

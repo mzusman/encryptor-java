@@ -1,4 +1,4 @@
-package filehandler.algorithm.cipheralgorithm;
+package filehandler.algorithm;
 
 import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
@@ -7,23 +7,25 @@ import lombok.AllArgsConstructor;
 /**
  * Created by mzeus on 01/06/16.
  */
-@AllArgsConstructor
-public class ReverseAlgorithm implements CipherAlgorithm {
-    CipherAlgorithm algorithm;
+public class ReverseAlgorithm extends Algorithm {
 
     public ReverseAlgorithm() {
 
     }
 
+    @Override
+    public int exceptedSize() {
+        return 1;
+    }
 
     @Override
     public byte decryptionOperation(int raw, int key) {
-        return algorithm.encryptionOperation(raw, key);
+        return algorithms.get(0).encryptionOperation(raw, key);
     }
 
     @Override
     public byte encryptionOperation(int raw, int key) {
-        return algorithm.decryptionOperation(raw, key);
+        return algorithms.get(0).decryptionOperation(raw, key);
     }
 
 
@@ -32,13 +34,4 @@ public class ReverseAlgorithm implements CipherAlgorithm {
         return "perform a reverse algorithm";
     }
 
-    @Override
-    public void checkKey(int key) throws KeyException {
-        algorithm.checkKey(key);
-    }
-
-    @Override
-    public int createKey() {
-        return algorithm.createKey();
-    }
 }
