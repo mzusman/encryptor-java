@@ -14,11 +14,6 @@ public class ReverseAlgorithm extends Algorithm {
     }
 
     @Override
-    public int exceptedSize() {
-        return 1;
-    }
-
-    @Override
     public byte decryptionOperation(int raw, int key) {
         return algorithms.get(0).encryptionOperation(raw, key);
     }

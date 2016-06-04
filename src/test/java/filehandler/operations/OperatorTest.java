@@ -15,12 +15,12 @@ public class OperatorTest {
     @Rule
     TemporaryFolder folder = new TemporaryFolder();
 
-    @Test
-    void test() throws Exception {
-        File file = folder.newFile();
-        Operator operator = new OperatorWithMsg(new Decryption(), System.out::println);
-        operator.act(file, new DoubleAlgorithm(new CaesarAlgorithm(), new NormalAlgorithm(new CaesarAlgorithm())));
-
-    }
+//    @Test
+//    void test() throws Exception {
+//        File file = folder.newFile();
+//        Operator operator = new OperatorWithMsg(new Decryption(), System.out::println);
+//        operator.act(file, new DoubleAlgorithm(new CaesarAlgorithm(), new NormalAlgorithm(new CaesarAlgorithm())));
+//
+//    }
 
 }

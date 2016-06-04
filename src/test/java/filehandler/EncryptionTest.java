@@ -20,11 +20,11 @@ public class EncryptionTest {
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
     private Encryption encryption = new Encryption();
 
-    @Test
-    public void act() throws Exception {
-        File file = temporaryFolder.newFile();
-        Assert.assertNotEquals(file, encryption.act(file, new NormalAlgorithm(new CaesarAlgorithm())));
-    }
+//    @Test
+//    public void act() throws Exception {
+//        File file = temporaryFolder.newFile();
+//        Assert.assertNotEquals(file, encryption.act(file, new NormalAlgorithm(new CaesarAlgorithm())));
+//    }
 
     @Test
     public void getDescription() throws Exception {

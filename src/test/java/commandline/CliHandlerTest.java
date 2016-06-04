@@ -5,6 +5,7 @@ import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.Decryption;
 import filehandler.operations.Encryption;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
+import filehandler.operations.Operator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -62,14 +63,14 @@ public class CliHandlerTest {
     @Test
     public void handleArguments() throws Exception {
         CliHandler cliHandler = CliHandler.getInstance();
-        FileHandler fileHandler = mock(FileHandler.class);
+        Operator fileHandler = mock(Operator.class);
         File file = temporaryFolder.newFile();
         CaesarAlgorithm algorithm = new CaesarAlgorithm();
         cliHandler.addOption(encryption);
         cliHandler.addAlgorithm(algorithm);
         System.setIn(new ByteArrayInputStream("1".getBytes()));
-        cliHandler.handleArguments(file.getPath());
-        verify(encryption, times(1)).act(any(File.class), any(Algorithm.class));
+        cliHandler.handleArguments(new String[]{file.getPath()});
+        verify(encryption, times(1)).act(System.out::println, any(File.class), any(Algorithm.class));
     }
 
 

@@ -18,10 +18,9 @@ import static java.lang.System.out;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class Decryption implements Operation, FileHandler {
+public class Decryption extends Operation {
 
     private String decrypted = "_decrypted";
-    private int key = 0;
 
     public Decryption() {
 
@@ -34,19 +33,7 @@ public class Decryption implements Operation, FileHandler {
 
 
     @Override
-    public File act(DisplayMessage message, File file, Algorithm algorithm) throws KeyException, IOException {
-
-        File outputFile = createNewFile(file);
-        @Cleanup FileInputStream fis = new FileInputStream(file);
-        @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        for (CipherAlgorithm cipherAlgorithm :
-                algorithm.getAlgorithms()) {
-            decrypt(fis, fos, getKey(algorithm), algorithm);
-        }
-        return outputFile;
-    }
-
-    private void decrypt(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
+    void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
         cipherAlgorithm.checkKey(key);
         int raw;
         byte dec;
@@ -62,10 +49,7 @@ public class Decryption implements Operation, FileHandler {
 
     @Override
     public int getKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-        if (key == 0) {
-            key = CliHandler.getInstance().getKey();
-        }
-        return key;
+        return CliHandler.getInstance().getKey();
     }
 
 

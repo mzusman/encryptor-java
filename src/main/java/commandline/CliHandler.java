@@ -25,7 +25,6 @@ public class CliHandler implements UserInterface {
 
     private ArrayList<Operation> operationFactory = new ArrayList<>();
     private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
-    private ArrayList<Algorithm> wrapAlgorithmFactory = new ArrayList<>();
     private DisplayMessage displayMessage = System.out::println;
 
     private CliHandler() {
@@ -39,8 +38,11 @@ public class CliHandler implements UserInterface {
     }
 
     public CliHandler addAlgorithm(CipherAlgorithm algorithm) {
-        if (algorithm == null)
+        if (algorithm == null) {
+            System.out.println("null");
             return this;
+        }
+
         algorithmFactory.add(algorithm);
         return this;
     }
@@ -66,10 +68,8 @@ public class CliHandler implements UserInterface {
         try {
             Operation operation = (Operation) selectSelectable(operationFactory, "Operation");
             Algorithm algorithm = (Algorithm) selectSelectable(algorithmFactory, "Algorithm");
-            for (int i = 0; i < algorithm.exceptedSize(); i++) {
-                algorithm.addAlgorithm((CipherAlgorithm)
-                        selectSelectable(algorithmFactory, "Algorithm"));
-            }
+            if (algorithm.exceptedSize() > 1 || algorithm.getAlgorithms().size() == 0)
+                furtherSelect(algorithm);
 
             Operator operator = new Operator(operation);
             operator.act(displayMessage, file, algorithm);
@@ -83,6 +83,19 @@ public class CliHandler implements UserInterface {
             }
         }
     }
+
+    private void furtherSelect(Algorithm algorithm) throws IOException {
+        for (int i = 0; i < algorithm.exceptedSize(); i++) {
+            algorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "Algorithm" + i));
+        }
+        for (CipherAlgorithm cipherAlgorithm :
+                algorithm.getAlgorithms()) {
+            if (((Algorithm) cipherAlgorithm).exceptedSize() > 1) {
+                furtherSelect((Algorithm) cipherAlgorithm);
+            }
+        }
+    }
+
 
     @Override
     public Selectable selectSelectable(List<? extends Selectable> list, String type) throws IOException {

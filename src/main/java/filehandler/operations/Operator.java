@@ -3,19 +3,20 @@ package filehandler.operations;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
+import lombok.Cleanup;
 import utils.DisplayMessage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
  * Created by mzeus on 01/06/16.
  */
-public class Operator implements Operation {
+public class Operator extends Operation {
     private Operation operation;
     private long startTime = 0;
     private long endTime = 0;
+    DisplayMessage displayMessage;
 
     public Operator(Operation operation) {
         this.operation = operation;
@@ -24,12 +25,13 @@ public class Operator implements Operation {
     @Override
     public File act(DisplayMessage displayMessage, File file, Algorithm algorithm) throws IOException, KeyException {
 
-        for (CipherAlgorithm cipherAlgorithm :
-                algorithm.getAlgorithms()) {
-            displayMessage.display(String.format("%s: using key: %d , save it for future use!",
-                    algorithm.getDescription(), getKey(cipherAlgorithm)));
-        }
 
+//        for (CipherAlgorithm cipherAlgorithm :
+//                algorithm.getAlgorithms()) {
+//            displayMessage.display();
+//        }
+
+        this.displayMessage = displayMessage;
         startTime = System.currentTimeMillis();
         displayMessage.display("Action started!");
 
@@ -40,6 +42,11 @@ public class Operator implements Operation {
         endTime = System.currentTimeMillis();
         displayMessage.display(String.format("Action took : %d ms", getElapsedTime()));
         return operationFile;
+    }
+
+    @Override
+    void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
+        operation.run(in, out, key, cipherAlgorithm);
     }
 
     @Override
@@ -57,5 +64,10 @@ public class Operator implements Operation {
      */
     private long getElapsedTime() {
         return endTime - startTime;
+    }
+
+    @Override
+    public File createNewFile(File file) throws IOException {
+        return operation.createNewFile(file);
     }
 }

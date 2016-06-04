@@ -1,5 +1,6 @@
 package filehandler.operations;
 
+import commandline.CliHandler;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.DoubleAlgorithm;
@@ -15,10 +16,9 @@ import java.util.Map;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class Encryption implements Operation {
+public class Encryption extends Operation {
 
     private static final String encrypted = ".encrypted";
-    private int key = 0;
 
     public Encryption() {
 
@@ -29,31 +29,21 @@ public class Encryption implements Operation {
         return "encrypt a file";
     }
 
-    @Override
-    public File act(DisplayMessage displayMessage, File file, Algorithm algorithm) throws KeyException, IOException {
 
-        File outputFile = createNewFile(file);
-        @Cleanup FileInputStream fis = new FileInputStream(file);
-        @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-
-        for (CipherAlgorithm cipherAlgorithm : algorithm.getAlgorithms()) {
-            encrypt(fis, fos, getKey(cipherAlgorithm), cipherAlgorithm);
-        }
-        return outputFile;
-    }
-
-
-    private File createNewFile(File originalFile) throws IOException {
+    public File createNewFile(File originalFile) throws IOException {
+        String exception = "cannot create a new file for encryption";
         File outputFile = new File(originalFile.getPath() + encrypted);
         try {
-            outputFile.createNewFile();
+            if (!outputFile.createNewFile())
+                throw new IOException(exception);
             return outputFile;
         } catch (IOException e) {
-            throw new IOException("cannot create a new file for encryption");
+            throw new IOException(exception);
         }
     }
 
-    private void encrypt(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException {
+    @Override
+    void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException {
         int raw;
         byte enc;
         try {
@@ -67,12 +57,10 @@ public class Encryption implements Operation {
 
     }
 
-
     @Override
     public int getKey(CipherAlgorithm algorithm) {
-        if (key == 0)
-            key = algorithm.createKey();
-        return key;
+        displayMessage.display("using key");
+        return algorithm.createKey();
     }
 
 
