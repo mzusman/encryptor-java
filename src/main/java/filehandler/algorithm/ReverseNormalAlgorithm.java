@@ -1,15 +1,11 @@
 package filehandler.algorithm;
 
-import exceptions.KeyException;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import lombok.AllArgsConstructor;
-
 /**
  * Created by mzeus on 01/06/16.
  */
-public class ReverseAlgorithm extends Algorithm {
+public class ReverseNormalAlgorithm extends NormalAlgorithm {
 
-    public ReverseAlgorithm() {
+    public ReverseNormalAlgorithm() {
 
     }
 

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 /**
  * Created by mzeus on 31/05/16.
  */
-public class NormalAlgorithmTest {
+public class NormalNormalAlgorithmTest {
     @Test
     public void decryptionOperation() throws Exception {
 

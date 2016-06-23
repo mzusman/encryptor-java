@@ -14,7 +14,7 @@ public class AlgorithmTest {
 //    @Test
 //    public void encrypt() throws Exception {
 //        CipherAlgorithm cipherAlgorithm = Mockito.mock(CipherAlgorithm.class);
-//        Algorithm algorithm = new NormalAlgorithm(cipherAlgorithm);
+//        NormalAlgorithm algorithm = new NormalAlgorithm(cipherAlgorithm);
 //        for (int i = 255; i > 0; i--) {
 //            PipedOutputStream pipedIn = new PipedOutputStream();
 //            InputStream in = new PipedInputStream(pipedIn);
@@ -30,7 +30,7 @@ public class AlgorithmTest {
 //    @Test
 //    public void decrypt() throws Exception {
 //        CipherAlgorithm cipherAlgorithm = Mockito.mock(CipherAlgorithm.class);
-//        Algorithm algorithm = new NormalAlgorithm(cipherAlgorithm);
+//        NormalAlgorithm algorithm = new NormalAlgorithm(cipherAlgorithm);
 //        for (int i = 255; i > 0; i--) {
 //            PipedOutputStream pipedIn = new PipedOutputStream();
 //            InputStream in = new PipedInputStream(pipedIn);

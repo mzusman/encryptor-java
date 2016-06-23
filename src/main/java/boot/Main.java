@@ -1,10 +1,10 @@
 package boot;
 
 import commandline.CliHandler;
-import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.DoubleAlgorithm;
-import filehandler.algorithm.ReverseAlgorithm;
-import filehandler.algorithm.SplitAlgorithm;
+import filehandler.algorithm.DoubleNormalAlgorithm;
+import filehandler.algorithm.NormalAlgorithm;
+import filehandler.algorithm.ReverseNormalAlgorithm;
+import filehandler.algorithm.SplitNormalAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
@@ -23,16 +23,16 @@ public class Main {
      * @param args
      */
     public static void main(String args[]) {
-        CliHandler cliHandler = CliHandler.getInstance();
-        cliHandler.addOption(new DecryptionOperation())
+        CliHandler.Builder builder = new CliHandler.Builder();
+        builder.addOption(new DecryptionOperation())
                 .addOption(new EncryptionOperation())
-                .addAlgorithm(new DoubleAlgorithm())
-                .addAlgorithm(new ReverseAlgorithm())
-                .addAlgorithm(new SplitAlgorithm())
-                .addAlgorithm(new Algorithm().addAlgorithm(new CaesarAlgorithm()))
-                .addAlgorithm(new Algorithm().addAlgorithm(new XorAlgorithm()))
-                .addAlgorithm(new Algorithm().addAlgorithm(new MultiplicationAlgorithm()))
-                .handleArguments(args);
+                .addAlgorithm(new DoubleNormalAlgorithm())
+                .addAlgorithm(new ReverseNormalAlgorithm())
+                .addAlgorithm(new SplitNormalAlgorithm())
+                .addAlgorithm(new NormalAlgorithm().addAlgorithm(new CaesarAlgorithm()))
+                .addAlgorithm(new NormalAlgorithm().addAlgorithm(new XorAlgorithm()))
+                .addAlgorithm(new NormalAlgorithm().addAlgorithm(new MultiplicationAlgorithm()))
+                .create().handleArguments(args);
 
     }
 

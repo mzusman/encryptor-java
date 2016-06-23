@@ -1,7 +1,7 @@
 package filehandler.operations;
 
 import exceptions.KeyException;
-import filehandler.algorithm.Algorithm;
+import filehandler.algorithm.NormalAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import utils.DisplayMessage;
 
@@ -14,21 +14,20 @@ public class Operator extends AbstractOperation {
     private AbstractOperation abstractOperation;
     private long startTime = 0;
     private long endTime = 0;
-    DisplayMessage displayMessage;
 
     public Operator(AbstractOperation abstractOperation) {
         this.abstractOperation = abstractOperation;
     }
 
     @Override
-    public File init(DisplayMessage displayMessage, File file, Algorithm algorithm) throws IOException, KeyException {
+    public File init(File file, NormalAlgorithm normalAlgorithm) throws IOException, KeyException {
 
         this.displayMessage = displayMessage;
         startTime = System.currentTimeMillis();
         displayMessage.display("Action started!");
 
 
-        File operationFile = abstractOperation.init(displayMessage, file, algorithm);
+        File operationFile = abstractOperation.init(displayMessage, file, normalAlgorithm);
 
         displayMessage.display("Action ended!");
         endTime = System.currentTimeMillis();

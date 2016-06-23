@@ -13,7 +13,7 @@ public class XorAlgorithm implements CipherAlgorithm {
 
     @Override
     public String getDescription() {
-        return "Xor Algorithm";
+        return "Xor NormalAlgorithm";
     }
 
     @Override

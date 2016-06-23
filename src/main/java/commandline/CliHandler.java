@@ -2,10 +2,12 @@ package commandline;
 
 
 import exceptions.KeyException;
-import filehandler.algorithm.Algorithm;
+import filehandler.algorithm.NormalAlgorithm;
 import filehandler.operations.AbstractOperation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
+import filehandler.operations.FileHandler;
 import filehandler.operations.Operator;
+import lombok.NonNull;
 import utils.DisplayMessage;
 import utils.Selectable;
 
@@ -17,37 +19,35 @@ import java.util.List;
  * Created by Mor on 5/19/2016.
  */
 public class CliHandler implements UserInterface {
-    private static CliHandler instance = new CliHandler();
 
-    public static CliHandler getInstance() {
-        return instance;
-    }
-
-    private ArrayList<AbstractOperation> abstractOperationFactory = new ArrayList<>();
-    private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
     private DisplayMessage displayMessage = System.out::println;
 
-    private CliHandler() {
-    }
+    private ArrayList<AbstractOperation> abstractOperationFactory;
+    private ArrayList<CipherAlgorithm> algorithmFactory;
 
-    public CliHandler addOption(AbstractOperation abstractOperation) {
-        if (abstractOperation == null)
-            return this;
-        abstractOperationFactory.add(abstractOperation);
-        return this;
-    }
-
-    public CliHandler addAlgorithm(CipherAlgorithm algorithm) {
-        if (algorithm == null) {
-            System.out.println("null");
-            return this;
+    private void furtherSelect(NormalAlgorithm normalAlgorithm) throws IOException {
+        for (int i = 0; i < normalAlgorithm.exceptedSize(); i++) {
+            normalAlgorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "NormalAlgorithm" + i));
         }
-
-        algorithmFactory.add(algorithm);
-        return this;
+        for (CipherAlgorithm cipherAlgorithm :
+                normalAlgorithm.getAlgorithms()) {
+            if (((NormalAlgorithm) cipherAlgorithm).exceptedSize() > 1) {
+                furtherSelect((NormalAlgorithm) cipherAlgorithm);
+            }
+        }
     }
 
 
+    private CliHandler(Builder builder) {
+        this.abstractOperationFactory = builder.abstractOperationFactory;
+        this.algorithmFactory = builder.algorithmFactory;
+    }
+
+    /**
+     * This method handles the arguments came from the cli
+     *
+     * @param args - cli args
+     */
     public void handleArguments(String[] args) {
         if (args.length != 1) {
             showOptions();
@@ -55,24 +55,13 @@ public class CliHandler implements UserInterface {
         }
 
         File file = new File(args[0]);
-        if (!file.exists() || !file.isFile()) try {
-            handleNotFoundFile(file.getPath());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-        else if (!file.isFile()) System.err.println("error: not a file");
-        else if (!file.canRead()) System.err.println("don't have permission to read");
-        else if (!file.canWrite()) System.err.println("don't have permission to write");
+        checkForFileError(file);
 
 
         try {
-            AbstractOperation abstractOperation = (AbstractOperation) selectSelectable(abstractOperationFactory, "AbstractOperation");
-            Algorithm algorithm = (Algorithm) selectSelectable(algorithmFactory, "Algorithm");
-            if (algorithm.exceptedSize() > 1 || algorithm.getAlgorithms().size() == 0)
-                furtherSelect(algorithm);
-
+            startUserSelect();
             Operator operator = new Operator(abstractOperation);
-            operator.init(displayMessage, file, algorithm);
+            operator.init(displayMessage, file, normalAlgorithm);
         } catch (KeyException e) {
             System.err.println(e.getMessage());
         } catch (IOException e) {
@@ -84,16 +73,22 @@ public class CliHandler implements UserInterface {
         }
     }
 
-    private void furtherSelect(Algorithm algorithm) throws IOException {
-        for (int i = 0; i < algorithm.exceptedSize(); i++) {
-            algorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "Algorithm" + i));
+    private void checkForFileError(@NonNull File file) {
+        if (!file.exists() || !file.isFile()) try {
+            handleNotFoundFile(file.getPath());
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
-        for (CipherAlgorithm cipherAlgorithm :
-                algorithm.getAlgorithms()) {
-            if (((Algorithm) cipherAlgorithm).exceptedSize() > 1) {
-                furtherSelect((Algorithm) cipherAlgorithm);
-            }
-        }
+        else if (!file.isFile()) System.err.println("error: not a file");
+        else if (!file.canRead()) System.err.println("don't have permission to read");
+        else if (!file.canWrite()) System.err.println("don't have permission to write");
+    }
+
+    private void startUserSelect() throws IOException {
+            AbstractOperation abstractOperation = (AbstractOperation) selectSelectable(abstractOperationFactory, "AbstractOperation");
+            NormalAlgorithm normalAlgorithm = (NormalAlgorithm) selectSelectable(algorithmFactory, "NormalAlgorithm");
+            if (normalAlgorithm.exceptedSize() > 1 || normalAlgorithm.getAlgorithms().size() == 0)
+                furtherSelect(normalAlgorithm);
     }
 
 
@@ -121,7 +116,6 @@ public class CliHandler implements UserInterface {
         System.out.println("usage: ... <file>\n");
         if (abstractOperationFactory.size() == 0) {
             System.out.println("no handlers are available");
-            return;
         }
     }
 
@@ -147,6 +141,36 @@ public class CliHandler implements UserInterface {
         } catch (IOException e) {
             throw new IOException("cannot read from console");
         }
+    }
+
+    /**
+     * Builder class for the {@link CliHandler} class
+     */
+    public static class Builder {
+        private ArrayList<AbstractOperation> abstractOperationFactory = new ArrayList<>();
+        private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
+
+        public Builder addOption(AbstractOperation abstractOperation) {
+            if (abstractOperation == null)
+                return this;
+            abstractOperationFactory.add(abstractOperation);
+            return this;
+        }
+
+        public Builder addAlgorithm(CipherAlgorithm algorithm) {
+            if (algorithm == null) {
+                System.out.println("null");
+                return this;
+            }
+            algorithmFactory.add(algorithm);
+            return this;
+        }
+
+        public CliHandler create() {
+            return new CliHandler(this);
+        }
+
+
     }
 
 

@@ -1,7 +1,7 @@
 package filehandler.operations;
 
 import exceptions.KeyException;
-import filehandler.algorithm.Algorithm;
+import filehandler.algorithm.NormalAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import utils.DisplayMessage;
 
@@ -13,8 +13,8 @@ import java.io.OutputStream;
 /**
  * Created by mzeus on 04/06/16.
  */
-public interface Operation {
-    File init(DisplayMessage event, File file, Algorithm algorithm) throws IOException, KeyException;
+interface Operation {
+    File init(DisplayMessage event, File file, NormalAlgorithm normalAlgorithm) throws IOException, KeyException;
 
     void run(DisplayMessage event, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException;
 

@@ -29,8 +29,8 @@ public class CipherAlgorithmTest {
         pout.flush();
         pout.close();
         EncryptionOperation encryptionOperation = new EncryptionOperation();
-        Algorithm algorithm1 = new Algorithm().addAlgorithm(new CaesarAlgorithm());
-        encryptionOperation.run(System.out::println, in, out, key, algorithm1);
+        NormalAlgorithm normalAlgorithm1 = new NormalAlgorithm().addAlgorithm(new CaesarAlgorithm());
+        encryptionOperation.run(System.out::println, in, out, key, normalAlgorithm1);
         System.out.println(baos.toByteArray());
         bytes = baos.toByteArray();
         assertNotEquals("test", (baos.toString()));
@@ -52,9 +52,9 @@ public class CipherAlgorithmTest {
         pout.write(bytes);
         pout.flush();
         pout.close();
-        Algorithm algorithm1 = new Algorithm().addAlgorithm(new CaesarAlgorithm());
+        NormalAlgorithm normalAlgorithm1 = new NormalAlgorithm().addAlgorithm(new CaesarAlgorithm());
         DecryptionOperation decryptionOperation = new DecryptionOperation();
-        decryptionOperation.run(System.out::println, in, out, key, algorithm1);
+        decryptionOperation.run(System.out::println, in, out, key, normalAlgorithm1);
         System.out.println(baos.toString());
         assertEquals("test", (baos.toString()));
 

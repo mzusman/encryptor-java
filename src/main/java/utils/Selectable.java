@@ -6,3 +6,4 @@ package utils;
 public interface Selectable {
     String getDescription();
 }
+
