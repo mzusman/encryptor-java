@@ -1,10 +1,9 @@
 package boot;
 
 import commandline.CliHandler;
-import filehandler.algorithm.DoubleNormalAlgorithm;
-import filehandler.algorithm.NormalAlgorithm;
-import filehandler.algorithm.ReverseNormalAlgorithm;
-import filehandler.algorithm.SplitNormalAlgorithm;
+import filehandler.algorithm.*;
+import filehandler.algorithm.ManipulatedAlgorithm;
+import filehandler.algorithm.ReverseManipulatedAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
@@ -24,15 +23,17 @@ public class Main {
      */
     public static void main(String args[]) {
         CliHandler.Builder builder = new CliHandler.Builder();
-        builder.addOption(new DecryptionOperation())
-                .addOption(new EncryptionOperation())
-                .addAlgorithm(new DoubleNormalAlgorithm())
-                .addAlgorithm(new ReverseNormalAlgorithm())
-                .addAlgorithm(new SplitNormalAlgorithm())
-                .addAlgorithm(new NormalAlgorithm().addAlgorithm(new CaesarAlgorithm()))
-                .addAlgorithm(new NormalAlgorithm().addAlgorithm(new XorAlgorithm()))
-                .addAlgorithm(new NormalAlgorithm().addAlgorithm(new MultiplicationAlgorithm()))
+        builder.addOption(DecryptionOperation::new)
+                .addOption(EncryptionOperation::new)
+                .addAlgorithm(DoubleAlgorithm::new)
+                .addAlgorithm(ReverseManipulatedAlgorithm::new)
+                .addAlgorithm(SplitManipulatedAlgorithm::new)
+                .addAlgorithm(() -> new ManipulatedAlgorithm().addAlgorithm(new CaesarAlgorithm()))
+                .addAlgorithm(() -> new ManipulatedAlgorithm().addAlgorithm(new XorAlgorithm()))
+                .addAlgorithm(() -> new ManipulatedAlgorithm().addAlgorithm(new MultiplicationAlgorithm()))
                 .create().handleArguments(args);
+
+
 
     }
 

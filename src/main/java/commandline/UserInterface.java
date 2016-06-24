@@ -9,15 +9,14 @@ import java.util.List;
 /**
  * Created by mzeus on 01/06/16.
  */
-public interface UserInterface {
+public interface UserInterface<S extends Selectable> {
 
 
     void handleArguments(String[] arg);
 
     void showOptions();
 
-    Selectable selectSelectable(List<? extends Selectable> selectables, String s) throws IOException;
-
+    S selectSelectable(List<S> selectables, String s) throws IOException;
 
 
 }

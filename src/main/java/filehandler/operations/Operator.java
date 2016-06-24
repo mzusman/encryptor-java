@@ -1,7 +1,7 @@
 package filehandler.operations;
 
 import exceptions.KeyException;
-import filehandler.algorithm.NormalAlgorithm;
+import filehandler.algorithm.ManipulatedAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import utils.DisplayMessage;
 
@@ -20,14 +20,13 @@ public class Operator extends AbstractOperation {
     }
 
     @Override
-    public File init(File file, NormalAlgorithm normalAlgorithm) throws IOException, KeyException {
+    public File init(File file, ManipulatedAlgorithm manipulatedAlgorithm) throws IOException, KeyException {
 
-        this.displayMessage = displayMessage;
         startTime = System.currentTimeMillis();
         displayMessage.display("Action started!");
 
 
-        File operationFile = abstractOperation.init(displayMessage, file, normalAlgorithm);
+        File operationFile = abstractOperation.init(displayMessage, file, manipulatedAlgorithm);
 
         displayMessage.display("Action ended!");
         endTime = System.currentTimeMillis();
@@ -41,8 +40,8 @@ public class Operator extends AbstractOperation {
     }
 
     @Override
-    public int getKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-        return abstractOperation.getKey(cipherAlgorithm);
+    public int findKey(CipherAlgorithm cipherAlgorithm) throws IOException {
+        return abstractOperation.findKey(cipherAlgorithm);
     }
 
     @Override

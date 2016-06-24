@@ -13,7 +13,7 @@ public class CaesarAlgorithm implements CipherAlgorithm {
 
     @Override
     public String getDescription() {
-        return "Caesar NormalAlgorithm";
+        return "Caesar ManipulatedAlgorithm";
     }
 
     @Override

@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * Created by mzeus on 29/05/16.
  */
-public class CaesarNormalAlgorithmTest {
+public class CaesarManipulatedAlgorithmTest {
     CaesarAlgorithm caesarAlgorithm = new CaesarAlgorithm();
     CipherAlgorithmTest test = new CipherAlgorithmTest();
 

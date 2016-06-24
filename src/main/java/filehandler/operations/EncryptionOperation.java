@@ -35,23 +35,12 @@ public class EncryptionOperation extends AbstractOperation {
     }
 
     @Override
-    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException {
-        int raw;
-        byte enc;
-        try {
-            while ((raw = in.read()) != -1) {
-                enc = cipherAlgorithm.encryptionOperation(raw, key);
-                out.write(enc);
-            }
-        } catch (IOException e) {
-            throw new IOException("Error reading from file");
-        }
-
+    public byte operate(CipherAlgorithm algorithm, int raw, int key) {
+        return algorithm.encryptionOperation(raw, key);
     }
 
     @Override
-    public int getKey(CipherAlgorithm algorithm) {
-        displayMessage.display("using key");
+    public int findKey(CipherAlgorithm algorithm) {
         return algorithm.createKey();
     }
 

@@ -12,7 +12,7 @@ import java.io.*;
  */
 public class DecryptionOperation extends AbstractOperation {
 
-    private String decrypted = "_decrypted";
+    private final String decrypted = "_decrypted";
 
     public DecryptionOperation() {
 
@@ -25,23 +25,13 @@ public class DecryptionOperation extends AbstractOperation {
 
 
     @Override
-    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws KeyException, IOException {
-        cipherAlgorithm.checkKey(key);
-        int raw;
-        byte dec;
-        try {
-            while ((raw = in.read()) != -1) {
-                dec = cipherAlgorithm.decryptionOperation(raw, key);
-                out.write(dec);
-            }
-        } catch (IOException e) {
-            throw new IOException("Error reading from file");
-        }
+    public int findKey(CipherAlgorithm cipherAlgorithm) throws IOException {
+        return CliHandler.getInstance().getKey();
     }
 
     @Override
-    public int getKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-        return CliHandler.getInstance().getKey();
+    public byte operate(CipherAlgorithm algorithm, int raw, int key) {
+        return algorithm.decryptionOperation(raw, key);
     }
 
 

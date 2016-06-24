@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class MultiplicationNormalAlgorithmTest {
+public class MultiplicationManipulatedAlgorithmTest {
     CipherAlgorithmTest test = new CipherAlgorithmTest();
     MultiplicationAlgorithm algorithm = new MultiplicationAlgorithm();
 

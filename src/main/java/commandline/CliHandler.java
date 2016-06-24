@@ -2,10 +2,9 @@ package commandline;
 
 
 import exceptions.KeyException;
-import filehandler.algorithm.NormalAlgorithm;
+import filehandler.algorithm.ManipulatedAlgorithm;
 import filehandler.operations.AbstractOperation;
 import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import filehandler.operations.FileHandler;
 import filehandler.operations.Operator;
 import lombok.NonNull;
 import utils.DisplayMessage;
@@ -14,28 +13,31 @@ import utils.Selectable;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.function.Supplier;
 
 /**
  * Created by Mor on 5/19/2016.
  */
-public class CliHandler implements UserInterface {
+public class CliHandler extends Observable implements Observer, UserInterface<Selectable> {
 
     private DisplayMessage displayMessage = System.out::println;
 
     private ArrayList<AbstractOperation> abstractOperationFactory;
     private ArrayList<CipherAlgorithm> algorithmFactory;
 
-    private void furtherSelect(NormalAlgorithm normalAlgorithm) throws IOException {
-        for (int i = 0; i < normalAlgorithm.exceptedSize(); i++) {
-            normalAlgorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "NormalAlgorithm" + i));
-        }
-        for (CipherAlgorithm cipherAlgorithm :
-                normalAlgorithm.getAlgorithms()) {
-            if (((NormalAlgorithm) cipherAlgorithm).exceptedSize() > 1) {
-                furtherSelect((NormalAlgorithm) cipherAlgorithm);
-            }
-        }
-    }
+//    private void furtherSelect(ManipulatedAlgorithm normalAlgorithm) throws IOException {
+//        for (int i = 0; i < normalAlgorithm; i++) {
+//            normalAlgorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "ManipulatedAlgorithm" + i));
+//        }
+//        for (CipherAlgorithm cipherAlgorithm :
+//                normalAlgorithm.getAlgorithms()) {
+//            if (((ManipulatedAlgorithm) cipherAlgorithm).exceptedSize() > 1) {
+//                furtherSelect((ManipulatedAlgorithm) cipherAlgorithm);
+//            }
+//        }
+//    }
 
 
     private CliHandler(Builder builder) {
@@ -60,10 +62,6 @@ public class CliHandler implements UserInterface {
 
         try {
             startUserSelect();
-            Operator operator = new Operator(abstractOperation);
-            operator.init(displayMessage, file, normalAlgorithm);
-        } catch (KeyException e) {
-            System.err.println(e.getMessage());
         } catch (IOException e) {
             try {
                 handleNotFoundFile(e.getMessage());
@@ -85,21 +83,10 @@ public class CliHandler implements UserInterface {
     }
 
     private void startUserSelect() throws IOException {
-            AbstractOperation abstractOperation = (AbstractOperation) selectSelectable(abstractOperationFactory, "AbstractOperation");
-            NormalAlgorithm normalAlgorithm = (NormalAlgorithm) selectSelectable(algorithmFactory, "NormalAlgorithm");
-            if (normalAlgorithm.exceptedSize() > 1 || normalAlgorithm.getAlgorithms().size() == 0)
-                furtherSelect(normalAlgorithm);
-    }
-
-
-    @Override
-    public Selectable selectSelectable(List<? extends Selectable> list, String type) throws IOException {
-        System.out.printf("Select an %s:\n", type);
-        list.forEach((s) ->
-                System.out.printf("%s - %s\n", list.indexOf(s), (s).getDescription()));
-        System.out.println("enter :");
-        String input = getStringFromUser();
-        return list.get(Integer.parseInt(input));// todo: have to make it more safety
+        AbstractOperation abstractOperation = (AbstractOperation) selectSelectable(abstractOperationFactory, "AbstractOperation");
+        ManipulatedAlgorithm manipulatedAlgorithm = (ManipulatedAlgorithm) selectSelectable(algorithmFactory, "ManipulatedAlgorithm");
+        if (manipulatedAlgorithm.exceptedSize() > 1 || manipulatedAlgorithm.getAlgorithms().size() == 0)
+            furtherSelect(manipulatedAlgorithm);
     }
 
 
@@ -117,6 +104,16 @@ public class CliHandler implements UserInterface {
         if (abstractOperationFactory.size() == 0) {
             System.out.println("no handlers are available");
         }
+    }
+
+    @Override
+    public Selectable selectSelectable(List<Selectable> list, String type) throws IOException {
+        System.out.printf("Select an %s:\n", type);
+        list.forEach((s) ->
+                System.out.printf("%s - %s\n", list.indexOf(s), (s).getDescription()));
+        System.out.println("enter :");
+        String input = getStringFromUser();
+        return list.get(Integer.parseInt(input));// todo: have to make it more safety
     }
 
 
@@ -143,6 +140,11 @@ public class CliHandler implements UserInterface {
         }
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+
+    }
+
     /**
      * Builder class for the {@link CliHandler} class
      */
@@ -150,19 +152,19 @@ public class CliHandler implements UserInterface {
         private ArrayList<AbstractOperation> abstractOperationFactory = new ArrayList<>();
         private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
 
-        public Builder addOption(AbstractOperation abstractOperation) {
+        public Builder addOption(Supplier<AbstractOperation> abstractOperation) {
             if (abstractOperation == null)
                 return this;
-            abstractOperationFactory.add(abstractOperation);
+            abstractOperationFactory.add(abstractOperation.get());
             return this;
         }
 
-        public Builder addAlgorithm(CipherAlgorithm algorithm) {
+        public Builder addAlgorithm(Supplier<CipherAlgorithm> algorithm) {
             if (algorithm == null) {
                 System.out.println("null");
                 return this;
             }
-            algorithmFactory.add(algorithm);
+            algorithmFactory.add(algorithm.get());
             return this;
         }
 

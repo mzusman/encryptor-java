@@ -1,4 +1,4 @@
-package filehandler.algorithm.cipheralgorithm;
+package filehandler.algorithm;
 
 import exceptions.KeyException;
 
@@ -6,7 +6,7 @@ import exceptions.KeyException;
 /**
  * Created by mzeus on 31/05/16.
  */
-interface KeyAlgorithm {
+public interface KeyAlgorithm {
     void checkKey(int key) throws KeyException;
 
     int createKey();

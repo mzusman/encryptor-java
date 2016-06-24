@@ -18,7 +18,7 @@ public class MultiplicationAlgorithm implements CipherAlgorithm {
 
     @Override
     public String getDescription() {
-        return "Multiplication NormalAlgorithm";
+        return "Multiplication ManipulatedAlgorithm";
     }
 
     @Override

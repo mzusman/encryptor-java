@@ -1,11 +1,7 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import exceptions.KeyException;
-import exceptions.UnsupportedKeyNumberException;
+import filehandler.algorithm.KeyAlgorithm;
 import utils.Selectable;
-
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * Created by mzeus on 29/05/16.

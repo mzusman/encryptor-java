@@ -12,13 +12,13 @@ import static org.mockito.Mockito.*;
 /**
  * Created by mzeus on 31/05/16.
  */
-public class NormalNormalAlgorithmTest {
+public class NormalManipulatedAlgorithmTest {
     @Test
     public void decryptionOperation() throws Exception {
 
         CipherAlgorithm cipherAlgorithm = mock(CipherAlgorithm.class);
-        NormalAlgorithm normalAlgorithm = new NormalAlgorithm(cipherAlgorithm);
-        normalAlgorithm.decryptionOperation(anyInt(), anyInt());
+        ManipulatedAlgorithm manipulatedAlgorithm = new ManipulatedAlgorithm(cipherAlgorithm);
+        manipulatedAlgorithm.decryptionOperation(anyInt(), anyInt());
         verify(cipherAlgorithm, times(1)).decryptionOperation(anyInt(), anyInt());
 
     }
@@ -27,17 +27,17 @@ public class NormalNormalAlgorithmTest {
     public void encryptionOperation() throws Exception {
 
         CipherAlgorithm cipherAlgorithm = mock(CipherAlgorithm.class);
-        NormalAlgorithm normalAlgorithm = new NormalAlgorithm(cipherAlgorithm);
-        normalAlgorithm.encryptionOperation(anyInt(), anyInt());
+        ManipulatedAlgorithm manipulatedAlgorithm = new ManipulatedAlgorithm(cipherAlgorithm);
+        manipulatedAlgorithm.encryptionOperation(anyInt(), anyInt());
         verify(cipherAlgorithm, times(1)).encryptionOperation(anyInt(), anyInt());
 
     }
 
     @Test(expected = KeyException.class)
     public void checkKey() throws Exception {
-        new NormalAlgorithm(new MultiplicationAlgorithm()).checkKey(256);
-        new NormalAlgorithm(new XorAlgorithm()).checkKey(256);
-        new NormalAlgorithm(new CaesarAlgorithm()).checkKey(256);
+        new ManipulatedAlgorithm(new MultiplicationAlgorithm()).checkKey(256);
+        new ManipulatedAlgorithm(new XorAlgorithm()).checkKey(256);
+        new ManipulatedAlgorithm(new CaesarAlgorithm()).checkKey(256);
     }
 
 }

@@ -14,7 +14,7 @@ public class OperatorTest {
 //    void test() throws Exception {
 //        File file = folder.newFile();
 //        Operator operator = new OperatorWithMsg(new DecryptionOperation(), System.out::println);
-//        operator.act(file, new DoubleNormalAlgorithm(new CaesarAlgorithm(), new NormalAlgorithm(new CaesarAlgorithm())));
+//        operator.act(file, new DoubleAlgorithm(new CaesarAlgorithm(), new ManipulatedAlgorithm(new CaesarAlgorithm())));
 //
 //    }
 
