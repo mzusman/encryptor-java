@@ -2,7 +2,9 @@ package filehandler.algorithm.cipheralgorithm;
 
 import exceptions.KeyException;
 import exceptions.UnsupportedKeyNumberException;
+import filehandler.algorithm.CipherAlgorithm;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -12,28 +14,18 @@ public class XorAlgorithm implements CipherAlgorithm {
 
 
     @Override
-    public String getDescription() {
-        return "Xor ManipulatedAlgorithm";
-    }
-
-    @Override
-    public byte decryptionOperation(int raw, int key) {
+    public byte decryptionOperation(int raw, int index, int key) {
         return (byte) ((byte) (raw ^ key) & 0xff);
     }
 
     @Override
-    public byte encryptionOperation(int raw, int key) {
+    public byte encryptionOperation(int raw, int index, int key) {
         return (byte) ((byte) (raw ^ key) & 0xff);
     }
 
     @Override
-    public void checkKey(int key) throws KeyException {
-        if ((byte) key == 0)
-            throw new UnsupportedKeyNumberException(key);
+    public boolean checkIfKeyIsValid(Integer key) {
+        return (byte) key.intValue() != 0;
     }
 
-    @Override
-    public int createKey() {
-        return new Random().nextInt(255) + 1;
-    }
 }

@@ -20,7 +20,7 @@ public class EncryptionOperationTest {
 //    @Test
 //    public void act() throws Exception {
 //        File file = temporaryFolder.newFile();
-//        Assert.assertNotEquals(file, encryptionOperation.act(file, new ManipulatedAlgorithm(new CaesarAlgorithm())));
+//        Assert.assertNotEquals(file, encryptionOperation.act(file, new ExtendedAlgorithm(new CaesarAlgorithm())));
 //    }
 
     @Test

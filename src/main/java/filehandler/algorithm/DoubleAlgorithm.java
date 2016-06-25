@@ -1,36 +1,31 @@
 package filehandler.algorithm;
 
 import exceptions.KeyException;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
+
+import java.util.ArrayList;
 
 /**
- * Created by mzeus on 01/06/16.
+ * Created by mzeus on 6/25/16.
  */
-public class DoubleAlgorithm implements CipherAlgorithm {
-    CipherAlgorithm cipherAlgorithm;
+public class DoubleAlgorithm extends ListOfAlgorithm {
+    public DoubleAlgorithm(ArrayList<AlgorithmKey> list) {
+        super(list);
+    }
+
 
     @Override
     public String getDescription() {
-        return "preform a double algorithm";
+        return "double algorithm";
     }
 
     @Override
-    public byte decryptionOperation(int raw, int key) {
-        return 0;
+    public byte decryptionOperation(int raw, int index, AlgorithmKey algorithmKey, int i) {
+        return algorithmKey.getCipherAlgorithm().decryptionOperation(raw, index, algorithmKey.getKey());
     }
 
     @Override
-    public byte encryptionOperation(int raw, int key) {
-        return 0;
+    public byte encryptionOperation(int raw, int index, AlgorithmKey algorithmKey, int i) {
+        return algorithmKey.getCipherAlgorithm().encryptionOperation(raw, index, algorithmKey.getKey());
     }
 
-    @Override
-    public void checkKey(int key) throws KeyException {
-
-    }
-
-    @Override
-    public int createKey() {
-        return 0;
-    }
 }

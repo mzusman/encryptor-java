@@ -2,8 +2,8 @@ package boot;
 
 import commandline.CliHandler;
 import filehandler.algorithm.*;
-import filehandler.algorithm.ManipulatedAlgorithm;
-import filehandler.algorithm.ReverseManipulatedAlgorithm;
+import filehandler.algorithm.ExtendedAlgorithm;
+import filehandler.algorithm.ReverseAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
@@ -25,12 +25,12 @@ public class Main {
         CliHandler.Builder builder = new CliHandler.Builder();
         builder.addOption(DecryptionOperation::new)
                 .addOption(EncryptionOperation::new)
-                .addAlgorithm(DoubleAlgorithm::new)
-                .addAlgorithm(ReverseManipulatedAlgorithm::new)
-                .addAlgorithm(SplitManipulatedAlgorithm::new)
-                .addAlgorithm(() -> new ManipulatedAlgorithm().addAlgorithm(new CaesarAlgorithm()))
-                .addAlgorithm(() -> new ManipulatedAlgorithm().addAlgorithm(new XorAlgorithm()))
-                .addAlgorithm(() -> new ManipulatedAlgorithm().addAlgorithm(new MultiplicationAlgorithm()))
+                .addAlgorithm(ExtendedAlgorithm.DoubleAlgorithm::new)
+                .addAlgorithm(ReverseAlgorithm::new)
+                .addAlgorithm(SplitAlgorithm::new)
+                .addAlgorithm(() -> new ExtendedAlgorithm().addAlgorithm(new CaesarAlgorithm()))
+                .addAlgorithm(() -> new ExtendedAlgorithm().addAlgorithm(new XorAlgorithm()))
+                .addAlgorithm(() -> new ExtendedAlgorithm().addAlgorithm(new MultiplicationAlgorithm()))
                 .create().handleArguments(args);
 
 

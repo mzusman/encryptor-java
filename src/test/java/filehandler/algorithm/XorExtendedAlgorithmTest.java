@@ -6,7 +6,7 @@ import org.junit.Test;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class XorManipulatedAlgorithmTest {
+public class XorExtendedAlgorithmTest {
     XorAlgorithm xorAlgorithm = new XorAlgorithm();
     CipherAlgorithmTest algorithm = new CipherAlgorithmTest();
 

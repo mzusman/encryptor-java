@@ -2,7 +2,6 @@ package filehandler.algorithm;
 
 import exceptions.KeyException;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
 import filehandler.operations.DecryptionOperation;
 import filehandler.operations.EncryptionOperation;
 
@@ -29,8 +28,8 @@ public class CipherAlgorithmTest {
         pout.flush();
         pout.close();
         EncryptionOperation encryptionOperation = new EncryptionOperation();
-        ManipulatedAlgorithm manipulatedAlgorithm1 = new ManipulatedAlgorithm().addAlgorithm(new CaesarAlgorithm());
-        encryptionOperation.run(System.out::println, in, out, key, manipulatedAlgorithm1);
+        ExtendedAlgorithm extendedAlgorithm1 = new ExtendedAlgorithm().addAlgorithm(new CaesarAlgorithm());
+        encryptionOperation.run(System.out::println, in, out, key, extendedAlgorithm1);
         System.out.println(baos.toByteArray());
         bytes = baos.toByteArray();
         assertNotEquals("test", (baos.toString()));
@@ -52,9 +51,9 @@ public class CipherAlgorithmTest {
         pout.write(bytes);
         pout.flush();
         pout.close();
-        ManipulatedAlgorithm manipulatedAlgorithm1 = new ManipulatedAlgorithm().addAlgorithm(new CaesarAlgorithm());
+        ExtendedAlgorithm extendedAlgorithm1 = new ExtendedAlgorithm().addAlgorithm(new CaesarAlgorithm());
         DecryptionOperation decryptionOperation = new DecryptionOperation();
-        decryptionOperation.run(System.out::println, in, out, key, manipulatedAlgorithm1);
+        decryptionOperation.run(System.out::println, in, out, key, extendedAlgorithm1);
         System.out.println(baos.toString());
         assertEquals("test", (baos.toString()));
 

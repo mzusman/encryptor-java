@@ -1,6 +1,6 @@
 package commandline;
 
-import filehandler.algorithm.ManipulatedAlgorithm;
+import filehandler.algorithm.ExtendedAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.DecryptionOperation;
 import filehandler.operations.EncryptionOperation;
@@ -69,7 +69,7 @@ public class CliHandlerTest {
         cliHandler.addAlgorithm(algorithm);
         System.setIn(new ByteArrayInputStream("1".getBytes()));
         cliHandler.handleArguments(new String[]{file.getPath()});
-        verify(encryptionOperation, times(1)).init(System.out::println, any(File.class), any(ManipulatedAlgorithm.class));
+        verify(encryptionOperation, times(1)).init(System.out::println, any(File.class), any(ExtendedAlgorithm.class));
     }
 
 

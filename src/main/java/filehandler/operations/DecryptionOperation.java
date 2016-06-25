@@ -1,9 +1,6 @@
 package filehandler.operations;
 
-import commandline.CliHandler;
-import exceptions.KeyException;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import utils.DisplayMessage;
+import filehandler.algorithm.CipherAlgorithm;
 
 import java.io.*;
 
@@ -18,20 +15,15 @@ public class DecryptionOperation extends AbstractOperation {
 
     }
 
-    @Override
-    public String getDescription() {
-        return "decrypt a file";
-    }
-
 
     @Override
     public int findKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-        return CliHandler.getInstance().getKey();
+
     }
 
     @Override
-    public byte operate(CipherAlgorithm algorithm, int raw, int key) {
-        return algorithm.decryptionOperation(raw, key);
+    public byte operate(CipherAlgorithm algorithm, int raw, int index, int key) {
+        return algorithm.decryptionOperation(raw, index, key);
     }
 
 

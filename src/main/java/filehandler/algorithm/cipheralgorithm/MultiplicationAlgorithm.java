@@ -1,28 +1,21 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import exceptions.KeyException;
-import exceptions.UnsupportedKeyNumberException;
-
-import java.util.Random;
+import filehandler.algorithm.CipherAlgorithm;
 
 
 /**
  * Created by mzeus on 30/05/16.
  */
-public class MultiplicationAlgorithm implements CipherAlgorithm {
+public class MultiplicationAlgorithm implements CipherAlgorithm{
 
 
     private byte procedureMwo(int raw, int key) {
         return (byte) (raw * key);
     }
 
-    @Override
-    public String getDescription() {
-        return "Multiplication ManipulatedAlgorithm";
-    }
 
     @Override
-    public byte decryptionOperation(int raw, int key) {
+    public byte decryptionOperation(int raw, int index, int key) {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
             if (((byte) (i * key)) == 1) {
@@ -35,26 +28,14 @@ public class MultiplicationAlgorithm implements CipherAlgorithm {
 
 
     @Override
-    public byte encryptionOperation(int raw, int key) {
+    public byte encryptionOperation(int raw, int index, int key) {
         return procedureMwo(raw, key);
     }
 
     @Override
-    public void checkKey(int key) throws KeyException {
-        if ((byte) key == 0 || key % 2 == 0)
-            throw new UnsupportedKeyNumberException(key);
+    public boolean checkIfKeyIsValid(Integer key) {
+        return !((byte) key.intValue() == 0 || key % 2 == 0);
     }
 
-
-    @Override
-    public int createKey() {
-        int key = new Random().nextInt(255) + 1;
-        try {
-            checkKey(key);
-        } catch (KeyException e) {
-            return createKey();
-        }
-        return key;
-    }
 
 }

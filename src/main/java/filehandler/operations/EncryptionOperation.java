@@ -1,9 +1,10 @@
 package filehandler.operations;
 
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import utils.DisplayMessage;
+import exceptions.KeyException;
+import filehandler.algorithm.CipherAlgorithm;
 
 import java.io.*;
+import java.util.Random;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -14,11 +15,6 @@ public class EncryptionOperation extends AbstractOperation {
 
     public EncryptionOperation() {
 
-    }
-
-    @Override
-    public String getDescription() {
-        return "encrypt a file";
     }
 
 
@@ -35,13 +31,18 @@ public class EncryptionOperation extends AbstractOperation {
     }
 
     @Override
-    public byte operate(CipherAlgorithm algorithm, int raw, int key) {
-        return algorithm.encryptionOperation(raw, key);
+    public byte operate(CipherAlgorithm algorithm, int raw, int index, int key) {
+        return algorithm.encryptionOperation(raw, index, key);
     }
 
     @Override
-    public int findKey(CipherAlgorithm algorithm) {
-        return algorithm.createKey();
+    public int findKey(CipherAlgorithm cipherAlgorithm) {
+        Random random = new Random(255);
+        int key = random.nextInt() + 1;
+        while (!cipherAlgorithm.checkIfKeyIsValid(key))
+            key = random.nextInt() + 1;
+        return key;
+
     }
 
 

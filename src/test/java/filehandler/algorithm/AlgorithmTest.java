@@ -1,11 +1,5 @@
 package filehandler.algorithm;
 
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.io.*;
-
 /**
  * Created by mzeus on 31/05/16.
  */
@@ -14,7 +8,7 @@ public class AlgorithmTest {
 //    @Test
 //    public void encrypt() throws Exception {
 //        CipherAlgorithm cipherAlgorithm = Mockito.mock(CipherAlgorithm.class);
-//        ManipulatedAlgorithm algorithm = new ManipulatedAlgorithm(cipherAlgorithm);
+//        ExtendedAlgorithm algorithm = new ExtendedAlgorithm(cipherAlgorithm);
 //        for (int i = 255; i > 0; i--) {
 //            PipedOutputStream pipedIn = new PipedOutputStream();
 //            InputStream in = new PipedInputStream(pipedIn);
@@ -30,7 +24,7 @@ public class AlgorithmTest {
 //    @Test
 //    public void decrypt() throws Exception {
 //        CipherAlgorithm cipherAlgorithm = Mockito.mock(CipherAlgorithm.class);
-//        ManipulatedAlgorithm algorithm = new ManipulatedAlgorithm(cipherAlgorithm);
+//        ExtendedAlgorithm algorithm = new ExtendedAlgorithm(cipherAlgorithm);
 //        for (int i = 255; i > 0; i--) {
 //            PipedOutputStream pipedIn = new PipedOutputStream();
 //            InputStream in = new PipedInputStream(pipedIn);

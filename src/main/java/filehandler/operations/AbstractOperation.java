@@ -1,9 +1,9 @@
 package filehandler.operations;
 
 import exceptions.KeyException;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
+import filehandler.algorithm.AlgorithmKey;
+import filehandler.algorithm.CipherAlgorithm;
 import lombok.Cleanup;
-import utils.Selectable;
 
 import java.io.*;
 import java.util.Observable;
@@ -11,24 +11,21 @@ import java.util.Observable;
 /**
  * Created by mzeus on 29/05/16.
  */
-public abstract class AbstractOperation extends Observable implements Operation, Selectable, FileHandler {
+public abstract class AbstractOperation extends Observable implements Operation, FileHandler {
 
     @Override
-    public File init(File file, CipherAlgorithm algorithm) throws IOException, KeyException {
-        File outputFile = createNewFile(file);
-        @Cleanup FileInputStream fis = new FileInputStream(file);
-        @Cleanup FileOutputStream fos = new FileOutputStream(outputFile);
-        run(fis, fos, findKey(algorithm), algorithm);
-        return outputFile;
-    }
-
-    @Override
-    public void run(InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException {
+    public void run(StreamManager streamManager, CipherAlgorithm algorithm) throws IOException {
+        int key = findKey(algorithm);
+        AlgorithmKey algorithmKey = new AlgorithmKey(algorithm, key);
+        InputStream in = streamManager.getInputStream();
+        OutputStream out = streamManager.getOutputStream();
         int raw;
         byte enc;
+        int index = 0;
         try {
             while ((raw = in.read()) != -1) {
-                enc = operate(cipherAlgorithm, raw, key);
+                enc = operate(algorithmKey.getCipherAlgorithm(), raw, index, algorithmKey.getKey());
+                index++;
                 out.write(enc);
             }
         } catch (IOException e) {
@@ -38,8 +35,4 @@ public abstract class AbstractOperation extends Observable implements Operation,
     }
 
 
-    @Override
-    public String getDescription() {
-        return "make an operation";
-    }
 }

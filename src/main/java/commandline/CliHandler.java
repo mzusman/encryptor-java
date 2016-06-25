@@ -1,14 +1,13 @@
 package commandline;
 
 
-import exceptions.KeyException;
-import filehandler.algorithm.ManipulatedAlgorithm;
+import com.sun.corba.se.spi.orb.Operation;
+import filehandler.algorithm.ExtendedAlgorithm;
 import filehandler.operations.AbstractOperation;
-import filehandler.algorithm.cipheralgorithm.CipherAlgorithm;
-import filehandler.operations.Operator;
+import filehandler.algorithm.CipherAlgorithm;
 import lombok.NonNull;
+import utils.AvailableAlgorithms;
 import utils.DisplayMessage;
-import utils.Selectable;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,29 +19,28 @@ import java.util.function.Supplier;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class CliHandler extends Observable implements Observer, UserInterface<Selectable> {
+public class CliHandler extends Observable implements Observer, UserInterface<CipherAlgorithm, Operation> {
 
-    private DisplayMessage displayMessage = System.out::println;
 
-    private ArrayList<AbstractOperation> abstractOperationFactory;
-    private ArrayList<CipherAlgorithm> algorithmFactory;
+    private ArrayList<Operation> operations;
+    private ArrayList<CipherAlgorithm> algorithms;
 
-//    private void furtherSelect(ManipulatedAlgorithm normalAlgorithm) throws IOException {
+//    private void furtherSelect(ExtendedAlgorithm normalAlgorithm) throws IOException {
 //        for (int i = 0; i < normalAlgorithm; i++) {
-//            normalAlgorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "ManipulatedAlgorithm" + i));
+//            normalAlgorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "ExtendedAlgorithm" + i));
 //        }
 //        for (CipherAlgorithm cipherAlgorithm :
 //                normalAlgorithm.getAlgorithms()) {
-//            if (((ManipulatedAlgorithm) cipherAlgorithm).exceptedSize() > 1) {
-//                furtherSelect((ManipulatedAlgorithm) cipherAlgorithm);
+//            if (((ExtendedAlgorithm) cipherAlgorithm).exceptedSize() > 1) {
+//                furtherSelect((ExtendedAlgorithm) cipherAlgorithm);
 //            }
 //        }
 //    }
 
 
     private CliHandler(Builder builder) {
-        this.abstractOperationFactory = builder.abstractOperationFactory;
-        this.algorithmFactory = builder.algorithmFactory;
+        this.operations = builder.operations;
+        this.algorithms = builder.algorithms;
     }
 
     /**
@@ -83,10 +81,8 @@ public class CliHandler extends Observable implements Observer, UserInterface<Se
     }
 
     private void startUserSelect() throws IOException {
-        AbstractOperation abstractOperation = (AbstractOperation) selectSelectable(abstractOperationFactory, "AbstractOperation");
-        ManipulatedAlgorithm manipulatedAlgorithm = (ManipulatedAlgorithm) selectSelectable(algorithmFactory, "ManipulatedAlgorithm");
-        if (manipulatedAlgorithm.exceptedSize() > 1 || manipulatedAlgorithm.getAlgorithms().size() == 0)
-            furtherSelect(manipulatedAlgorithm);
+        Operation operation = (Operation) selectOperation(operations);
+        CipherAlgorithm cipherAlgorithm = (CipherAlgorithm) selectAlgorithm(algorithms);
     }
 
 
@@ -101,19 +97,37 @@ public class CliHandler extends Observable implements Observer, UserInterface<Se
 
     public void showOptions() {
         System.out.println("usage: ... <file>\n");
-        if (abstractOperationFactory.size() == 0) {
-            System.out.println("no handlers are available");
-        }
     }
 
     @Override
-    public Selectable selectSelectable(List<Selectable> list, String type) throws IOException {
-        System.out.printf("Select an %s:\n", type);
-        list.forEach((s) ->
-                System.out.printf("%s - %s\n", list.indexOf(s), (s).getDescription()));
-        System.out.println("enter :");
+    public CipherAlgorithm selectAlgorithm(List<CipherAlgorithm> algorithms) throws IOException {
+        System.out.println("Select an algorithm:");
+        printDescriptions(algorithms);
+        return (CipherAlgorithm) getUserChoice(algorithms);
+    }
+
+    private Object getUserChoice(List list) throws IOException {
+        System.out.printf("enter(%d-%d) :", 1, list.size() + 1);
         String input = getStringFromUser();
-        return list.get(Integer.parseInt(input));// todo: have to make it more safety
+        while (!input.matches("\\d$")) {
+            System.out.println("Wrong input");
+            printDescriptions(list);
+            System.out.printf("enter(%d-%d) :", 1, list.size() + 1);
+            input = getStringFromUser();
+        }
+        return list.get(Integer.parseInt(input) - 1);// todo: have to make it more safety
+
+    }
+
+    private void printDescriptions(List list) {
+        list.forEach(c -> System.out.printf("%s - %s\n", list.indexOf(c) + 1, c.toString()));
+    }
+
+    @Override
+    public Operation selectOperation(List<Operation> operations) throws IOException {
+        System.out.println("Select an operation:");
+        printDescriptions(operations);
+        return (Operation) getUserChoice(operations);
     }
 
 
@@ -149,22 +163,20 @@ public class CliHandler extends Observable implements Observer, UserInterface<Se
      * Builder class for the {@link CliHandler} class
      */
     public static class Builder {
-        private ArrayList<AbstractOperation> abstractOperationFactory = new ArrayList<>();
-        private ArrayList<CipherAlgorithm> algorithmFactory = new ArrayList<>();
+        private ArrayList<Operation> operations = new ArrayList<>();
+        private ArrayList<CipherAlgorithm> algorithms = new ArrayList<>();
 
-        public Builder addOption(Supplier<AbstractOperation> abstractOperation) {
+        public Builder addOption(Supplier<Operation> abstractOperation) {
             if (abstractOperation == null)
                 return this;
-            abstractOperationFactory.add(abstractOperation.get());
+            operations.add(abstractOperation.get());
             return this;
         }
 
         public Builder addAlgorithm(Supplier<CipherAlgorithm> algorithm) {
-            if (algorithm == null) {
-                System.out.println("null");
+            if (algorithm == null)
                 return this;
-            }
-            algorithmFactory.add(algorithm.get());
+            algorithms.add(algorithm.get());
             return this;
         }
 

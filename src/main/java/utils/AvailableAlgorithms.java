@@ -1,4 +1,4 @@
-package commandline;
+package utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
