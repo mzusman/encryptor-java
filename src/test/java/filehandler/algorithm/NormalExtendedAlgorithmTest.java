@@ -15,20 +15,20 @@ public class NormalExtendedAlgorithmTest {
     @Test
     public void decryptionOperation() throws Exception {
 
-        CipherAlgorithm cipherAlgorithm = mock(CipherAlgorithm.class);
-        ExtendedAlgorithm extendedAlgorithm = new ExtendedAlgorithm(cipherAlgorithm);
+        SingleAlgorithm singleAlgorithm = mock(SingleAlgorithm.class);
+        ExtendedAlgorithm extendedAlgorithm = new ExtendedAlgorithm(singleAlgorithm);
         extendedAlgorithm.decryptionOperation(anyInt(), anyInt());
-        verify(cipherAlgorithm, times(1)).decryptionOperation(anyInt(), anyInt());
+        verify(singleAlgorithm, times(1)).decryptionOperation(anyInt(), anyInt());
 
     }
 
     @Test
     public void encryptionOperation() throws Exception {
 
-        CipherAlgorithm cipherAlgorithm = mock(CipherAlgorithm.class);
-        ExtendedAlgorithm extendedAlgorithm = new ExtendedAlgorithm(cipherAlgorithm);
+        SingleAlgorithm singleAlgorithm = mock(SingleAlgorithm.class);
+        ExtendedAlgorithm extendedAlgorithm = new ExtendedAlgorithm(singleAlgorithm);
         extendedAlgorithm.encryptionOperation(anyInt(), anyInt());
-        verify(cipherAlgorithm, times(1)).encryptionOperation(anyInt(), anyInt());
+        verify(singleAlgorithm, times(1)).encryptionOperation(anyInt(), anyInt());
 
     }
 

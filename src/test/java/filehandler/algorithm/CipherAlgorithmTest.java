@@ -17,7 +17,7 @@ public class CipherAlgorithmTest {
     byte[] bytes;
 
 
-    public void encryptTest(CipherAlgorithm algorithm, int key) throws IOException, KeyException {
+    public void encryptTest(SingleAlgorithm algorithm, int key) throws IOException, KeyException {
 
         PipedOutputStream pout = new PipedOutputStream();
         InputStream in = new PipedInputStream(pout);
@@ -41,7 +41,7 @@ public class CipherAlgorithmTest {
      * the information is still the same
      */
 
-    public void decryptTest(CipherAlgorithm algorithm, int key) throws IOException, KeyException {
+    public void decryptTest(SingleAlgorithm algorithm, int key) throws IOException, KeyException {
 
         encryptTest(algorithm, key);
         PipedOutputStream pout = new PipedOutputStream();

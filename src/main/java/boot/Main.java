@@ -38,7 +38,7 @@ public class Main {
 
         Operation operation = cliHandler.getSelectedOperation();
         ListOfAlgorithms algorithms = cliHandler.getSelectedListOfAlgorithms();
-        operation.run();
+        operation.run(algorithms);
 
 
     }

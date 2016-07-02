@@ -1,19 +1,18 @@
 package filehandler.algorithm;
 
 import exceptions.KeyException;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by mzeus on 6/25/16.
  */
 @NoArgsConstructor
-public abstract class ListOfAlgorithms implements CipherAlgorithm<Integer> {
-    @Getter
+@Data
+public abstract class ListOfAlgorithms implements SingleAlgorithm<Integer>, Serializable {
+
     private ArrayList<AlgorithmKey> list;
 
     public abstract byte decryptionOperation(int raw, int index, AlgorithmKey algorithmKey, int i);
@@ -34,15 +33,10 @@ public abstract class ListOfAlgorithms implements CipherAlgorithm<Integer> {
 
     @Override
     public byte decryptionOperation(Integer raw, int index, Integer key) {
-        byte dec = (byte) raw.intValue();
-        for (AlgorithmKey algorithmKey :
-                list) {
-            dec = decryptionOperation(dec, index, algorithmKey, list.indexOf(algorithmKey));
-        }
-        return dec;
+
     }
 
-    public ListOfAlgorithms addAlgorithm(CipherAlgorithm algorithm) {
+    public ListOfAlgorithms addAlgorithm(SingleAlgorithm algorithm) {
         if (algorithm != null && list.size() < wantedSize())
             list.add(new AlgorithmKey(algorithm, -1));
         return this;
@@ -51,17 +45,12 @@ public abstract class ListOfAlgorithms implements CipherAlgorithm<Integer> {
 
     @Override
     public byte encryptionOperation(Integer raw, int index, Integer key) {
-        byte enc = (byte) raw.intValue();
-        for (AlgorithmKey algorithmKey :
-                list) {
-            enc = encryptionOperation(enc, index, algorithmKey, list.indexOf(algorithmKey));
-        }
-        return enc;
+
     }
 
     @Override
     public boolean checkIfKeyIsValid(Integer key) {
-        return list.stream().allMatch((a) -> a.getCipherAlgorithm().checkIfKeyIsValid(a.getKey()));
+        return list.stream().allMatch((a) -> a.getSingleAlgorithm().checkIfKeyIsValid(a.getKey()));
     }
 
     public void setDecryptionKey(int key, int algoIndex) {

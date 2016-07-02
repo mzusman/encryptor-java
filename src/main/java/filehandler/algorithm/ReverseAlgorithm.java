@@ -7,21 +7,28 @@ import java.util.ArrayList;
 /**
  * Created by mzeus on 01/06/16.
  */
-public class ReverseAlgorithm extends ListOfAlgorithms {
+public class ReverseAlgorithm<T> implements Algorithm<T> {
+
+    AlgorithmKey<T> algorithmKey;
+
+    @Override
+    public int numberOfAlgorithms() {
+        return 1;
+    }
 
     /**
      * This method override the {@link ExtendedAlgorithm#decryptionOperation(int, int)}
      * implementation to make it run in reverse - decryption operation is now encryption
      * and vice versa.
      *
-     * @param raw raw byte to encode
+     * @param raw          raw byte to encode
      * @param algorithmKey key used for encode
      * @return the encoded bye
      */
 
     @Override
-    public byte decryptionOperation(int raw, int index, AlgorithmKey algorithmKey, int i) {
-        return algorithmKey.getCipherAlgorithm().encryptionOperation(raw, index, algorithmKey.getKey());
+    public T decrypt(T raw, T key, int streamIndex) {
+        return algorithmKey.getSingleAlgorithm().encrypt(raw, key, streamIndex);
     }
 
 
@@ -29,18 +36,32 @@ public class ReverseAlgorithm extends ListOfAlgorithms {
      * This method is similar to {@link #decryptionOperation(int, int)}
      */
     @Override
-    public byte encryptionOperation(int raw, int index, AlgorithmKey algorithmKey, int i) {
-        return algorithmKey.getCipherAlgorithm().decryptionOperation(raw, index, algorithmKey.getKey());
+    public T encrypt(T raw, T key, int streamIndex) {
+        return algorithmKey.getSingleAlgorithm().decrypt(raw, key, streamIndex);
     }
 
     @Override
-    public int wantedSize() {
-        return 1;
+    public void pushAlgorithm(Algorithm algorithm) {
+        algorithmKey = new AlgorithmKey<T>(algorithm, null);
     }
 
     @Override
-    public boolean checkIfKeyIsValid(Integer key) {
-        return false;
+    public T getKey(Algorithm algorithm, int index) {
+        return algorithmKey.getKey();
     }
 
+    @Override
+    public boolean generateEncryptKeys() {
+        return algorithmKey.getSingleAlgorithm().generateEncryptKeys();
+    }
+
+    @Override
+    public void setDecryptionKey(T key, Algorithm algorithm) {
+        algorithmKey.setKey(key);
+    }
+
+    @Override
+    public boolean checkIfKeyIsValid(T key) {
+        return algorithmKey.getSingleAlgorithm().checkIfKeyIsValid(key);
+    }
 }

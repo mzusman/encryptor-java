@@ -1,12 +1,12 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.SingleAlgorithm;
 
 
 /**
  * Created by mzeus on 30/05/16.
  */
-public class MultiplicationAlgorithm implements CipherAlgorithm<Integer> {
+public class MultiplicationAlgorithm extends SingleAlgorithm {
 
 
     private byte procedureMwo(int raw, int key) {
@@ -15,7 +15,7 @@ public class MultiplicationAlgorithm implements CipherAlgorithm<Integer> {
 
 
     @Override
-    public byte decryptionOperation(Integer raw, int index, Integer key) {
+    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
             if (((byte) (i * key)) == 1) {
@@ -23,13 +23,12 @@ public class MultiplicationAlgorithm implements CipherAlgorithm<Integer> {
                 break;
             }
         }
-        return procedureMwo(raw, decKey);
+        return (int) procedureMwo(raw, decKey);
     }
 
-
     @Override
-    public byte encryptionOperation(Integer raw, int index, Integer key) {
-        return procedureMwo(raw, key);
+    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
+        return (int) procedureMwo(raw, key);
     }
 
     @Override

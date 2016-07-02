@@ -1,7 +1,7 @@
 package commandline;
 
 
-import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.SingleAlgorithm;
 import filehandler.algorithm.ListOfAlgorithms;
 import filehandler.operations.Operation;
 import filehandler.operations.Operator;
@@ -18,11 +18,11 @@ import java.util.function.Supplier;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class CliHandler extends Observable implements Observer, UserInterface<CipherAlgorithm, Operation> {
+public class CliHandler extends Observable implements Observer, UserInterface<ListOfAlgorithms, Operation> {
 
 
     private ArrayList<Operation> operations;
-    private ArrayList<CipherAlgorithm> algorithms;
+    private ArrayList<ListOfAlgorithms> algorithms;
     @Getter
     private Operation selectedOperation;
     @Getter
@@ -69,7 +69,7 @@ public class CliHandler extends Observable implements Observer, UserInterface<Ci
 
     private void startUserSelect() throws IOException {
         Operation operation = (Operation) selectOperation(operations);
-        CipherAlgorithm cipherAlgorithm = (CipherAlgorithm) selectAlgorithm(algorithms);
+        SingleAlgorithm singleAlgorithm = (SingleAlgorithm) selectAlgorithm(algorithms);
     }
 
 
@@ -87,10 +87,13 @@ public class CliHandler extends Observable implements Observer, UserInterface<Ci
     }
 
     @Override
-    public CipherAlgorithm selectAlgorithm(List<CipherAlgorithm> algorithms) throws IOException {
+    public ListOfAlgorithms selectAlgorithm(List<ListOfAlgorithms> algorithms) throws IOException {
         System.out.println("Select an algorithm:");
         printDescriptions(algorithms);
-        return (CipherAlgorithm) getUserChoice(algorithms);
+        ListOfAlgorithms listOfAlgorithms = (ListOfAlgorithms) getUserChoice(algorithms);
+        for (int i = 0; i < ; i++) {
+
+        }
     }
 
     private Object getUserChoice(List list) throws IOException {
@@ -151,7 +154,7 @@ public class CliHandler extends Observable implements Observer, UserInterface<Ci
      */
     public static class Builder {
         private ArrayList<Operation> operations = new ArrayList<>();
-        private ArrayList<CipherAlgorithm> algorithms = new ArrayList<>();
+        private ArrayList<ListOfAlgorithms> algorithms = new ArrayList<>();
 
         public Builder addOption(Supplier<Operation> abstractOperation) {
             if (abstractOperation == null)

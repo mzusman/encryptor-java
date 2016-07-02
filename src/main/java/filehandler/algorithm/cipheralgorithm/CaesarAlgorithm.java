@@ -1,21 +1,21 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.SingleAlgorithm;
 
 /**
  * Created by mzeus on 29/05/16.
  */
-public class CaesarAlgorithm implements CipherAlgorithm<Integer> {
+public class CaesarAlgorithm extends SingleAlgorithm {
 
 
     @Override
-    public byte decryptionOperation(Integer raw, int index, Integer key) {
-        return (byte) (raw - key.byteValue());
+    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
+        return (Integer) (raw - key.byteValue());
     }
 
     @Override
-    public byte encryptionOperation(Integer raw, int index, Integer key) {
-        return (byte) (raw + key.byteValue());
+    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
+        return (Integer) (raw + key.byteValue());
     }
 
     @Override

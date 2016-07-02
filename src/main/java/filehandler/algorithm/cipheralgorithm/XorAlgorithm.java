@@ -2,7 +2,8 @@ package filehandler.algorithm.cipheralgorithm;
 
 import exceptions.KeyException;
 import exceptions.UnsupportedKeyNumberException;
-import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.Algorithm;
+import filehandler.algorithm.SingleAlgorithm;
 
 import java.util.List;
 import java.util.Random;
@@ -10,17 +11,16 @@ import java.util.Random;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class XorAlgorithm implements CipherAlgorithm<Integer> {
-
+public class XorAlgorithm extends SingleAlgorithm {
 
     @Override
-    public byte decryptionOperation(Integer raw, int index, Integer key) {
-        return (byte) ((byte) (raw ^ key) & 0xff);
+    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
+        return (Integer) ((byte) (raw ^ key) & 0xff);
     }
 
     @Override
-    public byte encryptionOperation(Integer raw, int index, Integer key) {
-        return (byte) ((byte) (raw ^ key) & 0xff);
+    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
+        return (Integer) ((byte) (raw ^ key) & 0xff);
     }
 
     @Override

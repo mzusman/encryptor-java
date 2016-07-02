@@ -1,7 +1,8 @@
 package filehandler.operations;
 
 import exceptions.KeyException;
-import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.SingleAlgorithm;
+import filehandler.algorithm.SingleAlgorithm;
 import utils.DisplayMessage;
 
 import java.io.*;
@@ -34,13 +35,13 @@ public class Operator extends AbstractOperation {
     }
 
     @Override
-    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, CipherAlgorithm cipherAlgorithm) throws IOException, KeyException {
-        abstractOperation.run(message, in, out, key, cipherAlgorithm);
+    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, SingleAlgorithm singleAlgorithm) throws IOException, KeyException {
+        abstractOperation.run(message, in, out, key, singleAlgorithm);
     }
 
     @Override
-    public int findKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-        return abstractOperation.findKey(cipherAlgorithm);
+    public int findKey(SingleAlgorithm singleAlgorithm) throws IOException {
+        return abstractOperation.findKey(singleAlgorithm);
     }
 
     @Override

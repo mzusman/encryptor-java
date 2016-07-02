@@ -9,8 +9,10 @@ import java.io.*;
  */
 public class DecryptionOperation extends AbstractOperation {
 
-    private final String decrypted = "_decrypted";
 
+    public DecryptionOperation(StreamManager streamManager) {
+        super(streamManager);
+    }
 
     @Override
     public void findKey(ListOfAlgorithms algorithms) throws IOException {
@@ -23,21 +25,4 @@ public class DecryptionOperation extends AbstractOperation {
     }
 
 
-    @Override
-    public File createNewFile(File file) throws IOException {
-        String[] filename = file.getPath().split("\\.", 2);
-        StringBuilder sp;
-        if (filename.length > 1)
-            sp = new StringBuilder(filename[0])
-                    .append(decrypted).append(".").append(filename[1]);
-        else sp = new StringBuilder(filename[0]).
-                append(decrypted);
-        File outputFile = new File(sp.toString());
-        try {
-            outputFile.createNewFile();
-            return outputFile;
-        } catch (IOException e) {
-            throw new IOException("cannot create new file for decryption");
-        }
-    }
 }
