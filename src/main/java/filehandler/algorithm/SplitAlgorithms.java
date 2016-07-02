@@ -5,12 +5,8 @@ import java.util.ArrayList;
 /**
  * Created by mzeus on 01/06/16.
  */
-public class SplitAlgorithm extends ListOfAlgorithm {
+public class SplitAlgorithms extends ListOfAlgorithms {
 
-
-    public SplitAlgorithm(ArrayList<AlgorithmKey> list) {
-        super(list);
-    }
 
     @Override
     public byte decryptionOperation(int raw, int index, AlgorithmKey algorithmKey, int i) {
@@ -30,7 +26,8 @@ public class SplitAlgorithm extends ListOfAlgorithm {
     }
 
     @Override
-    public String getDescription() {
-        return "Split Algorithm";
+    public int wantedSize() {
+        return 2;
     }
+
 }

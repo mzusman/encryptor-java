@@ -1,6 +1,6 @@
 package filehandler.operations;
 
-import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.ListOfAlgorithms;
 
 import java.io.*;
 
@@ -11,19 +11,15 @@ public class DecryptionOperation extends AbstractOperation {
 
     private final String decrypted = "_decrypted";
 
-    public DecryptionOperation() {
-
-    }
-
 
     @Override
-    public int findKey(CipherAlgorithm cipherAlgorithm) throws IOException {
-
+    public void findKey(ListOfAlgorithms algorithms) throws IOException {
+//        algorithms.setDecryptionKey();
     }
 
     @Override
-    public byte operate(CipherAlgorithm algorithm, int raw, int index, int key) {
-        return algorithm.decryptionOperation(raw, index, key);
+    public byte operate(ListOfAlgorithms algorithm, int raw, int index) {
+        return algorithm.decryptionOperation(raw, index);
     }
 
 

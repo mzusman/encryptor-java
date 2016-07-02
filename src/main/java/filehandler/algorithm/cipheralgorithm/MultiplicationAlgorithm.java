@@ -6,7 +6,7 @@ import filehandler.algorithm.CipherAlgorithm;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class MultiplicationAlgorithm implements CipherAlgorithm{
+public class MultiplicationAlgorithm implements CipherAlgorithm<Integer> {
 
 
     private byte procedureMwo(int raw, int key) {
@@ -15,7 +15,7 @@ public class MultiplicationAlgorithm implements CipherAlgorithm{
 
 
     @Override
-    public byte decryptionOperation(int raw, int index, int key) {
+    public byte decryptionOperation(Integer raw, int index, Integer key) {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
             if (((byte) (i * key)) == 1) {
@@ -28,7 +28,7 @@ public class MultiplicationAlgorithm implements CipherAlgorithm{
 
 
     @Override
-    public byte encryptionOperation(int raw, int index, int key) {
+    public byte encryptionOperation(Integer raw, int index, Integer key) {
         return procedureMwo(raw, key);
     }
 

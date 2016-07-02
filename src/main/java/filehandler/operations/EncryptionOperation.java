@@ -2,6 +2,7 @@ package filehandler.operations;
 
 import exceptions.KeyException;
 import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.ListOfAlgorithms;
 
 import java.io.*;
 import java.util.Random;
@@ -31,18 +32,17 @@ public class EncryptionOperation extends AbstractOperation {
     }
 
     @Override
-    public byte operate(CipherAlgorithm algorithm, int raw, int index, int key) {
-        return algorithm.encryptionOperation(raw, index, key);
+    public byte operate(ListOfAlgorithms algorithm, int raw, int index) {
+        return algorithm.encryptionOperation(raw, index);
     }
 
     @Override
-    public int findKey(CipherAlgorithm cipherAlgorithm) {
-        Random random = new Random(255);
-        int key = random.nextInt() + 1;
-        while (!cipherAlgorithm.checkIfKeyIsValid(key))
-            key = random.nextInt() + 1;
-        return key;
-
+    public void findKey(ListOfAlgorithms algorithms) {
+//        Random random = new Random(255);
+//        int key = random.nextInt() + 1;
+//        while (!algorithms.checkIfKeyIsValid(key))
+//            key = random.nextInt() + 1;
+        algorithms.createEncryptionKeys();
     }
 
 

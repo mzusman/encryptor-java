@@ -1,7 +1,7 @@
 package commandline;
 
-import com.sun.corba.se.spi.orb.Operation;
 import filehandler.algorithm.CipherAlgorithm;
+import filehandler.operations.Operation;
 
 import java.io.IOException;
 import java.util.List;

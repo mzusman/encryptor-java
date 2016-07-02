@@ -1,7 +1,6 @@
 package filehandler.operations;
 
 import exceptions.KeyException;
-import filehandler.algorithm.ExtendedAlgorithm;
 import filehandler.algorithm.CipherAlgorithm;
 import utils.DisplayMessage;
 

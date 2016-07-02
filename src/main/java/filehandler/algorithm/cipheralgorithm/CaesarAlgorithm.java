@@ -5,17 +5,17 @@ import filehandler.algorithm.CipherAlgorithm;
 /**
  * Created by mzeus on 29/05/16.
  */
-public class CaesarAlgorithm implements CipherAlgorithm {
+public class CaesarAlgorithm implements CipherAlgorithm<Integer> {
 
 
     @Override
-    public byte decryptionOperation(int raw, int index, int key) {
-        return (byte) (raw - Integer.valueOf(key).byteValue());
+    public byte decryptionOperation(Integer raw, int index, Integer key) {
+        return (byte) (raw - key.byteValue());
     }
 
     @Override
-    public byte encryptionOperation(int raw, int index, int key) {
-        return (byte) (raw + Integer.valueOf(key).byteValue());
+    public byte encryptionOperation(Integer raw, int index, Integer key) {
+        return (byte) (raw + key.byteValue());
     }
 
     @Override

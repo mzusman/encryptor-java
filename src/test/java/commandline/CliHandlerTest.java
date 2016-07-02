@@ -1,6 +1,5 @@
 package commandline;
 
-import filehandler.algorithm.ExtendedAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.DecryptionOperation;
 import filehandler.operations.EncryptionOperation;

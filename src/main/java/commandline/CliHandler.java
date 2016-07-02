@@ -1,13 +1,12 @@
 package commandline;
 
 
-import com.sun.corba.se.spi.orb.Operation;
-import filehandler.algorithm.ExtendedAlgorithm;
-import filehandler.operations.AbstractOperation;
 import filehandler.algorithm.CipherAlgorithm;
+import filehandler.algorithm.ListOfAlgorithms;
+import filehandler.operations.Operation;
+import filehandler.operations.Operator;
+import lombok.Getter;
 import lombok.NonNull;
-import utils.AvailableAlgorithms;
-import utils.DisplayMessage;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,19 +23,10 @@ public class CliHandler extends Observable implements Observer, UserInterface<Ci
 
     private ArrayList<Operation> operations;
     private ArrayList<CipherAlgorithm> algorithms;
-
-//    private void furtherSelect(ExtendedAlgorithm normalAlgorithm) throws IOException {
-//        for (int i = 0; i < normalAlgorithm; i++) {
-//            normalAlgorithm.addAlgorithm((CipherAlgorithm) selectSelectable(algorithmFactory, "ExtendedAlgorithm" + i));
-//        }
-//        for (CipherAlgorithm cipherAlgorithm :
-//                normalAlgorithm.getAlgorithms()) {
-//            if (((ExtendedAlgorithm) cipherAlgorithm).exceptedSize() > 1) {
-//                furtherSelect((ExtendedAlgorithm) cipherAlgorithm);
-//            }
-//        }
-//    }
-
+    @Getter
+    private Operation selectedOperation;
+    @Getter
+    private ListOfAlgorithms selectedListOfAlgorithms;
 
     private CliHandler(Builder builder) {
         this.operations = builder.operations;
@@ -53,11 +43,8 @@ public class CliHandler extends Observable implements Observer, UserInterface<Ci
             showOptions();
             return;
         }
-
         File file = new File(args[0]);
         checkForFileError(file);
-
-
         try {
             startUserSelect();
         } catch (IOException e) {
@@ -173,7 +160,7 @@ public class CliHandler extends Observable implements Observer, UserInterface<Ci
             return this;
         }
 
-        public Builder addAlgorithm(Supplier<CipherAlgorithm> algorithm) {
+        public Builder addAlgorithm(Supplier<ListOfAlgorithms> algorithm) {
             if (algorithm == null)
                 return this;
             algorithms.add(algorithm.get());

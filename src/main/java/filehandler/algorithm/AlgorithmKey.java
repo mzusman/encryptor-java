@@ -15,7 +15,7 @@ import java.util.Random;
 public class AlgorithmKey {
     @Getter
     private CipherAlgorithm cipherAlgorithm;
-    @Getter
+    @Setter @Getter
     private int key;
 
 

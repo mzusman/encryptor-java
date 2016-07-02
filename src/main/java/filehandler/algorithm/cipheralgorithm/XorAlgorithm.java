@@ -10,16 +10,16 @@ import java.util.Random;
 /**
  * Created by mzeus on 30/05/16.
  */
-public class XorAlgorithm implements CipherAlgorithm {
+public class XorAlgorithm implements CipherAlgorithm<Integer> {
 
 
     @Override
-    public byte decryptionOperation(int raw, int index, int key) {
+    public byte decryptionOperation(Integer raw, int index, Integer key) {
         return (byte) ((byte) (raw ^ key) & 0xff);
     }
 
     @Override
-    public byte encryptionOperation(int raw, int index, int key) {
+    public byte encryptionOperation(Integer raw, int index, Integer key) {
         return (byte) ((byte) (raw ^ key) & 0xff);
     }
 
