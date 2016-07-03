@@ -18,5 +18,4 @@ public class AlgorithmKey<T> implements Serializable {
     private Algorithm<T> singleAlgorithm;
     private T key;
 
-
 }

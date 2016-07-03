@@ -37,7 +37,7 @@ public class Main {
                 .addAlgorithm(DoubleAlgorithm::new)
                 .addAlgorithm(SplitAlgorithms::new);
         CliHandler cliHandler = builder.create();
-        cliHandler.handleArguments(args);
+        cliHandler.startUserSelect();
 
         Operation operation = cliHandler.getSelectedOperation();
         Algorithm algorithms = cliHandler.getSelectedAlgorithm();

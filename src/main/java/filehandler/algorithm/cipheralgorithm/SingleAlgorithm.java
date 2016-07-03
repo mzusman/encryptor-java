@@ -1,5 +1,7 @@
-package filehandler.algorithm;
+package filehandler.algorithm.cipheralgorithm;
 
+import filehandler.algorithm.Algorithm;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -8,7 +10,7 @@ import java.util.Random;
 /**
  * Created by mzeus on 29/05/16.
  */
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.MODULE)
 public class SingleAlgorithm implements Algorithm<Integer> {
     private int key;
 
@@ -39,24 +41,34 @@ public class SingleAlgorithm implements Algorithm<Integer> {
     }
 
     @Override
+    public Integer getKey() {
+        return key;
+    }
+
+    @Override
     public Integer getKey(Algorithm algorithm, int index) {
         return key;
     }
 
     @Override
+    public Integer getKey(int index) {
+        return key;
+    }
+
+    @Override
     public boolean generateEncryptKeys() {
-        Random random = new Random(255);
-        int key = random.nextInt() + 1;
+        Random random = new Random();
+        key = random.nextInt(255) + 1;
         while (!checkIfKeyIsValid(key))
             key = random.nextInt() + 1;
+        System.out.println(key);
         return true;
 
     }
 
     @Override
     public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
-        if (algorithm.equals(algorithm))
-            this.key = key;
+        this.key = key;
     }
 
     @Override

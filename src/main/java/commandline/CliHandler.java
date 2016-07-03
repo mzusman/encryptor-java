@@ -45,15 +45,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         }
         File file = new File(args[0]);
         checkForFileError(file);
-        try {
-            startUserSelect();
-        } catch (IOException e) {
-            try {
-                handleNotFoundFile(e.getMessage());
-            } catch (IOException e1) {
-                System.err.println(e1.getMessage());
-            }
-        }
+        startUserSelect();
     }
 
     private void checkForFileError(@NonNull File file) {
@@ -67,9 +59,13 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         else if (!file.canWrite()) System.err.println("don't have permission to write");
     }
 
-    private void startUserSelect() throws IOException {
-        selectedOperation = (Operation) selectOperation(operations);
-        selectedAlgorithm = (Algorithm) selectAlgorithm(algorithms);
+    public void startUserSelect() {
+        try {
+            selectedOperation = selectOperation();
+            selectedAlgorithm = selectAlgorithm();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -86,36 +82,34 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         System.out.println("usage: ... <file>\n");
     }
 
-    @Override
-    public Algorithm selectAlgorithm(List<Algorithm> algorithms) throws IOException {
+    public Algorithm selectAlgorithm() throws IOException {
         System.out.println("Select an algorithm:");
         printDescriptions(algorithms);
         Algorithm algorithm = (Algorithm) getUserChoice(algorithms);
         for (int i = 0; i < algorithm.numberOfAlgorithms(); i++) {
-            algorithm.pushAlgorithm(selectAlgorithm(algorithms));
+            algorithm.pushAlgorithm(selectAlgorithm());
         }
         return algorithm;
     }
 
-    private Object getUserChoice(List list) throws IOException {
-        System.out.printf("enter(%d-%d) :", 1, list.size() + 1);
+    public Object getUserChoice(List list) throws IOException {
+        System.out.printf("enter(%d-%d) :", 1, list.size());
         String input = getStringFromUser();
         while (!input.matches("\\d$")) {
             System.out.println("Wrong input");
             printDescriptions(list);
-            System.out.printf("enter(%d-%d) :", 1, list.size() + 1);
+            System.out.printf("enter(%d-%d) :", 1, list.size());
             input = getStringFromUser();
         }
-        return list.get(Integer.parseInt(input) - 1);// todo: have to make it more safety
-
+        return list.remove(Integer.parseInt(input) - 1);// todo: have to make it more safety
     }
+
 
     private void printDescriptions(List list) {
         list.forEach(c -> System.out.printf("%s - %s\n", list.indexOf(c) + 1, c.toString()));
     }
 
-    @Override
-    public Operation selectOperation(List<Operation> operations) throws IOException {
+    public Operation selectOperation() throws IOException {
         System.out.println("Select an operation:");
         printDescriptions(operations);
         return (Operation) getUserChoice(operations);
@@ -133,7 +127,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         }
     }
 
-    private String getStringFromUser() throws IOException {
+    public String getStringFromUser() throws IOException {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         try {
             String in = console.readLine();
@@ -178,8 +172,6 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         public CliHandler create() {
             return new CliHandler(this);
         }
-
-
     }
 
 

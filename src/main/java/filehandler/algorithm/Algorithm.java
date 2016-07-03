@@ -6,6 +6,12 @@ import java.io.Serializable;
  * Created by mzeus on 7/2/16.
  */
 public interface Algorithm<T> extends Serializable {
+    T getKey();
+
+    T getKey(Algorithm algorithm, int index);
+
+    T getKey(int index);
+
     int numberOfAlgorithms();
 
     int numberOfKeys();
@@ -16,7 +22,6 @@ public interface Algorithm<T> extends Serializable {
 
     void pushAlgorithm(Algorithm algorithm);
 
-    T getKey(Algorithm algorithm, int index);
 
     boolean generateEncryptKeys();
 

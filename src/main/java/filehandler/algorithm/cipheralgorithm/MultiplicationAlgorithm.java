@@ -1,6 +1,5 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import filehandler.algorithm.SingleAlgorithm;
 import lombok.NoArgsConstructor;
 
 
@@ -20,7 +19,7 @@ public class MultiplicationAlgorithm extends SingleAlgorithm {
     public Integer decrypt(Integer raw, Integer key, int streamIndex) {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
-            if (((byte) (i * key)) == 1) {
+            if (((byte) (i * getKey())) == 1) {
                 decKey = (byte) i;
                 break;
             }
@@ -30,7 +29,7 @@ public class MultiplicationAlgorithm extends SingleAlgorithm {
 
     @Override
     public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        return (int) procedureMwo(raw, key);
+        return (int) procedureMwo(raw, getKey());
     }
 
     @Override

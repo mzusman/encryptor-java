@@ -8,7 +8,8 @@ import java.util.ArrayList;
  * Created by mzeus on 7/2/16.
  */
 public class DoubleAlgorithm implements Algorithm<Integer> {
-    private ArrayList<AlgorithmKey<Integer>> algorithms;
+
+    private ArrayList<Algorithm<Integer>> algorithms;
 
     public DoubleAlgorithm() {
         algorithms = new ArrayList<>();
@@ -27,9 +28,9 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
     @Override
     public Integer decrypt(Integer raw, Integer key, int streamIndex) {
         Integer dec = raw;
-        for (AlgorithmKey algorithmKey :
-                algorithms) {
-            Algorithm<Integer> algorithm = algorithmKey.getSingleAlgorithm();
+        for (int i = algorithms.size() - 1; i >= 0; i--) {
+            Algorithm<Integer> algorithm = algorithms.get(i);
+            System.out.println(algorithm.getKey());
             dec = algorithm.decrypt(dec, key, streamIndex);
         }
         return dec;
@@ -38,35 +39,46 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
     @Override
     public Integer encrypt(Integer raw, Integer key, int streamIndex) {
         Integer enc = raw;
-        for (AlgorithmKey algorithmKey :
-                algorithms) {
-            Algorithm<Integer> algorithm = algorithmKey.getSingleAlgorithm();
-            enc = algorithm.encrypt(raw, key, streamIndex);
+        for (int i = 0; i < algorithms.size(); i++) {
+            Algorithm<Integer> algorithm = algorithms.get(i);
+            System.out.println(algorithm.getKey());
+            enc = algorithm.encrypt(enc, key, streamIndex);
         }
         return enc;
     }
 
     @Override
     public void pushAlgorithm(Algorithm algorithm) {
-        algorithms.add(new AlgorithmKey<Integer>(algorithm, -1));
+        algorithms.add(algorithm);
+    }
+
+    @Override
+    public Integer getKey() {
+        return algorithms.get(0).getKey();
     }
 
     @Override
     public Integer getKey(Algorithm algorithm, int index) {
-        AlgorithmKey<Integer> algorithmKey = algorithms.stream().findAny().filter((a) -> a.getSingleAlgorithm().equals(algorithm)).get();
-        if (algorithmKey != null)
-            return algorithmKey.getKey();
-        return 0;
+        Algorithm<Integer> al = algorithms.stream().findAny().filter((a) -> a.equals(algorithm)).get();
+        if (al != null)
+            return al.getKey();
+        return getKey();
+    }
+
+    @Override
+    public Integer getKey(int index) {
+        return algorithms.get(index).getKey();
     }
 
     @Override
     public boolean generateEncryptKeys() {
-        return algorithms.stream().allMatch((a) -> generateEncryptKeys());
+        algorithms.stream().forEach(Algorithm::generateEncryptKeys);
+        return true;
     }
 
     @Override
     public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
-        algorithms.stream().findAny().filter((a) -> a.getSingleAlgorithm().equals(algorithm)).get().setKey(key);
+        algorithms.stream().findAny().filter((a) -> a.equals(algorithm)).get().setDecryptionKey(key, 0, null);
     }
 
     @Override

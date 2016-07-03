@@ -1,6 +1,5 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import filehandler.algorithm.SingleAlgorithm;
 import lombok.NoArgsConstructor;
 
 /**
@@ -10,15 +9,14 @@ import lombok.NoArgsConstructor;
 public class CaesarAlgorithm extends SingleAlgorithm {
 
 
-
     @Override
     public Integer decrypt(Integer raw, Integer key, int streamIndex) {
-        return (Integer) (raw - key.byteValue());
+        return raw - getKey().byteValue();
     }
 
     @Override
     public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        return (Integer) (raw + key.byteValue());
+        return raw + getKey().byteValue();
     }
 
     @Override

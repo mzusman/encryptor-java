@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class SplitAlgorithms implements Algorithm<Integer> {
 
-    Algorithm<Integer> algorithm;
+    private Algorithm<Integer> algorithm;
     private List<Integer> keys;
 
     public SplitAlgorithms() {
@@ -27,22 +27,20 @@ public class SplitAlgorithms implements Algorithm<Integer> {
 
     @Override
     public Integer decrypt(Integer raw, Integer key, int streamIndex) {
-        int dec;
-        if (streamIndex % 2 == 0)
-            dec = algorithm.decrypt(raw, keys.get(0), streamIndex);
+        if (streamIndex % 2 == 1)
+            algorithm.setDecryptionKey(keys.get(0), 0, null);
         else
-            dec = algorithm.decrypt(raw, keys.get(1), streamIndex);
-        return dec;
+            algorithm.setDecryptionKey(keys.get(1), 0, null);
+        return algorithm.decrypt(raw, keys.get(0), streamIndex);
     }
 
     @Override
     public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        int enc;
-        if (streamIndex % 2 == 0)
-            enc = algorithm.encrypt(raw, keys.get(0), streamIndex);
+        if (streamIndex % 2 == 1)
+            algorithm.setDecryptionKey(keys.get(0), 0, null);
         else
-            enc = algorithm.encrypt(raw, keys.get(1), streamIndex);
-        return enc;
+            algorithm.setDecryptionKey(keys.get(1), 0, null);
+        return algorithm.encrypt(raw, keys.get(0), streamIndex);
     }
 
     @Override
@@ -51,16 +49,27 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     }
 
     @Override
+    public Integer getKey() {
+        return keys.get(0);
+    }
+
+    @Override
     public Integer getKey(Algorithm algorithm, int index) {
         return keys.get(index);
     }
 
     @Override
+    public Integer getKey(int index) {
+        return keys.get(index);
+    }
+
+    @Override
     public boolean generateEncryptKeys() {
-        algorithm.generateEncryptKeys();
-        keys.add(0, algorithm.getKey(null, 0));
-        algorithm.generateEncryptKeys();
-        keys.add(1, algorithm.getKey(null, 0));
+        for (int i = 0; i < numberOfKeys(); i++) {
+            algorithm.generateEncryptKeys();
+            keys.add(algorithm.getKey());
+            System.out.println(keys);
+        }
         return true;
 
     }

@@ -53,7 +53,17 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
     }
 
     @Override
+    public T getKey() {
+        return algorithmKey.getKey();
+    }
+
+    @Override
     public T getKey(Algorithm algorithm, int index) {
+        return algorithmKey.getKey();
+    }
+
+    @Override
+    public T getKey(int index) {
         return algorithmKey.getKey();
     }
 

@@ -10,9 +10,5 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum AvailableOperations {
-    DECRYPT(new DecryptionOperator()),
-    ENCRYPT(new EncryptionOperator());
-
-    Operation operation;
 
 }

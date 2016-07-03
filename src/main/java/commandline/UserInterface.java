@@ -12,13 +12,7 @@ import java.util.List;
 public interface UserInterface<C extends Algorithm, O extends Operation> {
 
 
-    void handleArguments(String[] arg);
-
     void showOptions();
-
-    C selectAlgorithm(List<C> algorithms) throws IOException;
-
-    O selectOperation(List<O> operations) throws IOException;
 
 
 }
