@@ -1,63 +1,69 @@
 package filehandler.operations;
 
-import exceptions.KeyException;
-import filehandler.algorithm.SingleAlgorithm;
-import filehandler.algorithm.SingleAlgorithm;
-import utils.DisplayMessage;
+import commandline.CommandsEnum;
+import utils.Timer;
+import filehandler.algorithm.Algorithm;
+import lombok.*;
+import utils.files.FilesManager;
+import utils.files.KeyFilesManager;
 
 import java.io.*;
+import java.util.Observable;
 
 /**
- * Created by mzeus on 01/06/16.
+ * Created by mzeus on 29/05/16.
  */
-public class Operator extends AbstractOperation {
-    private AbstractOperation abstractOperation;
-    private long startTime = 0;
-    private long endTime = 0;
+class Operator extends Observable implements Operation<Algorithm<Integer>> {
 
-    public Operator(AbstractOperation abstractOperation) {
-        this.abstractOperation = abstractOperation;
+    private
+    @Setter
+    FilesManager streamManager;
+    @Getter
+    private KeyFilesManager keyFilesManager;
+
+    Operator(File inputFile) {
+        keyFilesManager = new KeyFilesManager(inputFile);
+    }
+
+
+    @Override
+    public void run(Algorithm<Integer> algorithm) {
+        try {
+            fillKeys(algorithm);
+            @Cleanup InputStream in = streamManager.getInputStream();
+            @Cleanup OutputStream out = streamManager.getOutputStream();
+            int raw;
+            byte enc;
+            int index = 0;
+            //start
+            setChanged();
+            notifyObservers(CommandsEnum.START);
+            Timer.getInstance().start();
+            while ((raw = in.read()) != -1) {
+                enc = operate(algorithm, raw, index);
+                index++;
+                out.write(enc);
+            }
+            //end
+            setChanged();
+            notifyObservers(CommandsEnum.END);
+            Timer.getInstance().end();
+        } catch (IOException e) {
+            setChanged();
+            notifyObservers(new IOException("Error reading from file"));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public File init(File file, ExtendedAlgorithm extendedAlgorithm) throws IOException, KeyException {
-
-        startTime = System.currentTimeMillis();
-        displayMessage.display("Action started!");
-
-
-        File operationFile = abstractOperation.init(displayMessage, file, extendedAlgorithm);
-
-        displayMessage.display("Action ended!");
-        endTime = System.currentTimeMillis();
-        displayMessage.display(String.format("Action took : %d ms", getElapsedTime()));
-        return operationFile;
+    public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
+        return 0;
     }
 
     @Override
-    public void run(DisplayMessage message, InputStream in, OutputStream out, int key, SingleAlgorithm singleAlgorithm) throws IOException, KeyException {
-        abstractOperation.run(message, in, out, key, singleAlgorithm);
+    public void fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException {
+
     }
 
-    @Override
-    public int findKey(SingleAlgorithm singleAlgorithm) throws IOException {
-        return abstractOperation.findKey(singleAlgorithm);
-    }
-
-    @Override
-    public String getDescription() {
-        return abstractOperation.getDescription();
-    }
-
-    /**
-     * @return time took for the abstractOperation , 0 if the abstractOperation was'nt started
-     */
-    private long getElapsedTime() {
-        return endTime - startTime;
-    }
-
-    @Override
-    public File createNewFile(File file) throws IOException {
-        return abstractOperation.createNewFile(file);
-    }
 }

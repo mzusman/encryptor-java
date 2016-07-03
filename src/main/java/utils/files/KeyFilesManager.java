@@ -1,6 +1,6 @@
 package utils.files;
 
-import filehandler.algorithm.ListOfAlgorithms;
+import filehandler.algorithm.Algorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import lombok.Cleanup;
 
@@ -12,27 +12,31 @@ import java.io.*;
 public class KeyFilesManager extends FilesManager {
     private final static String KEY_FILE_NAME = "key.bin";
 
+    public KeyFilesManager(File inputFile) {
+        super(inputFile);
+    }
+
     @Override
-    public File getOutputFile() throws IOException {
+    public File getOutFile() throws IOException {
         File file = new File(getInputFile().getParentFile().getPath() + KEY_FILE_NAME);
-        if (file.exists())
+        if (file.exists() && file.isFile() && file.canWrite())
             return file;
         if (file.createNewFile())
             return file;
         throw new IOException("Cannot create a file");
     }
 
-    public void writeAlgorithmsToFile(ListOfAlgorithms algorithms) throws IOException {
-        @Cleanup ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getOutputFile()));
+    public void writeAlgorithmsToFile(Algorithm algorithms) throws IOException {
+        @Cleanup ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getOutFile()));
         oos.writeObject(algorithms);
     }
 
-    public ListOfAlgorithms readAlgorithmsFromFile() throws IOException, ClassNotFoundException {
+    public Algorithm readAlgorithmsFromFile() throws IOException, ClassNotFoundException {
         File file = new File(getInputFile().getParentFile().getPath() + KEY_FILE_NAME);
         if (!file.exists())
-            return new NormalAlgorithm().addAlgorithm(new CaesarAlgorithm());
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-        return (ListOfAlgorithms) ois.readObject();
+            throw new IOException();
+        @Cleanup ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+        return (Algorithm) ois.readObject();
     }
 
 

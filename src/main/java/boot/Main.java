@@ -6,11 +6,13 @@ import filehandler.algorithm.ReverseAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
-import filehandler.operations.DecryptionOperation;
-import filehandler.operations.EncryptionOperation;
+import filehandler.operations.DecryptionOperator;
+import filehandler.operations.EncryptionOperator;
 import filehandler.operations.Operation;
+import lombok.Cleanup;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.util.Observable;
 
 /**
  * Created by Mor on 5/18/2016.
@@ -25,21 +27,22 @@ public class Main {
      */
     public static void main(String args[]) {
         CliHandler.Builder builder = new CliHandler.Builder();
-        builder.addOption(DecryptionOperation::new)
-                .addOption(EncryptionOperation::new)
-                .addAlgorithm(() -> new NormalAlgorithm().addAlgorithm(new CaesarAlgorithm()))
+        File file = new File(args[0]);
+        builder.addOption(()-> new DecryptionOperator(file))
+                .addOption(() -> new EncryptionOperator(file))
+                .addAlgorithm(CaesarAlgorithm::new)
                 .addAlgorithm(ReverseAlgorithm::new)
-                .addAlgorithm(() -> new NormalAlgorithm().addAlgorithm(new MultiplicationAlgorithm()))
-                .addAlgorithm(() -> new NormalAlgorithm().addAlgorithm(new XorAlgorithm()))
-                .addAlgorithm(SplitAlgorithms::new)
-                .addAlgorithm(DoubleAlgorithms::new);
+                .addAlgorithm(XorAlgorithm::new)
+                .addAlgorithm(MultiplicationAlgorithm::new)
+                .addAlgorithm(DoubleAlgorithm::new)
+                .addAlgorithm(SplitAlgorithms::new);
         CliHandler cliHandler = builder.create();
         cliHandler.handleArguments(args);
 
         Operation operation = cliHandler.getSelectedOperation();
-        ListOfAlgorithms algorithms = cliHandler.getSelectedListOfAlgorithms();
+        Algorithm algorithms = cliHandler.getSelectedAlgorithm();
+        ((Observable)operation).addObserver(cliHandler);
         operation.run(algorithms);
-
 
     }
 

@@ -10,8 +10,13 @@ public class DecryptionFilesManager extends FilesManager {
 
     private final static String decrypted = "_decrypted";
 
+    public DecryptionFilesManager(File inputFile) {
+        super(inputFile);
+    }
+
+
     @Override
-    public File getOutputFile() throws IOException {
+    public File getOutFile() throws IOException {
         String[] filename = getInputFile().getPath().split("\\.", 2);
         StringBuilder sp;
         if (filename.length > 1)

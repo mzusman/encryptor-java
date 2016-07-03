@@ -1,5 +1,7 @@
 package filehandler.algorithm;
 
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 
 /**
@@ -8,8 +10,17 @@ import java.util.ArrayList;
 public class DoubleAlgorithm implements Algorithm<Integer> {
     private ArrayList<AlgorithmKey<Integer>> algorithms;
 
+    public DoubleAlgorithm() {
+        algorithms = new ArrayList<>();
+    }
+
     @Override
     public int numberOfAlgorithms() {
+        return 2;
+    }
+
+    @Override
+    public int numberOfKeys() {
         return 2;
     }
 
@@ -54,7 +65,7 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
     }
 
     @Override
-    public void setDecryptionKey(Integer key, Algorithm algorithm) {
+    public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
         algorithms.stream().findAny().filter((a) -> a.getSingleAlgorithm().equals(algorithm)).get().setKey(key);
     }
 

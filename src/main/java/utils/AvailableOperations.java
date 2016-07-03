@@ -1,7 +1,7 @@
 package utils;
 
-import filehandler.operations.DecryptionOperation;
-import filehandler.operations.EncryptionOperation;
+import filehandler.operations.DecryptionOperator;
+import filehandler.operations.EncryptionOperator;
 import filehandler.operations.Operation;
 import lombok.AllArgsConstructor;
 
@@ -10,8 +10,8 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum AvailableOperations {
-    DECRYPT(new DecryptionOperation()),
-    ENCRYPT(new EncryptionOperation());
+    DECRYPT(new DecryptionOperator()),
+    ENCRYPT(new EncryptionOperator());
 
     Operation operation;
 

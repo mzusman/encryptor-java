@@ -1,10 +1,14 @@
 package filehandler.algorithm;
 
+import java.io.Serializable;
+
 /**
  * Created by mzeus on 7/2/16.
  */
-public interface Algorithm<T> {
+public interface Algorithm<T> extends Serializable {
     int numberOfAlgorithms();
+
+    int numberOfKeys();
 
     T decrypt(T raw, T key, int streamIndex);
 
@@ -16,7 +20,7 @@ public interface Algorithm<T> {
 
     boolean generateEncryptKeys();
 
-    void setDecryptionKey(T key, Algorithm algorithm);
+    void setDecryptionKey(T key, int index, Algorithm algorithm);
 
     boolean checkIfKeyIsValid(T key);
 }

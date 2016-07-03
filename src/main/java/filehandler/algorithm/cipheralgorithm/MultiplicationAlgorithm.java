@@ -1,11 +1,13 @@
 package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.SingleAlgorithm;
+import lombok.NoArgsConstructor;
 
 
 /**
  * Created by mzeus on 30/05/16.
  */
+@NoArgsConstructor
 public class MultiplicationAlgorithm extends SingleAlgorithm {
 
 

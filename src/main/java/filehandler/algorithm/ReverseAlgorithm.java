@@ -1,12 +1,14 @@
 package filehandler.algorithm;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
 /**
  * Created by mzeus on 01/06/16.
  */
+@NoArgsConstructor
 public class ReverseAlgorithm<T> implements Algorithm<T> {
 
     AlgorithmKey<T> algorithmKey;
@@ -14,6 +16,11 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
     @Override
     public int numberOfAlgorithms() {
         return 1;
+    }
+
+    @Override
+    public int numberOfKeys() {
+        return 0;
     }
 
     /**
@@ -56,7 +63,7 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
     }
 
     @Override
-    public void setDecryptionKey(T key, Algorithm algorithm) {
+    public void setDecryptionKey(T key, int index, Algorithm algorithm) {
         algorithmKey.setKey(key);
     }
 

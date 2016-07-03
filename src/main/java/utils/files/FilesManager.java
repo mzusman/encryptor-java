@@ -1,7 +1,6 @@
 package utils.files;
 
-import filehandler.operations.StreamManager;
-import lombok.Cleanup;
+import utils.StreamManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,17 +13,24 @@ public abstract class FilesManager implements StreamManager {
     @Getter
     @Setter
     File inputFile;
+    @Setter
+    File outFile;
 
+    FilesManager(File inputFile) {
+        this.inputFile = inputFile;
+    }
 
-    public abstract File getOutputFile() throws IOException;
+    abstract public File getOutFile() throws IOException;
 
     @Override
     public OutputStream getOutputStream() throws IOException {
-        return new FileOutputStream(getOutputFile());
+        return new FileOutputStream(getOutFile());
     }
 
     @Override
     public InputStream getInputStream() throws FileNotFoundException {
         return new FileInputStream(inputFile);
     }
+
+
 }

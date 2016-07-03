@@ -1,12 +1,11 @@
 package commandline;
 
 
-import filehandler.algorithm.SingleAlgorithm;
-import filehandler.algorithm.ListOfAlgorithms;
+import filehandler.algorithm.Algorithm;
 import filehandler.operations.Operation;
-import filehandler.operations.Operator;
 import lombok.Getter;
 import lombok.NonNull;
+import utils.Timer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,15 +17,16 @@ import java.util.function.Supplier;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class CliHandler extends Observable implements Observer, UserInterface<ListOfAlgorithms, Operation> {
+public class CliHandler implements Observer, UserInterface<Algorithm, Operation> {
 
 
     private ArrayList<Operation> operations;
-    private ArrayList<ListOfAlgorithms> algorithms;
+    private ArrayList<Algorithm> algorithms;
     @Getter
     private Operation selectedOperation;
     @Getter
-    private ListOfAlgorithms selectedListOfAlgorithms;
+    private Algorithm selectedAlgorithm;
+
 
     private CliHandler(Builder builder) {
         this.operations = builder.operations;
@@ -68,8 +68,8 @@ public class CliHandler extends Observable implements Observer, UserInterface<Li
     }
 
     private void startUserSelect() throws IOException {
-        Operation operation = (Operation) selectOperation(operations);
-        SingleAlgorithm singleAlgorithm = (SingleAlgorithm) selectAlgorithm(algorithms);
+        selectedOperation = (Operation) selectOperation(operations);
+        selectedAlgorithm = (Algorithm) selectAlgorithm(algorithms);
     }
 
 
@@ -87,13 +87,14 @@ public class CliHandler extends Observable implements Observer, UserInterface<Li
     }
 
     @Override
-    public ListOfAlgorithms selectAlgorithm(List<ListOfAlgorithms> algorithms) throws IOException {
+    public Algorithm selectAlgorithm(List<Algorithm> algorithms) throws IOException {
         System.out.println("Select an algorithm:");
         printDescriptions(algorithms);
-        ListOfAlgorithms listOfAlgorithms = (ListOfAlgorithms) getUserChoice(algorithms);
-        for (int i = 0; i < ; i++) {
-
+        Algorithm algorithm = (Algorithm) getUserChoice(algorithms);
+        for (int i = 0; i < algorithm.numberOfAlgorithms(); i++) {
+            algorithm.pushAlgorithm(selectAlgorithm(algorithms));
         }
+        return algorithm;
     }
 
     private Object getUserChoice(List list) throws IOException {
@@ -146,15 +147,19 @@ public class CliHandler extends Observable implements Observer, UserInterface<Li
 
     @Override
     public void update(Observable observable, Object o) {
+        if (o.equals(CommandsEnum.START)) {
+            System.out.println("Operation have started");
+        }
+        if (o.equals(CommandsEnum.END)) {
+            System.out.println("Operation have ended, took :" + Timer.getInstance().getLastTime());
+        }
 
     }
 
-    /**
-     * Builder class for the {@link CliHandler} class
-     */
+
     public static class Builder {
         private ArrayList<Operation> operations = new ArrayList<>();
-        private ArrayList<ListOfAlgorithms> algorithms = new ArrayList<>();
+        private ArrayList<Algorithm> algorithms = new ArrayList<>();
 
         public Builder addOption(Supplier<Operation> abstractOperation) {
             if (abstractOperation == null)
@@ -163,7 +168,7 @@ public class CliHandler extends Observable implements Observer, UserInterface<Li
             return this;
         }
 
-        public Builder addAlgorithm(Supplier<ListOfAlgorithms> algorithm) {
+        public Builder addAlgorithm(Supplier<Algorithm> algorithm) {
             if (algorithm == null)
                 return this;
             algorithms.add(algorithm.get());

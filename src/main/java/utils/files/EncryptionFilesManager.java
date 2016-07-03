@@ -10,8 +10,13 @@ public class EncryptionFilesManager extends FilesManager {
 
     private static final String encrypted = ".encrypted";
 
+    public EncryptionFilesManager(File inputFile) {
+        super(inputFile);
+    }
+
+
     @Override
-    public File getOutputFile() throws IOException {
+    public File getOutFile() throws IOException {
         String exception = "cannot create a new file for encryption";
         File outputFile = new File(getInputFile().getPath() + encrypted);
         try {

@@ -5,4 +5,6 @@ package commandline;
  */
 public enum  CommandsEnum {
     FIND_KEY,
+    START,
+    END,
 }
