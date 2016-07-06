@@ -22,16 +22,7 @@ public class DecryptionOperatorTest {
     public void warmUp() throws IOException {
         File file = folder.newFile("aaa.txt");
         decryptionOperator = new DecryptionOperator(file);
-
     }
 
-    @Test
-    public void fillKeys() throws Exception {
-
-    }
-
-    @Test
-    public void run() throws Exception {
-    }
 
 }

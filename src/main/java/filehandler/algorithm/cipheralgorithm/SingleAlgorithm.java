@@ -2,6 +2,7 @@ package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.Algorithm;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -10,9 +11,10 @@ import java.util.Random;
 /**
  * Created by mzeus on 29/05/16.
  */
-@NoArgsConstructor(access = AccessLevel.MODULE)
-public class SingleAlgorithm implements Algorithm<Integer> {
-    private int key;
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@EqualsAndHashCode
+public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
+    private int key = 0;
 
     @Override
     public int numberOfKeys() {

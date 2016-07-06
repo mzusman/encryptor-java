@@ -1,6 +1,13 @@
 package utils.files;
 
+import filehandler.operations.EncryptionOperator;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -8,9 +15,21 @@ import static org.junit.Assert.*;
  * Created by mzeus on 7/3/16.
  */
 public class EncryptionFilesManagerTest {
+    EncryptionFilesManager manager;
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
+    @Before
+    public void warmUp() throws IOException {
+        manager = new EncryptionFilesManager(folder.newFile());
+    }
+
     @Test
     public void getOutFile() throws Exception {
-
+        File file = manager.getOutFile();
+        assertNotNull(file);
+        System.out.println(file.getName());
     }
 
 }

@@ -2,6 +2,8 @@ package filehandler.algorithm.cipheralgorithm;
 
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * Created by mzeus on 30/05/16.
  */
