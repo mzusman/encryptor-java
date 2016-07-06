@@ -11,6 +11,12 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     private Algorithm<Integer> algorithm;
     private List<Integer> keys;
 
+    @Override
+    public String toString() {
+        return "run a " + getClass().getSimpleName();
+    }
+
+
     public SplitAlgorithms() {
         keys = new ArrayList<>();
     }

@@ -1,5 +1,6 @@
 package filehandler.algorithm.cipheralgorithm;
 
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -8,6 +9,7 @@ import java.io.Serializable;
  * Created by mzeus on 30/05/16.
  */
 @NoArgsConstructor
+@EqualsAndHashCode
 public class XorAlgorithm extends SingleAlgorithm {
 
     @Override
@@ -25,4 +27,8 @@ public class XorAlgorithm extends SingleAlgorithm {
         return (byte) key.intValue() != 0;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

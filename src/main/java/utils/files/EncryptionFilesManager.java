@@ -19,12 +19,10 @@ public class EncryptionFilesManager extends FilesManager {
     public File getOutFile() throws IOException {
         String exception = "cannot create a new file for encryption";
         File outputFile = new File(getInputFile().getPath() + encrypted);
-        try {
-            if (!outputFile.createNewFile())
-                throw new IOException(exception);
+        if (outputFile.exists())
+            outputFile.delete();
+        if (outputFile.createNewFile())
             return outputFile;
-        } catch (IOException e) {
-            throw new IOException(exception);
-        }
+        throw new IOException(exception);
     }
 }

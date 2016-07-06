@@ -81,4 +81,10 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
     public boolean checkIfKeyIsValid(T key) {
         return algorithmKey.getSingleAlgorithm().checkIfKeyIsValid(key);
     }
+
+    @Override
+    public String toString() {
+        return "run a " + getClass().getSimpleName();
+    }
+
 }

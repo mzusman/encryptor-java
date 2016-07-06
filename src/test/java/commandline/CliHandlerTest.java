@@ -1,6 +1,5 @@
 package commandline;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import filehandler.algorithm.DoubleAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
@@ -40,9 +39,6 @@ public class CliHandlerTest {
 
     @Test
     public void startUserSelect() throws Exception {
-        cliHandler.startUserSelect();
-        assertNotNull(cliHandler.getSelectedAlgorithm());
-        assertNotNull(cliHandler.getSelectedOperation());
     }
 
 
@@ -51,15 +47,6 @@ public class CliHandlerTest {
 
     }
 
-    @Test
-    public void getSelectedOperation() throws Exception {
-        assertNotNull(cliHandler.getSelectedOperation());
-    }
-
-    @Test
-    public void getSelectedAlgorithm() throws Exception {
-        assertNotNull(cliHandler.getSelectedAlgorithm());
-    }
 
     @Test
     public void selectAlgorithm() throws Exception {

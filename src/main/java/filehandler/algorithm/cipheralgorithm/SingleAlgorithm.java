@@ -39,7 +39,6 @@ public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
 
     @Override
     public void pushAlgorithm(Algorithm algorithm) {
-
     }
 
     @Override
@@ -65,7 +64,6 @@ public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
             key = random.nextInt() + 1;
         System.out.println(key);
         return true;
-
     }
 
     @Override
@@ -76,5 +74,10 @@ public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     @Override
     public boolean checkIfKeyIsValid(Integer key) {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "run a " + getClass().getSimpleName();
     }
 }

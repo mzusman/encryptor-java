@@ -147,6 +147,10 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         if (o.equals(CommandsEnum.END)) {
             System.out.println("Operation have ended, took :" + Timer.getInstance().getLastTime());
         }
+        if (o instanceof Exception) {
+            System.out.println(((Exception) o).getMessage());
+            ((Exception) o).printStackTrace();
+        }
 
     }
 

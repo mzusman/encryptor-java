@@ -85,4 +85,9 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
     public boolean checkIfKeyIsValid(Integer key) {
         return algorithms.stream().allMatch((a) -> checkIfKeyIsValid(key));
     }
+
+    @Override
+    public String toString() {
+        return "run a " + getClass().getSimpleName();
+    }
 }

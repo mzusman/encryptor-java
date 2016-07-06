@@ -25,13 +25,11 @@ public class DecryptionFilesManager extends FilesManager {
         else sp = new StringBuilder(filename[0]).
                 append(decrypted);
         File outputFile = new File(sp.toString());
-        try {
-            if (outputFile.createNewFile())
-                return outputFile;
-            else throw new IOException("cannot create new file for decryption");
+        if (outputFile.exists())
+            outputFile.delete();
+        if (outputFile.createNewFile())
+            return outputFile;
+        throw new IOException("cannot create new file for decryption");
 
-        } catch (IOException e) {
-            throw new IOException("cannot create new file for decryption");
-        }
     }
 }

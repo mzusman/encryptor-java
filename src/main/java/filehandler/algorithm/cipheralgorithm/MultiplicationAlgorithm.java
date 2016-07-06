@@ -1,5 +1,6 @@
 package filehandler.algorithm.cipheralgorithm;
 
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
  * Created by mzeus on 30/05/16.
  */
 @NoArgsConstructor
+@EqualsAndHashCode
 public class MultiplicationAlgorithm extends SingleAlgorithm {
 
 
@@ -37,5 +39,8 @@ public class MultiplicationAlgorithm extends SingleAlgorithm {
         return !((byte) key.intValue() == 0 || key % 2 == 0);
     }
 
-
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

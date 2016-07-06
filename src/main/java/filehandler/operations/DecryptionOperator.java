@@ -1,6 +1,8 @@
 package filehandler.operations;
 
+import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
+import lombok.ToString;
 import utils.files.DecryptionFilesManager;
 
 import java.io.*;
@@ -17,14 +19,21 @@ public class DecryptionOperator extends Operator {
     }
 
 
-
     @Override
     public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
         return algorithm.decrypt(raw, 0, index).byteValue();
     }
 
     @Override
-    public void fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException {
-        algorithm = getKeyFilesManager().readAlgorithmsFromFile();
+    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
+        Algorithm<Integer> tmpAlgorithm = getKeyFilesManager().readAlgorithmsFromFile();
+        if (tmpAlgorithm.getClass().equals(algorithm.getClass()))
+            return tmpAlgorithm;
+        else throw new KeyException("file was not encrypted with selected algorithm");
+    }
+
+    @Override
+    public String toString() {
+        return "Decrypt a file/folder";
     }
 }

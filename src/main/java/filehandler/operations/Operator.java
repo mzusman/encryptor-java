@@ -1,6 +1,7 @@
 package filehandler.operations;
 
 import commandline.CommandsEnum;
+import exceptions.KeyException;
 import utils.Timer;
 import filehandler.algorithm.Algorithm;
 import lombok.*;
@@ -29,7 +30,7 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
     @Override
     public void run(Algorithm<Integer> algorithm) {
         try {
-            fillKeys(algorithm);
+            algorithm = fillKeys(algorithm);
             @Cleanup InputStream in = streamManager.getInputStream();
             @Cleanup OutputStream out = streamManager.getOutputStream();
             int raw;
@@ -46,11 +47,11 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
             }
             //end
             setChanged();
-            notifyObservers(CommandsEnum.END);
             Timer.getInstance().end();
-        } catch (IOException e) {
+            notifyObservers(CommandsEnum.END);
+        } catch (IOException | KeyException e) {
             setChanged();
-            notifyObservers(new IOException("Error reading from file"));
+            notifyObservers(e);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -62,8 +63,8 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
     }
 
     @Override
-    public void fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException {
-
+    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
+        return algorithm;
     }
 
 }

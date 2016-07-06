@@ -18,9 +18,10 @@ public class KeyFilesManager extends FilesManager {
 
     @Override
     public File getOutFile() throws IOException {
-        File file = new File(getInputFile().getParentFile().getPath() + KEY_FILE_NAME);
+        File file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
+        System.out.println(file.getPath());
         if (file.exists() && file.isFile() && file.canWrite())
-            return file;
+            file.delete();
         if (file.createNewFile())
             return file;
         throw new IOException("Cannot create a file");
@@ -32,7 +33,8 @@ public class KeyFilesManager extends FilesManager {
     }
 
     public Algorithm readAlgorithmsFromFile() throws IOException, ClassNotFoundException {
-        File file = new File(getInputFile().getParentFile().getPath() + KEY_FILE_NAME);
+        File file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
+        System.out.println(file.getPath());
         if (!file.exists())
             throw new IOException();
         @Cleanup ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));

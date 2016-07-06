@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
  */
 
 
-@AllArgsConstructor
 public class KeyException extends Exception {
-    private
-    @Getter
-    String message;
 
 
+    public KeyException(String s) {
+        super(s);
+    }
 }

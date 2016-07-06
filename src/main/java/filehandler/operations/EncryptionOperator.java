@@ -23,8 +23,14 @@ public class EncryptionOperator extends Operator {
     }
 
     @Override
-    public void fillKeys(Algorithm<Integer> algorithm) throws IOException {
+    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException {
         algorithm.generateEncryptKeys();
         getKeyFilesManager().writeAlgorithmsToFile(algorithm);
+        return algorithm;
+    }
+
+    @Override
+    public String toString() {
+        return "Encrypt a file/folder";
     }
 }
