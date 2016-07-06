@@ -1,7 +1,6 @@
 package utils.files;
 
 import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import lombok.Cleanup;
 
 import java.io.*;

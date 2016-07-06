@@ -2,6 +2,7 @@ package filehandler.operations;
 
 import commandline.CommandsEnum;
 import exceptions.KeyException;
+import utils.StreamManager;
 import utils.Timer;
 import filehandler.algorithm.Algorithm;
 import lombok.*;
@@ -14,11 +15,13 @@ import java.util.Observable;
 /**
  * Created by mzeus on 29/05/16.
  */
+//sync
 class Operator extends Observable implements Operation<Algorithm<Integer>> {
 
     private
+    @Getter
     @Setter
-    FilesManager streamManager;
+    StreamManager streamManager;
     @Getter
     private KeyFilesManager keyFilesManager;
 
@@ -31,24 +34,7 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
     public void run(Algorithm<Integer> algorithm) {
         try {
             algorithm = fillKeys(algorithm);
-            @Cleanup InputStream in = streamManager.getInputStream();
-            @Cleanup OutputStream out = streamManager.getOutputStream();
-            int raw;
-            byte enc;
-            int index = 0;
-            //start
-            setChanged();
-            notifyObservers(CommandsEnum.START);
-            Timer.getInstance().start();
-            while ((raw = in.read()) != -1) {
-                enc = operate(algorithm, raw, index);
-                index++;
-                out.write(enc);
-            }
-            //end
-            setChanged();
-            Timer.getInstance().end();
-            notifyObservers(CommandsEnum.END);
+            runSync(algorithm);
         } catch (IOException | KeyException e) {
             setChanged();
             notifyObservers(e);
@@ -65,6 +51,28 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
     @Override
     public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
         return algorithm;
+    }
+
+    @Override
+    public void runSync(Algorithm algorithm) throws IOException {
+        @Cleanup InputStream in = streamManager.getInputStream();
+        @Cleanup OutputStream out = streamManager.getOutputStream();
+        int raw;
+        byte enc;
+        int index = 0;
+        //start
+        setChanged();
+        notifyObservers(CommandsEnum.START);
+        Timer.getInstance().start();
+        while ((raw = in.read()) != -1) {
+            enc = operate(algorithm, raw, index);
+            index++;
+            out.write(enc);
+        }
+        //end
+        setChanged();
+        Timer.getInstance().end();
+        notifyObservers(CommandsEnum.END);
     }
 
 }

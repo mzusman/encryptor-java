@@ -7,6 +7,7 @@ import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.DecryptionOperator;
+import filehandler.operations.DirectoryOperator;
 import filehandler.operations.EncryptionOperator;
 import filehandler.operations.Operation;
 import lombok.Cleanup;
@@ -28,20 +29,25 @@ public class Main {
     public static void main(String args[]) {
         CliHandler.Builder builder = new CliHandler.Builder();
         File file = new File(args[0]);
-        builder.addOption(()-> new DecryptionOperator(file))
-                .addOption(() -> new EncryptionOperator(file))
-                .addAlgorithm(CaesarAlgorithm::new)
+
+        builder.addAlgorithm(CaesarAlgorithm::new)
                 .addAlgorithm(ReverseAlgorithm::new)
                 .addAlgorithm(XorAlgorithm::new)
                 .addAlgorithm(MultiplicationAlgorithm::new)
                 .addAlgorithm(DoubleAlgorithm::new)
                 .addAlgorithm(SplitAlgorithms::new);
+        if (file.isDirectory()) {
+            builder.addOption(() -> new DirectoryOperator(new DecryptionOperator(file)))
+                    .addOption(() -> new DirectoryOperator(new EncryptionOperator(file)));
+        }
+        builder.addOption(() -> new DecryptionOperator(file))
+                .addOption(() -> new EncryptionOperator(file));
         CliHandler cliHandler = builder.create();
         cliHandler.startUserSelect();
 
         Operation operation = cliHandler.getSelectedOperation();
         Algorithm algorithms = cliHandler.getSelectedAlgorithm();
-        ((Observable)operation).addObserver(cliHandler);
+        ((Observable) operation).addObserver(cliHandler);
         operation.run(algorithms);
 
     }

@@ -2,6 +2,10 @@ package filehandler.algorithm.cipheralgorithm;
 
 import org.junit.Test;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static org.junit.Assert.*;
 
 /**
@@ -12,6 +16,8 @@ public class CaesarAlgorithmTest {
 
     @Test
     public void encryptEqualsDecrypt() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> System.out.println("hello"));
         caesarAlgorithm.generateEncryptKeys();
         assertEquals(caesarAlgorithm.encrypt(caesarAlgorithm.decrypt(20, 0, 0), 0, 0), new Integer(20));
     }

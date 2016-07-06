@@ -14,4 +14,6 @@ public interface Operation<E extends Algorithm<Integer>> {
     byte operate(Algorithm<Integer> algorithm, int raw, int index);
 
     Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException;
+
+    void runSync(Algorithm algorithm) throws IOException;
 }

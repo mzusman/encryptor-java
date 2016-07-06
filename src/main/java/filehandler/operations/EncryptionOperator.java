@@ -1,6 +1,7 @@
 package filehandler.operations;
 
 import filehandler.algorithm.Algorithm;
+import utils.files.DirectoryFilesManager;
 import utils.files.EncryptionFilesManager;
 
 import java.io.File;
@@ -14,8 +15,11 @@ public class EncryptionOperator extends Operator {
 
     public EncryptionOperator(File inputFile) {
         super(inputFile);
+        if (inputFile.isDirectory())
+            setStreamManager(new DirectoryFilesManager(new EncryptionFilesManager(inputFile)));
         setStreamManager(new EncryptionFilesManager(inputFile));
     }
+
 
     @Override
     public byte operate(Algorithm<Integer> algorithm, int raw, int index) {

@@ -61,8 +61,7 @@ public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
         Random random = new Random();
         key = random.nextInt(255) + 1;
         while (!checkIfKeyIsValid(key))
-            key = random.nextInt() + 1;
-        System.out.println(key);
+            key = random.nextInt(255) + 1;
         return true;
     }
 

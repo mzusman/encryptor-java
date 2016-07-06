@@ -30,7 +30,6 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
         Integer dec = raw;
         for (int i = algorithms.size() - 1; i >= 0; i--) {
             Algorithm<Integer> algorithm = algorithms.get(i);
-            System.out.println(algorithm.getKey());
             dec = algorithm.decrypt(dec, key, streamIndex);
         }
         return dec;
@@ -41,7 +40,6 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
         Integer enc = raw;
         for (int i = 0; i < algorithms.size(); i++) {
             Algorithm<Integer> algorithm = algorithms.get(i);
-            System.out.println(algorithm.getKey());
             enc = algorithm.encrypt(enc, key, streamIndex);
         }
         return enc;

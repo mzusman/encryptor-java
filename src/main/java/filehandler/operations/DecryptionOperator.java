@@ -4,6 +4,7 @@ import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import lombok.ToString;
 import utils.files.DecryptionFilesManager;
+import utils.files.DirectoryFilesManager;
 
 import java.io.*;
 
@@ -15,7 +16,9 @@ public class DecryptionOperator extends Operator {
 
     public DecryptionOperator(File inputFile) {
         super(inputFile);
-        setStreamManager(new DecryptionFilesManager(inputFile));
+        if (inputFile.isDirectory())
+            setStreamManager(new DirectoryFilesManager(new DecryptionFilesManager(inputFile)));
+        else setStreamManager(new DecryptionFilesManager(inputFile));
     }
 
 

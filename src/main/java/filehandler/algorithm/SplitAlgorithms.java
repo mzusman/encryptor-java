@@ -74,7 +74,6 @@ public class SplitAlgorithms implements Algorithm<Integer> {
         for (int i = 0; i < numberOfKeys(); i++) {
             algorithm.generateEncryptKeys();
             keys.add(algorithm.getKey());
-            System.out.println(keys);
         }
         return true;
 
