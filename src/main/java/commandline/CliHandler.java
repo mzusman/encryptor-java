@@ -143,13 +143,13 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     public void update(Observable observable, Object o) {
         if (o.equals(CommandsEnum.START)) {
             System.out.println("Operation have started");
-        }
-        if (o.equals(CommandsEnum.END)) {
+        } else if (o.equals(CommandsEnum.END)) {
             System.out.println("Operation have ended, took :" + Timer.getInstance().getLastTime());
-        }
-        if (o instanceof Exception) {
+        } else if (o instanceof Exception) {
             System.out.println(((Exception) o).getMessage());
             ((Exception) o).printStackTrace();
+        } else if (o instanceof Observable) {
+            ((Observable) o).addObserver(this);
         }
 
     }

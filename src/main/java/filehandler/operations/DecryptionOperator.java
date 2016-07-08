@@ -16,9 +16,7 @@ public class DecryptionOperator extends Operator {
 
     public DecryptionOperator(File inputFile) {
         super(inputFile);
-        if (inputFile.isDirectory())
-            setStreamManager(new DirectoryFilesManager(new DecryptionFilesManager(inputFile)));
-        else setStreamManager(new DecryptionFilesManager(inputFile));
+        setStreamManager(new DecryptionFilesManager(inputFile));
     }
 
 

@@ -17,13 +17,21 @@ public class KeyFilesManager extends FilesManager {
 
     @Override
     public File getOutFile() throws IOException {
-        File file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
+        File file;
+        if (!getInputFile().isDirectory())
+            file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
+        else file = new File(getInputFile().getPath() + File.separator + KEY_FILE_NAME);
         System.out.println(file.getPath());
         if (file.exists() && file.isFile() && file.canWrite())
             file.delete();
         if (file.createNewFile())
             return file;
         throw new IOException("Cannot create a file");
+    }
+
+    @Override
+    public String getFileExtension() {
+        return KEY_FILE_NAME;
     }
 
     public void writeAlgorithmsToFile(Algorithm algorithms) throws IOException {

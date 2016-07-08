@@ -32,5 +32,6 @@ public abstract class FilesManager implements StreamManager {
         return new FileInputStream(inputFile);
     }
 
+    abstract public String getFileExtension();
 
 }

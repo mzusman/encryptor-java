@@ -1,43 +1,88 @@
 package utils.files;
 
-import lombok.AllArgsConstructor;
+import exceptions.CannotReadFromFileException;
 import utils.StreamManager;
 
 import java.io.*;
-import java.nio.file.Files;
+import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * Created by mzeus on 7/6/16.
  */
-public class DirectoryFilesManager implements StreamManager {
+public class DirectoryFilesManager extends FilesManager {
 
+    private final ArrayList<File> inFiles = new ArrayList<>();
+    private final ArrayList<File> outFiles = new ArrayList<>();
+    private final ArrayList<Map.Entry<File, File>> fileHashMap = new ArrayList<>();
     private FilesManager filesManager;
-    ArrayList<File> files = new ArrayList<>();
-    Semaphore sem = new Semaphore(5);
+    File opDir;
 
-    public DirectoryFilesManager(FilesManager filesManager) {
+    public DirectoryFilesManager(FilesManager filesManager) throws IOException {
+        super(filesManager.inputFile);
         this.filesManager = filesManager;
+        File dir = filesManager.getInputFile();
         File[] inFiles = filesManager.getInputFile().listFiles();
         if (inFiles != null) {
             for (File inFile : inFiles) {
                 if (inFile.isFile())
-                    files.add(inFile);
+                    this.inFiles.add(inFile);
             }
         }
     }
 
 
     @Override
-    public OutputStream getOutputStream() throws IOException {
+    public File getOutFile() throws IOException {
+        return filesManager.getOutFile();
+    }
 
-        return null;
+    private void createOutputFiles() throws IOException {
+        if (opDir == null) {
+            opDir = new File(filesManager.getInputFile(), getFileExtension());
+            if (!opDir.mkdir())
+                throw new CannotReadFromFileException();
+            for (File inFile : inFiles) {
+                File outFile = new File(opDir, inFile.getName());
+                if (!outFile.createNewFile())
+                    throw new CannotReadFromFileException();
+                fileHashMap.add(new AbstractMap.SimpleEntry<File, File>(inFile, outFile));
+            }
+        }
     }
 
     @Override
-    public InputStream getInputStream() throws FileNotFoundException {
-        return null;
+    public synchronized OutputStream getOutputStream() throws IOException {
+        return new FileOutputStream(outFiles.get(0));
     }
+
+    @Override
+    public synchronized InputStream getInputStream() throws FileNotFoundException {
+        return new FileInputStream(inFiles.get(0));
+    }
+
+    public synchronized File getInputFile(int i) throws IOException {
+        createOutputFiles();
+        return fileHashMap.get(i).getKey();
+    }
+
+    public synchronized File getOutputFile(int i) throws IOException {
+        createOutputFiles();
+        return fileHashMap.get(i).getValue();
+    }
+
+    public int size() throws IOException {
+        createOutputFiles();
+        return fileHashMap.size();
+    }
+
+    @Override
+    public String getFileExtension() {
+        return filesManager.getFileExtension().substring(1);
+    }
+
+
 }

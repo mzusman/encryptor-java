@@ -15,8 +15,6 @@ public class EncryptionOperator extends Operator {
 
     public EncryptionOperator(File inputFile) {
         super(inputFile);
-        if (inputFile.isDirectory())
-            setStreamManager(new DirectoryFilesManager(new EncryptionFilesManager(inputFile)));
         setStreamManager(new EncryptionFilesManager(inputFile));
     }
 

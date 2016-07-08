@@ -30,6 +30,10 @@ public class DecryptionFilesManager extends FilesManager {
         if (outputFile.createNewFile())
             return outputFile;
         throw new IOException("cannot create new file for decryption");
+    }
 
+    @Override
+    public String getFileExtension() {
+        return decrypted;
     }
 }

@@ -26,4 +26,11 @@ public class EncryptionFilesManager extends FilesManager {
             return outputFile;
         throw new IOException(exception);
     }
+
+    @Override
+    public String getFileExtension() {
+        return encrypted;
+    }
+
+
 }

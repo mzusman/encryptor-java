@@ -34,12 +34,12 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
     public void run(Algorithm<Integer> algorithm) {
         try {
             algorithm = fillKeys(algorithm);
-            runSync(algorithm);
-        } catch (IOException | KeyException e) {
+            @Cleanup InputStream in = streamManager.getInputStream();
+            @Cleanup OutputStream out = streamManager.getOutputStream();
+            runSync(in, out, algorithm);
+        } catch (IOException | KeyException | ClassNotFoundException e) {
             setChanged();
             notifyObservers(e);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -54,9 +54,7 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
     }
 
     @Override
-    public void runSync(Algorithm algorithm) throws IOException {
-        @Cleanup InputStream in = streamManager.getInputStream();
-        @Cleanup OutputStream out = streamManager.getOutputStream();
+    public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
         int raw;
         byte enc;
         int index = 0;
