@@ -6,11 +6,7 @@ import filehandler.algorithm.ReverseAlgorithm;
 import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
-import filehandler.operations.DecryptionOperator;
-import filehandler.operations.DirectoryOperator;
-import filehandler.operations.EncryptionOperator;
-import filehandler.operations.Operation;
-import lombok.Cleanup;
+import filehandler.operations.*;
 
 import java.io.File;
 import java.util.Observable;
@@ -37,11 +33,15 @@ public class Main {
                 .addAlgorithm(DoubleAlgorithm::new)
                 .addAlgorithm(SplitAlgorithms::new);
         if (file.isDirectory()) {
-            builder.addOption(() -> new DirectoryOperator(new DecryptionOperator(file)))
-                    .addOption(() -> new DirectoryOperator(new EncryptionOperator(file)));
+            builder.addOption(() -> new DirectoryAsyncOperator(new DecryptionOperator(file)))
+                    .addOption(() -> new DirectoryAsyncOperator(new EncryptionOperator(file)))
+                    .addOption(() -> new DirectorySyncOperator(new EncryptionOperator(file)))
+                    .addOption(() -> new DirectorySyncOperator(new DecryptionOperator(file)));
         }
-        builder.addOption(() -> new DecryptionOperator(file))
-                .addOption(() -> new EncryptionOperator(file));
+        else {
+            builder.addOption(() -> new DecryptionOperator(file))
+                    .addOption(() -> new EncryptionOperator(file));
+        }
         CliHandler cliHandler = builder.create();
         cliHandler.startUserSelect();
 

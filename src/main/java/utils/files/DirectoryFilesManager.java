@@ -43,13 +43,14 @@ public class DirectoryFilesManager extends FilesManager {
     private void createOutputFiles() throws IOException {
         if (opDir == null) {
             opDir = new File(filesManager.getInputFile(), getFileExtension());
+            System.out.println("Poke");
             if (!opDir.mkdir())
                 throw new CannotReadFromFileException();
             for (File inFile : inFiles) {
                 File outFile = new File(opDir, inFile.getName());
                 if (!outFile.createNewFile())
                     throw new CannotReadFromFileException();
-                fileHashMap.add(new AbstractMap.SimpleEntry<File, File>(inFile, outFile));
+                fileHashMap.add(new AbstractMap.SimpleEntry<>(inFile, outFile));
             }
         }
     }
@@ -75,8 +76,7 @@ public class DirectoryFilesManager extends FilesManager {
     }
 
     public int size() throws IOException {
-        createOutputFiles();
-        return fileHashMap.size();
+        return inFiles.size();
     }
 
     @Override

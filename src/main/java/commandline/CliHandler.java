@@ -150,7 +150,10 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
             ((Exception) o).printStackTrace();
         } else if (o instanceof Observable) {
             ((Observable) o).addObserver(this);
+        } else if (o instanceof String) {
+            System.out.println(o);
         }
+
 
     }
 

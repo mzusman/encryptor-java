@@ -36,7 +36,13 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
             algorithm = fillKeys(algorithm);
             @Cleanup InputStream in = streamManager.getInputStream();
             @Cleanup OutputStream out = streamManager.getOutputStream();
+            setChanged();
+            notifyObservers(CommandsEnum.START);
+            Timer.getInstance().start();
             runSync(in, out, algorithm);
+            Timer.getInstance().end();
+            setChanged();
+            notifyObservers(CommandsEnum.END);
         } catch (IOException | KeyException | ClassNotFoundException e) {
             setChanged();
             notifyObservers(e);
@@ -58,19 +64,13 @@ class Operator extends Observable implements Operation<Algorithm<Integer>> {
         int raw;
         byte enc;
         int index = 0;
-        //start
-        setChanged();
-        notifyObservers(CommandsEnum.START);
-        Timer.getInstance().start();
+
         while ((raw = in.read()) != -1) {
             enc = operate(algorithm, raw, index);
             index++;
             out.write(enc);
         }
-        //end
-        setChanged();
-        Timer.getInstance().end();
-        notifyObservers(CommandsEnum.END);
+
     }
 
 }
