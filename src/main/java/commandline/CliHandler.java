@@ -8,10 +8,7 @@ import lombok.NonNull;
 import utils.Timer;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -62,7 +59,8 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     public void startUserSelect() {
         try {
             selectedOperation = selectOperation();
-            selectedAlgorithm = selectAlgorithm();
+//            selectedAlgorithm = selectAlgorithm();
+//            selectedAlgorithm = selectAlgorithmClass();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,7 +90,20 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         return algorithm;
     }
 
-    public Object getUserChoice(List list) throws IOException {
+    private Algorithm selectAlgorithmClass() throws IOException, IllegalAccessException, InstantiationException {
+        System.out.println("Select an algorithm:");
+        ArrayList<AlgorithmsEnum> classes = new ArrayList<>();
+        Collections.addAll(classes, AlgorithmsEnum.values());
+        printDescriptions(classes);
+        AlgorithmsEnum anEnum = (AlgorithmsEnum) getUserChoice(classes);
+        Algorithm algorithm = anEnum.getAlgorithmClass().newInstance();
+        for (int i = 0; i < algorithm.numberOfAlgorithms(); i++) {
+            algorithm.pushAlgorithm(selectAlgorithmClass());
+        }
+        return algorithm;
+    }
+
+    private Object getUserChoice(List list) throws IOException {
         System.out.printf("enter(%d-%d) :", 1, list.size());
         String input = getStringFromUser();
         while (!input.matches("\\d$")) {
@@ -101,7 +112,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
             System.out.printf("enter(%d-%d) :", 1, list.size());
             input = getStringFromUser();
         }
-        return list.remove(Integer.parseInt(input) - 1);// todo: have to make it more safety
+        return list.get(Integer.parseInt(input) - 1);// todo: have to make it more safety
     }
 
 
@@ -109,7 +120,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         list.forEach(c -> System.out.printf("%s - %s\n", list.indexOf(c) + 1, c.toString()));
     }
 
-    public Operation selectOperation() throws IOException {
+    private Operation selectOperation() throws IOException {
         System.out.println("Select an operation:");
         printDescriptions(operations);
         return (Operation) getUserChoice(operations);
@@ -127,7 +138,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         }
     }
 
-    public String getStringFromUser() throws IOException {
+    private String getStringFromUser() throws IOException {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         try {
             String in = console.readLine();
@@ -161,6 +172,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     public static class Builder {
         private ArrayList<Operation> operations = new ArrayList<>();
         private ArrayList<Algorithm> algorithms = new ArrayList<>();
+        private ArrayList<Class> classes = new ArrayList<>();
 
         public Builder addOption(Supplier<Operation> abstractOperation) {
             if (abstractOperation == null)
@@ -173,6 +185,13 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
             if (algorithm == null)
                 return this;
             algorithms.add(algorithm.get());
+            return this;
+        }
+
+        public Builder addAlgorithmClass(Class<? extends Algorithm> aClass) {
+            if (aClass == null)
+                return this;
+            classes.add(aClass);
             return this;
         }
 

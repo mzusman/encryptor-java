@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<doubleAlgorithm>
+    <algorithms>
+        <doubleAlgorithm>
+            <algorithms>
+                <doubleAlgorithm>
+                    <algorithms>
+                        <xorAlgorithm/>
+                        <multiplicationAlgorithm/>
+                    </algorithms>
+                </doubleAlgorithm>
+                <xorAlgorithm/>
+            </algorithms>
+        </doubleAlgorithm>
+        <multiplicationAlgorithm/>
+    </algorithms>
+</doubleAlgorithm>

@@ -1,17 +1,21 @@
 package filehandler.algorithm;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 /**
  * Created by mzeus on 01/06/16.
  */
-@NoArgsConstructor
+@XmlRootElement
 public class ReverseAlgorithm<T> implements Algorithm<T> {
 
-    AlgorithmKey<T> algorithmKey;
+    private Algorithm<T> algorithm;
+
+    public ReverseAlgorithm() {
+
+    }
 
     @Override
     public int numberOfAlgorithms() {
@@ -21,6 +25,11 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
     @Override
     public int numberOfKeys() {
         return 0;
+    }
+
+    @XmlElement(required = true, type = Object.class)
+    public Algorithm<T> getAlgorithmKey() {
+        return algorithm;
     }
 
     /**
@@ -33,9 +42,10 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
      * @return the encoded bye
      */
 
+
     @Override
     public T decrypt(T raw, T key, int streamIndex) {
-        return algorithmKey.getSingleAlgorithm().encrypt(raw, key, streamIndex);
+        return algorithm.encrypt(raw, key, streamIndex);
     }
 
 
@@ -44,42 +54,42 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
      */
     @Override
     public T encrypt(T raw, T key, int streamIndex) {
-        return algorithmKey.getSingleAlgorithm().decrypt(raw, key, streamIndex);
+        return algorithm.decrypt(raw, key, streamIndex);
     }
 
     @Override
     public void pushAlgorithm(Algorithm algorithm) {
-        algorithmKey = new AlgorithmKey<T>(algorithm, null);
+        this.algorithm = algorithm;
     }
 
     @Override
     public T getKey() {
-        return algorithmKey.getKey();
+        return algorithm.getKey();
     }
 
     @Override
     public T getKey(Algorithm algorithm, int index) {
-        return algorithmKey.getKey();
+        return (T) algorithm.getKey(algorithm, index);
     }
 
     @Override
     public T getKey(int index) {
-        return algorithmKey.getKey();
+        return algorithm.getKey(index);
     }
 
     @Override
     public boolean generateEncryptKeys() {
-        return algorithmKey.getSingleAlgorithm().generateEncryptKeys();
+        return algorithm.generateEncryptKeys();
     }
 
     @Override
     public void setDecryptionKey(T key, int index, Algorithm algorithm) {
-        algorithmKey.setKey(key);
+        algorithm.setDecryptionKey(key, index, algorithm);
     }
 
     @Override
     public boolean checkIfKeyIsValid(T key) {
-        return algorithmKey.getSingleAlgorithm().checkIfKeyIsValid(key);
+        return algorithm.checkIfKeyIsValid(key);
     }
 
     @Override

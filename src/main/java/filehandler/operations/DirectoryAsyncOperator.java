@@ -24,12 +24,13 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
 
     private Operator operator;
     private DirectoryFilesManager manager;
-    private ExecutorService service = Executors.newCachedThreadPool();
+    private ExecutorService service = Executors.newFixedThreadPool(THREADS);
     private volatile int counter;
     private ReentrantLock lock = new ReentrantLock();
+    private static final int THREADS = 5;
 
     public DirectoryAsyncOperator(Operator operator) {
-            this.operator = operator;
+        this.operator = operator;
         try {
             this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
             this.counter = manager.size() - 1;
@@ -47,15 +48,15 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
-            CountDownLatch latch = new CountDownLatch(5);
+            CountDownLatch latch = new CountDownLatch(THREADS);
             int size = manager.size();
-            int filesPerThreads = size / 5 + ((size % 5 == 0) ? 0 : 1);
+            int filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
             System.out.println(size);
             if (filesPerThreads < 1)
                 filesPerThreads = 1;
             int finalFilesPerThreads = filesPerThreads;
             System.out.println(finalFilesPerThreads);
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < THREADS; i++) {
                 service.execute(() -> {
                     try {
                         while (getCounter() >= 0) {
@@ -140,7 +141,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                 InputStream inputStream = in.get(i);
                 if ((raw = inputStream.read()) != -1) {
                     OutputStream outputStream = out.get(i);
-                    outputStream.write(operate(algorithm, raw, 0));
+                    outputStream.write(operate(algorithm, raw, index));
                 } else {
                     out.remove(in.indexOf(inputStream)).close();
                     inputStream.close();

@@ -1,16 +1,19 @@
 package filehandler.algorithm.cipheralgorithm;
 
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
  * Created by mzeus on 30/05/16.
  */
-@NoArgsConstructor
 @EqualsAndHashCode
+@XmlRootElement
 public class XorAlgorithm extends SingleAlgorithm {
+    public XorAlgorithm(){
+
+    }
 
     @Override
     public Integer decrypt(Integer raw, Integer key, int streamIndex) {

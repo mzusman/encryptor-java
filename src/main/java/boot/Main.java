@@ -7,7 +7,10 @@ import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
 import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.*;
+import org.xml.sax.SAXException;
+import utils.XmlFilesManager;
 
+import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.util.Observable;
 
@@ -26,19 +29,12 @@ public class Main {
         CliHandler.Builder builder = new CliHandler.Builder();
         File file = new File(args[0]);
 
-        builder.addAlgorithm(CaesarAlgorithm::new)
-                .addAlgorithm(ReverseAlgorithm::new)
-                .addAlgorithm(XorAlgorithm::new)
-                .addAlgorithm(MultiplicationAlgorithm::new)
-                .addAlgorithm(DoubleAlgorithm::new)
-                .addAlgorithm(SplitAlgorithms::new);
         if (file.isDirectory()) {
             builder.addOption(() -> new DirectoryAsyncOperator(new DecryptionOperator(file)))
                     .addOption(() -> new DirectoryAsyncOperator(new EncryptionOperator(file)))
                     .addOption(() -> new DirectorySyncOperator(new EncryptionOperator(file)))
                     .addOption(() -> new DirectorySyncOperator(new DecryptionOperator(file)));
-        }
-        else {
+        } else {
             builder.addOption(() -> new DecryptionOperator(file))
                     .addOption(() -> new EncryptionOperator(file));
         }
@@ -46,9 +42,17 @@ public class Main {
         cliHandler.startUserSelect();
 
         Operation operation = cliHandler.getSelectedOperation();
-        Algorithm algorithms = cliHandler.getSelectedAlgorithm();
+//        Algorithm algorithm = cliHandler.getSelectedAlgorithm();
+        Algorithm algorithm = null;
+        try {
+            algorithm = XmlFilesManager.getInstance().readAlgorithmFromXml();
+            XmlFilesManager.getInstance().writeAlgorithmToXml(algorithm);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+
         ((Observable) operation).addObserver(cliHandler);
-        operation.run(algorithms);
+        operation.run(algorithm);
 
     }
 

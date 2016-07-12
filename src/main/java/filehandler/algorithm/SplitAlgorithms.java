@@ -1,14 +1,18 @@
 package filehandler.algorithm;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by mzeus on 01/06/16.
  */
+@XmlRootElement
 public class SplitAlgorithms implements Algorithm<Integer> {
 
     private Algorithm<Integer> algorithm;
+
     private List<Integer> keys;
 
     @Override
@@ -19,6 +23,11 @@ public class SplitAlgorithms implements Algorithm<Integer> {
 
     public SplitAlgorithms() {
         keys = new ArrayList<>();
+    }
+
+    @XmlElement(required = true, type = Object.class)
+    public Algorithm<Integer> getAlgorithm() {
+        return algorithm;
     }
 
     @Override

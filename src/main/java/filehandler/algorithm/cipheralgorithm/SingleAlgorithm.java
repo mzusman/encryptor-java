@@ -1,20 +1,23 @@
 package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.Algorithm;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Random;
 
 /**
  * Created by mzeus on 29/05/16.
  */
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @EqualsAndHashCode
+@XmlRootElement
 public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     private int key = 0;
+
+    public SingleAlgorithm() {
+
+    }
 
     @Override
     public int numberOfKeys() {

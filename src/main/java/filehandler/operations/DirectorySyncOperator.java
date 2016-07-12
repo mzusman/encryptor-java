@@ -29,6 +29,7 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
     @Override
     public void run(Algorithm<Integer> algorithm) {
         try {
+            algorithm = operator.fillKeys(algorithm);
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
@@ -42,7 +43,7 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
             Timer.getInstance().end();
             setChanged();
             notifyObservers(CommandsEnum.END);
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | KeyException e) {
             setChanged();
             notifyObservers(e);
         }
@@ -63,6 +64,7 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
     public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
         operator.runSync(in, out, algorithm);
     }
+
     @Override
     public String toString() {
         return "sync " + operator.toString();

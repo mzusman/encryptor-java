@@ -1,18 +1,27 @@
 package filehandler.algorithm;
 
-import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 /**
  * Created by mzeus on 7/2/16.
  */
+@XmlRootElement
 public class DoubleAlgorithm implements Algorithm<Integer> {
 
     private ArrayList<Algorithm<Integer>> algorithms;
 
     public DoubleAlgorithm() {
         algorithms = new ArrayList<>();
+    }
+
+    @XmlElementWrapper
+    @XmlAnyElement(lax = true)
+    public ArrayList<Algorithm<Integer>> getAlgorithms() {
+        return algorithms;
     }
 
     @Override

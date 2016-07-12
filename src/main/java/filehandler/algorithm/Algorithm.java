@@ -1,5 +1,6 @@
 package filehandler.algorithm;
 
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**

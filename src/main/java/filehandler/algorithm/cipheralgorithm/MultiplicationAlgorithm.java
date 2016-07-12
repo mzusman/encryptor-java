@@ -1,16 +1,20 @@
 package filehandler.algorithm.cipheralgorithm;
 
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
  * Created by mzeus on 30/05/16.
  */
-@NoArgsConstructor
 @EqualsAndHashCode
+@XmlRootElement
 public class MultiplicationAlgorithm extends SingleAlgorithm {
 
+    public MultiplicationAlgorithm(){
+
+    }
 
     private byte procedureMwo(int raw, int key) {
         return (byte) (raw * key);
