@@ -1,10 +1,9 @@
 package filehandler.algorithm;
 
 
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import filehandler.algorithm.cipheralgorithm.SingleAlgorithm;
+
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +15,6 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
     private Algorithm<Integer> algorithm;
 
     public ReverseAlgorithm() {
-
     }
 
     @Override
@@ -81,6 +79,7 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
 
     @Override
     public boolean generateEncryptKeys() {
+        System.out.println(algorithm);
         return algorithm.generateEncryptKeys();
     }
 

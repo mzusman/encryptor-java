@@ -2,6 +2,8 @@ package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.Algorithm;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.Random;
@@ -9,6 +11,7 @@ import java.util.Random;
 /**
  * Created by mzeus on 29/05/16.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     private int key = 0;

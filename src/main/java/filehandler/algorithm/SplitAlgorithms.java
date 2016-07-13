@@ -1,9 +1,6 @@
 package filehandler.algorithm;
 
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,18 +42,18 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     @Override
     public Integer decrypt(Integer raw, Integer key, int streamIndex) {
         if (streamIndex % 2 == 1)
-            algorithm.setDecryptionKey(keys.get(0), 0, null);
+            algorithm.setDecryptionKey(keys.get(0), 0, algorithm);
         else
-            algorithm.setDecryptionKey(keys.get(1), 0, null);
+            algorithm.setDecryptionKey(keys.get(1), 0, algorithm);
         return algorithm.decrypt(raw, keys.get(0), streamIndex);
     }
 
     @Override
     public Integer encrypt(Integer raw, Integer key, int streamIndex) {
         if (streamIndex % 2 == 1)
-            algorithm.setDecryptionKey(keys.get(0), 0, null);
+            algorithm.setDecryptionKey(keys.get(0), 0, algorithm);
         else
-            algorithm.setDecryptionKey(keys.get(1), 0, null);
+            algorithm.setDecryptionKey(keys.get(1), 0, algorithm);
         return algorithm.encrypt(raw, keys.get(0), streamIndex);
     }
 

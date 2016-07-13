@@ -20,7 +20,7 @@
       <xs:element name="algorithms" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:any processContents="lax" minOccurs="2" maxOccurs="2"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -29,13 +29,13 @@
 
   <xs:complexType name="reverseAlgorithm">
     <xs:sequence>
-      <xs:element name="algorithm" type="xs:anyType" minOccurs="0"/>
+      <xs:any processContents="skip" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="splitAlgorithms">
     <xs:sequence>
-      <xs:element name="algorithm" type="xs:anyType" minOccurs="0"/>
+      <xs:any processContents="skip" />
     </xs:sequence>
   </xs:complexType>
 

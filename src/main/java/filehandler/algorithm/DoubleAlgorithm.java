@@ -1,10 +1,9 @@
 package filehandler.algorithm;
 
 
-import javax.xml.bind.annotation.XmlAnyElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Created by mzeus on 7/2/16.
@@ -85,7 +84,9 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
 
     @Override
     public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
-        algorithms.stream().findAny().filter((a) -> a.equals(algorithm)).get().setDecryptionKey(key, 0, null);
+        Optional<Algorithm<Integer>> optional = algorithms.stream().findAny().filter((a) -> a.equals(algorithm));
+        if (optional.isPresent())
+            optional.get().setDecryptionKey(key, 0, algorithm);
     }
 
     @Override
