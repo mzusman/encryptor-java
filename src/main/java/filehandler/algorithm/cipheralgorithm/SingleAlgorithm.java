@@ -1,7 +1,6 @@
 package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.Algorithm;
-import lombok.EqualsAndHashCode;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -10,7 +9,6 @@ import java.util.Random;
 /**
  * Created by mzeus on 29/05/16.
  */
-@EqualsAndHashCode
 @XmlRootElement
 public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     private int key = 0;
@@ -81,5 +79,21 @@ public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     @Override
     public String toString() {
         return "run a " + getClass().getSimpleName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SingleAlgorithm)) return false;
+
+        SingleAlgorithm that = (SingleAlgorithm) o;
+
+        return key == that.key;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return key;
     }
 }

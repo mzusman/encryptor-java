@@ -1,6 +1,8 @@
 package filehandler.algorithm;
 
+import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class SplitAlgorithms implements Algorithm<Integer> {
         keys = new ArrayList<>();
     }
 
-    @XmlElement(required = true, type = Object.class)
+    @XmlElement(type = Object.class)
     public Algorithm<Integer> getAlgorithm() {
         return algorithm;
     }
@@ -97,5 +99,25 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     @Override
     public boolean checkIfKeyIsValid(Integer key) {
         return keys.stream().allMatch((k) -> algorithm.checkIfKeyIsValid(k));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SplitAlgorithms)) return false;
+
+        SplitAlgorithms that = (SplitAlgorithms) o;
+
+        if (algorithm != null ? !algorithm.equals(that.algorithm) : that.algorithm != null) return false;
+        if (keys != null ? !keys.equals(that.keys) : that.keys != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = algorithm != null ? algorithm.hashCode() : 0;
+        result = 31 * result + (keys != null ? keys.hashCode() : 0);
+        return result;
     }
 }

@@ -50,14 +50,29 @@ public class XmlFilesManager {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setSchema(schema);
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(algorithm, new File("hello.xml"));
-        marshaller.marshal(algorithm, System.out);
+        marshaller.marshal(algorithm, new File("default-algorithm.xml"));
     }
 
-    public Algorithm readAlgorithmFromXml() throws JAXBException{
+    public void writeAlgorithmToXml(Algorithm algorithm, File directory) throws JAXBException, IOException {
+        Marshaller marshaller = jaxbContext.createMarshaller();
+        marshaller.setSchema(schema);
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        File file = new File(directory, "algorithm.xml");
+        if (file.exists())
+            file.delete();
+        if (file.createNewFile())
+            marshaller.marshal(algorithm, file);
+    }
+
+    public Algorithm readAlgorithmFromXml() throws JAXBException {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         unmarshaller.setSchema(schema);
-        return (Algorithm) unmarshaller.unmarshal(new File("hello.xml"));
+        return (Algorithm) unmarshaller.unmarshal(new File("default-algorithm.xml"));
+    }
 
+    public Algorithm readAlgorithmFromXml(File file) throws JAXBException {
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+        unmarshaller.setSchema(schema);
+        return (Algorithm) unmarshaller.unmarshal(file);
     }
 }

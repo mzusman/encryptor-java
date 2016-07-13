@@ -39,5 +39,9 @@ public class Timer {
         return lastTime;
     }
 
+    public long current() {
+        return end - start;
+    }
+
 
 }

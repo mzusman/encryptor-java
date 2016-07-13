@@ -5,10 +5,15 @@ import filehandler.algorithm.Algorithm;
 import filehandler.operations.Operation;
 import lombok.Getter;
 import lombok.NonNull;
+import utils.StreamManager;
 import utils.Timer;
+import utils.XmlFilesManager;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlElement;
 import java.io.*;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -23,6 +28,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     private Operation selectedOperation;
     @Getter
     private Algorithm selectedAlgorithm;
+    private Class<? extends Operation> selectedSuperOperation;
 
 
     private CliHandler(Builder builder) {
@@ -59,13 +65,56 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     public void startUserSelect() {
         try {
             selectedOperation = selectOperation();
-//            selectedAlgorithm = selectAlgorithm();
-//            selectedAlgorithm = selectAlgorithmClass();
-        } catch (IOException e) {
+            if (askIfUseDefaultAlgorithm()) {
+                selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml();
+            } else {
+                if (askIfImport())
+                    selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml(getFileFromUser(File::isFile));
+                else {
+                    selectedAlgorithm = selectAlgorithmClass();
+                    if (askIfExport())
+                        XmlFilesManager.getInstance().writeAlgorithmToXml(selectedAlgorithm, getFileFromUser(File::isDirectory));
+                }
+            }
+        } catch (IOException | InstantiationException | IllegalAccessException | JAXBException e) {
             e.printStackTrace();
         }
     }
 
+    private boolean askIfImport() throws IOException {
+        System.out.println("would you like to import an algorithm xml? y/n");
+        return yesOrNo();
+    }
+
+    private File getFileFromUser(Predicate<File> predicate) throws IOException {
+        System.out.println("enter path:");
+        String in = getStringFromUser();
+        File file = new File(in);
+        while (!predicate.test(file)) {
+            in = getStringFromUser();
+            file = new File(in);
+            System.out.println("wrong input");
+        }
+        return file;
+    }
+
+    private boolean askIfExport() throws IOException {
+        System.out.println("would you want to export the algorithm?");
+        return yesOrNo();
+    }
+
+    private boolean askIfUseDefaultAlgorithm() throws IOException {
+        System.out.println("would you like to use the default algorithm? y/n");
+        return yesOrNo();
+    }
+
+    private boolean yesOrNo() throws IOException {
+        String in;
+        while (!(in = getStringFromUser()).matches("^(n|y)$")) {
+            System.out.println("wrong input");
+        }
+        return in.equals("y");
+    }
 
     private String handleNotFoundFile(String message) throws IOException {
         if (message != null)
@@ -173,6 +222,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         private ArrayList<Operation> operations = new ArrayList<>();
         private ArrayList<Algorithm> algorithms = new ArrayList<>();
         private ArrayList<Class> classes = new ArrayList<>();
+        private ArrayList<Class> superOperations = new ArrayList<>();
 
         public Builder addOption(Supplier<Operation> abstractOperation) {
             if (abstractOperation == null)
@@ -197,6 +247,13 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
 
         public CliHandler create() {
             return new CliHandler(this);
+        }
+
+        public Builder addSuperOption(Class<? extends Operation> aClass) {
+            if (aClass == null)
+                return this;
+            superOperations.add(aClass);
+            return this;
         }
     }
 

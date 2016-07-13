@@ -38,18 +38,12 @@ public class Main {
             builder.addOption(() -> new DecryptionOperator(file))
                     .addOption(() -> new EncryptionOperator(file));
         }
+
         CliHandler cliHandler = builder.create();
         cliHandler.startUserSelect();
 
         Operation operation = cliHandler.getSelectedOperation();
-//        Algorithm algorithm = cliHandler.getSelectedAlgorithm();
-        Algorithm algorithm = null;
-        try {
-            algorithm = XmlFilesManager.getInstance().readAlgorithmFromXml();
-            XmlFilesManager.getInstance().writeAlgorithmToXml(algorithm);
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        Algorithm algorithm = cliHandler.getSelectedAlgorithm();
 
         ((Observable) operation).addObserver(cliHandler);
         operation.run(algorithm);

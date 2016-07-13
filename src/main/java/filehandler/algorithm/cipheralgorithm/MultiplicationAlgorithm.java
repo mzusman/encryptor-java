@@ -1,6 +1,5 @@
 package filehandler.algorithm.cipheralgorithm;
 
-import lombok.EqualsAndHashCode;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -8,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Created by mzeus on 30/05/16.
  */
-@EqualsAndHashCode
 @XmlRootElement
 public class MultiplicationAlgorithm extends SingleAlgorithm {
 

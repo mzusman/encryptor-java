@@ -48,7 +48,6 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
-            CountDownLatch latch = new CountDownLatch(THREADS);
             int size = manager.size();
             int filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
             System.out.println(size);
@@ -79,14 +78,9 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                             }
                             readAndWriteFromFiles(inArray, outArray, finalAlgorithm);
                         }
-                        latch.countDown();
-                        latch.await();
-
                     } catch (IOException e) {
                         setChanged();
                         notifyObservers(e);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 });
             }

@@ -97,4 +97,20 @@ public class DoubleAlgorithm implements Algorithm<Integer> {
     public String toString() {
         return "run a " + getClass().getSimpleName();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DoubleAlgorithm)) return false;
+
+        DoubleAlgorithm that = (DoubleAlgorithm) o;
+
+        return algorithms.equals(that.algorithms);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return algorithms.hashCode();
+    }
 }

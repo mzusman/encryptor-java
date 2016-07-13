@@ -16,7 +16,7 @@ import java.util.Observable;
  * Created by mzeus on 29/05/16.
  */
 //sync
-class Operator extends Observable implements Operation<Algorithm<Integer>> {
+public class Operator extends Observable implements Operation<Algorithm<Integer>> {
 
     private
     @Getter
