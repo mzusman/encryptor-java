@@ -34,6 +34,7 @@ public class Main {
                     .addOption(() -> new DirectoryAsyncOperator(new EncryptionOperator(file)))
                     .addOption(() -> new DirectorySyncOperator(new EncryptionOperator(file)))
                     .addOption(() -> new DirectorySyncOperator(new DecryptionOperator(file)));
+
         } else {
             builder.addOption(() -> new DecryptionOperator(file))
                     .addOption(() -> new EncryptionOperator(file));

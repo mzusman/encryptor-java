@@ -79,7 +79,6 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
 
     @Override
     public boolean generateEncryptKeys() {
-        System.out.println(algorithm);
         return algorithm.generateEncryptKeys();
     }
 

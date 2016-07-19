@@ -34,36 +34,34 @@ public class XmlFilesManager {
     }
 
     private JAXBContext jaxbContext;
-//    private Schema schema;
+    private Schema schema;
 
     private XmlFilesManager() {
 
-//        Class[] classes = new Class[AlgorithmsEnum.values().length];
-//        for (int i = 0; i < classes.length; i++) {
-//            classes[i] = AlgorithmsEnum.values()[i].getAlgorithmClass();
-//        }
+        Class[] classes = new Class[AlgorithmsEnum.values().length];
+        for (int i = 0; i < classes.length; i++) {
+            classes[i] = AlgorithmsEnum.values()[i].getAlgorithmClass();
+        }
         try {
-            jaxbContext = JAXBContext.newInstance(CaesarAlgorithm.class,
-                    XorAlgorithm.class, MultiplicationAlgorithm.class,
-                    DoubleAlgorithm.class, SplitAlgorithms.class, ReverseAlgorithm.class);
+            jaxbContext = JAXBContext.newInstance(classes,null);
 
-//            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-//            schema = schemaFactory.newSchema(new File("schema1.xsd"));
-        } catch (JAXBException e) {
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            schema = schemaFactory.newSchema(new File("schema1.xsd"));
+        } catch (JAXBException | SAXException e) {
             e.printStackTrace();
         }
     }
 
     public void writeAlgorithmToXml(Algorithm algorithm) throws JAXBException {
         Marshaller marshaller = jaxbContext.createMarshaller();
-//        marshaller.setSchema(schema);
+        marshaller.setSchema(schema);
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(algorithm, new File("default-algorithm.xml"));
     }
 
     public void writeAlgorithmToXml(Algorithm algorithm, File directory) throws JAXBException, IOException {
         Marshaller marshaller = jaxbContext.createMarshaller();
-//        marshaller.setSchema(schema);
+        marshaller.setSchema(schema);
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         File file = new File(directory, "algorithm.xml");
         if (file.exists())
@@ -74,13 +72,13 @@ public class XmlFilesManager {
 
     public Algorithm readAlgorithmFromXml() throws JAXBException {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//        unmarshaller.setSchema(schema);
+        unmarshaller.setSchema(schema);
         return (Algorithm) unmarshaller.unmarshal(new File("default-algorithm.xml"));
     }
 
     public Algorithm readAlgorithmFromXml(File file) throws JAXBException {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-//        unmarshaller.setSchema(schema);
+        unmarshaller.setSchema(schema);
         unmarshaller.setListener(new Unmarshaller.Listener() {
             @Override
             public void beforeUnmarshal(Object target, Object parent) {
