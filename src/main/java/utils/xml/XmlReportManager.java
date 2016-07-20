@@ -1,4 +1,6 @@
-package utils;
+package utils.xml;
+
+import utils.Timer;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

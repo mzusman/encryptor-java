@@ -1,4 +1,4 @@
-package utils;
+package utils.xml;
 
 import commandline.AlgorithmsEnum;
 import filehandler.algorithm.Algorithm;
@@ -6,13 +6,10 @@ import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.*;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by mzeus on 7/11/16.

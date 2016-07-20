@@ -1,4 +1,4 @@
-package utils;
+package utils.xml;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

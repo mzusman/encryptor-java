@@ -2,7 +2,7 @@ package filehandler.operations;
 
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import utils.XmlFilesManager;
+import utils.xml.XmlFilesManager;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;

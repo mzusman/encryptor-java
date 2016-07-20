@@ -2,15 +2,8 @@ package boot;
 
 import commandline.CliHandler;
 import filehandler.algorithm.*;
-import filehandler.algorithm.ReverseAlgorithm;
-import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
-import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
-import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import filehandler.operations.*;
-import org.xml.sax.SAXException;
-import utils.XmlFilesManager;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.util.Observable;
 

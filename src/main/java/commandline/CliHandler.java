@@ -5,12 +5,10 @@ import filehandler.algorithm.Algorithm;
 import filehandler.operations.Operation;
 import lombok.Getter;
 import lombok.NonNull;
-import utils.StreamManager;
 import utils.Timer;
-import utils.XmlFilesManager;
+import utils.xml.XmlFilesManager;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.*;
 import java.util.*;
 import java.util.function.Predicate;

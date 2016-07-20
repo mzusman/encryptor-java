@@ -3,19 +3,15 @@ package filehandler.operations;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import lombok.Cleanup;
 import utils.Timer;
-import utils.XmlFilesManager;
-import utils.XmlReportManager;
+import utils.xml.XmlReportManager;
 import utils.files.DirectoryFilesManager;
 import utils.files.FilesManager;
 
 import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
