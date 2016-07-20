@@ -1,5 +1,7 @@
 package filehandler.operations;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.StampedLock;
 
 /**
  * Created by mzeus on 7/6/16.
@@ -26,11 +29,14 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
     private volatile int counter;
     private ReentrantLock lock = new ReentrantLock();
     private static final int THREADS = 5;
+    public static final String BASE = "DirectoryAsync.base";
 
-    public DirectoryAsyncOperator(Operator operator) {
-        this.operator = operator;
+    @Inject
+    public DirectoryAsyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager directoryFilesManager) {
         try {
-            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
+            this.operator = operator;
+            this.manager = directoryFilesManager;
+//            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
             this.counter = manager.size() - 1;
         } catch (IOException e) {
             //ignored

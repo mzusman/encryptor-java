@@ -1,8 +1,11 @@
 package filehandler.operations;
 
+import com.google.inject.Inject;
 import filehandler.algorithm.Algorithm;
+import utils.StreamManager;
 import utils.files.DirectoryFilesManager;
 import utils.files.EncryptionFilesManager;
+import utils.files.KeyFilesManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,9 +16,9 @@ import java.io.IOException;
 public class EncryptionOperator extends Operator {
 
 
-    public EncryptionOperator(File inputFile) {
-        super(inputFile);
-        setStreamManager(new EncryptionFilesManager(inputFile));
+    @Inject
+    public EncryptionOperator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
+        super(streamManager, keyFilesManager);
     }
 
 

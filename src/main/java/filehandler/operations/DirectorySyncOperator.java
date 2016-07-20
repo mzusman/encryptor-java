@@ -1,5 +1,7 @@
 package filehandler.operations;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
@@ -14,16 +16,14 @@ import java.util.Observable;
  * Created by mzeus on 7/11/16.
  */
 public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Integer>> {
-    Operator operator;
+    private Operator operator;
     private DirectoryFilesManager manager;
 
-    public DirectorySyncOperator(Operator operator) {
-        try {
-            this.operator = operator;
-            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
-        } catch (IOException e) {
-            //ignored
-        }
+    @Inject
+    public DirectorySyncOperator(Operator operator,@Named("dir") DirectoryFilesManager manager) {
+        this.operator = operator;
+        this.manager = manager;
+//            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
     }
 
     @Override

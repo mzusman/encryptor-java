@@ -1,5 +1,7 @@
 package utils.files;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import exceptions.CannotReadFromFileException;
 import utils.StreamManager;
 
@@ -21,7 +23,8 @@ public class DirectoryFilesManager extends FilesManager {
     private FilesManager filesManager;
     private File opDir;
 
-    public DirectoryFilesManager(FilesManager filesManager) throws IOException {
+    @Inject
+    public DirectoryFilesManager(@Named("decorator") FilesManager filesManager) throws IOException {
         super(filesManager.inputFile);
         this.filesManager = filesManager;
         File dir = filesManager.getInputFile();
@@ -43,7 +46,6 @@ public class DirectoryFilesManager extends FilesManager {
     private void createOutputFiles() throws IOException {
         if (opDir == null) {
             opDir = new File(filesManager.getInputFile(), getFileExtension());
-            System.out.println("Poke");
             if (!opDir.mkdir())
                 throw new CannotReadFromFileException();
             for (File inFile : inFiles) {

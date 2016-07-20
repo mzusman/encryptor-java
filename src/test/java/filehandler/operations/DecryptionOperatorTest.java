@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import utils.files.DecryptionFilesManager;
+import utils.files.KeyFilesManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class DecryptionOperatorTest {
     @Before
     public void warmUp() throws IOException {
         File file = folder.newFile("aaa.txt");
-        decryptionOperator = new DecryptionOperator(file);
+        decryptionOperator = new DecryptionOperator(new DecryptionFilesManager(file),new KeyFilesManager(file));
     }
 
 

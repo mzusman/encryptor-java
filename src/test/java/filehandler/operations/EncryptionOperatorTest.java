@@ -6,7 +6,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
+import utils.files.EncryptionFilesManager;
 import utils.files.FilesManager;
+import utils.files.KeyFilesManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class EncryptionOperatorTest {
     @Before
     public void warmUp() throws IOException {
         File file = folder.newFile("aaa.txt");
-        operator = new EncryptionOperator(file);
+        operator = new EncryptionOperator(new EncryptionFilesManager(file), new KeyFilesManager(file));
     }
 
     @Test(expected = NotSerializableException.class)

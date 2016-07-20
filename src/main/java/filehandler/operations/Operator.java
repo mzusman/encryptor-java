@@ -1,5 +1,6 @@
 package filehandler.operations;
 
+import com.google.inject.Inject;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
 import utils.StreamManager;
@@ -7,9 +8,11 @@ import utils.Timer;
 import filehandler.algorithm.Algorithm;
 import lombok.*;
 import utils.files.FilesManager;
+import utils.files.FilesManagerFactory;
 import utils.files.KeyFilesManager;
 
 import java.io.*;
+import java.security.Key;
 import java.util.Observable;
 
 /**
@@ -25,8 +28,10 @@ public class Operator extends Observable implements Operation<Algorithm<Integer>
     @Getter
     private KeyFilesManager keyFilesManager;
 
-    Operator(File inputFile) {
-        keyFilesManager = new KeyFilesManager(inputFile);
+    @Inject
+    Operator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
+        this.keyFilesManager = keyFilesManager;
+        this.streamManager = streamManager;
     }
 
 

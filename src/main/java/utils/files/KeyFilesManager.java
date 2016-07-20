@@ -1,5 +1,6 @@
 package utils.files;
 
+import com.google.inject.Inject;
 import filehandler.algorithm.Algorithm;
 import lombok.Cleanup;
 

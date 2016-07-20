@@ -1,5 +1,6 @@
 package utils.files;
 
+import com.google.inject.Inject;
 import utils.StreamManager;
 import lombok.Getter;
 import lombok.Setter;

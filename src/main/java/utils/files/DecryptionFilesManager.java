@@ -1,5 +1,7 @@
 package utils.files;
 
+import com.google.inject.Inject;
+
 import java.io.File;
 import java.io.IOException;
 

@@ -62,7 +62,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
 
     public void startUserSelect() {
         try {
-            selectedOperation = selectOperation();
+//            selectedOperation = selectOperation();
             if (askIfUseDefaultAlgorithm()) {
                 selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml();
             } else {

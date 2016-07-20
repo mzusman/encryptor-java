@@ -1,10 +1,14 @@
 package filehandler.operations;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import lombok.ToString;
+import utils.StreamManager;
 import utils.files.DecryptionFilesManager;
 import utils.files.DirectoryFilesManager;
+import utils.files.KeyFilesManager;
 
 import java.io.*;
 
@@ -13,10 +17,9 @@ import java.io.*;
  */
 public class DecryptionOperator extends Operator {
 
-
-    public DecryptionOperator(File inputFile) {
-        super(inputFile);
-        setStreamManager(new DecryptionFilesManager(inputFile));
+    @Inject
+    public DecryptionOperator(@Named("decrypt") StreamManager streamManager, KeyFilesManager keyFilesManager) {
+        super(streamManager, keyFilesManager);
     }
 
 
