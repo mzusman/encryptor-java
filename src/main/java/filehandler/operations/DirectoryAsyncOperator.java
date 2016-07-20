@@ -5,6 +5,8 @@ import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import lombok.Cleanup;
 import utils.Timer;
+import utils.XmlFilesManager;
+import utils.XmlReportManager;
 import utils.files.DirectoryFilesManager;
 import utils.files.FilesManager;
 
@@ -61,15 +63,15 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                         while (getCounter() >= 0) {
                             lock.lock();
                             System.out.println(Thread.currentThread().getName());
-                            ArrayList<InputStream> inArray = new ArrayList<>();
-                            ArrayList<OutputStream> outArray = new ArrayList<>();
+                            ArrayList<File> inArray = new ArrayList<>();
+                            ArrayList<File> outArray = new ArrayList<>();
                             for (int j = 0; j < finalFilesPerThreads && getCounter() >= 0; j++) {
                                 File in = manager.getInputFile(counter);
                                 File out = manager.getOutputFile(counter);
                                 setChanged();
                                 notifyObservers("file: " + in.getName());
-                                inArray.add(new FileInputStream(in));
-                                outArray.add(new FileOutputStream(out));
+                                inArray.add(in);
+                                outArray.add(out);
                                 counterDown();
                             }
                             lock.unlock();
@@ -78,7 +80,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                             }
                             readAndWriteFromFiles(inArray, outArray, finalAlgorithm);
                         }
-                    } catch (IOException e) {
+                    } catch (IOException | InterruptedException e) {
                         setChanged();
                         notifyObservers(e);
                     }
@@ -91,6 +93,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             notifyObservers(e);
         }
         Timer.getInstance().end();
+        XmlReportManager.getInstance().writeReport();
         setChanged();
         notifyObservers(CommandsEnum.END);
 
@@ -127,23 +130,42 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
         }
     }
 
-    private void readAndWriteFromFiles(ArrayList<InputStream> in, ArrayList<OutputStream> out, Algorithm algorithm) throws IOException {
+    private void readAndWriteFromFiles(ArrayList<File> in, ArrayList<File> out, Algorithm algorithm) throws InterruptedException {
+        ArrayList<InputStream> inputStreams = new ArrayList<>();
+        ArrayList<OutputStream> outputStreams = new ArrayList<>();
+        try {
+            for (int i = 0; i < in.size(); i++) {
+                inputStreams.add(new FileInputStream(in.get(i)));
+                outputStreams.add(new FileOutputStream(out.get(i)));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
         int raw;
         int index = 0;
         while (in.size() > 0) {
             for (int i = 0; i < in.size(); i++) {
-                InputStream inputStream = in.get(i);
-                if ((raw = inputStream.read()) != -1) {
-                    OutputStream outputStream = out.get(i);
-                    outputStream.write(operate(algorithm, raw, index));
-                } else {
-                    out.remove(in.indexOf(inputStream)).close();
-                    inputStream.close();
-                    in.remove(inputStream);
+                InputStream inputStream = inputStreams.get(i);
+                try {
+                    if ((raw = inputStream.read()) != -1) {
+                        OutputStream outputStream = outputStreams.get(i);
+                        outputStream.write(operate(algorithm, raw, index));
+                    } else {
+                        XmlReportManager.getInstance().writeFileDone(in.get(inputStreams.indexOf(inputStream)));
+                        outputStreams.remove(inputStreams.indexOf(inputStream)).close();
+                        in.remove(inputStreams.indexOf(inputStream));
+                        inputStream.close();
+                        inputStreams.remove(inputStream);
+                    }
+                } catch (IOException | InterruptedException e) {
+                    XmlReportManager.getInstance().writeFileError(in.get(inputStreams.indexOf(inputStream)), e);
                 }
             }
             index++;
         }
+
     }
 
     @Override

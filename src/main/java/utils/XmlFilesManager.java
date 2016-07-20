@@ -1,27 +1,18 @@
 package utils;
 
-import com.sun.jmx.remote.internal.Unmarshal;
 import commandline.AlgorithmsEnum;
 import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.DoubleAlgorithm;
-import filehandler.algorithm.ReverseAlgorithm;
-import filehandler.algorithm.SplitAlgorithms;
-import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
-import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
-import filehandler.algorithm.cipheralgorithm.SingleAlgorithm;
-import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.*;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.transform.Result;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by mzeus on 7/11/16.
@@ -43,7 +34,7 @@ public class XmlFilesManager {
             classes[i] = AlgorithmsEnum.values()[i].getAlgorithmClass();
         }
         try {
-            jaxbContext = JAXBContext.newInstance(classes,null);
+            jaxbContext = JAXBContext.newInstance(classes, null);
 
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             schema = schemaFactory.newSchema(new File("schema1.xsd"));

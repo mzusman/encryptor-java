@@ -40,7 +40,7 @@ public class Timer {
     }
 
     public long current() {
-        return end - start;
+        return Clock.systemDefaultZone().millis() - start;
     }
 
 

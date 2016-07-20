@@ -19,7 +19,7 @@ public class DirectoryFilesManager extends FilesManager {
     private final ArrayList<File> outFiles = new ArrayList<>();
     private final ArrayList<Map.Entry<File, File>> fileHashMap = new ArrayList<>();
     private FilesManager filesManager;
-    File opDir;
+    private File opDir;
 
     public DirectoryFilesManager(FilesManager filesManager) throws IOException {
         super(filesManager.inputFile);
