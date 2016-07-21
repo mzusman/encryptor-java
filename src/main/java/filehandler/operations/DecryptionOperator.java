@@ -18,7 +18,7 @@ import java.io.*;
 public class DecryptionOperator extends Operator {
 
     @Inject
-    public DecryptionOperator(@Named("decrypt") StreamManager streamManager, KeyFilesManager keyFilesManager) {
+    public DecryptionOperator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
         super(streamManager, keyFilesManager);
     }
 

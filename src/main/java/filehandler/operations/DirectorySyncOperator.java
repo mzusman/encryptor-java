@@ -18,9 +18,10 @@ import java.util.Observable;
 public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Integer>> {
     private Operator operator;
     private DirectoryFilesManager manager;
+    public static final String BASE = "DirectorySync.base";
 
     @Inject
-    public DirectorySyncOperator(Operator operator,@Named("dir") DirectoryFilesManager manager) {
+    public DirectorySyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager manager) {
         this.operator = operator;
         this.manager = manager;
 //            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());

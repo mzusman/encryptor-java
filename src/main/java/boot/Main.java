@@ -39,8 +39,8 @@ public class Main {
 //            builder.addOption(() -> new DecryptionOperator(file, new DecryptionFilesManager(file)))
 //                    .addOption(() -> new EncryptionOperator(file, new EncryptionFilesManager(file)));
 //        }
-        Injector injector = Guice.createInjector(new DirectoryEncryptAsyncModule(file));
-        DirectoryAsyncOperator operator = injector.getInstance(DirectoryAsyncOperator.class);
+        Injector injector = Guice.createInjector(new DirectoryModule(), new DecryptModule(file));
+        DirectorySyncOperator operator = injector.getInstance(DirectorySyncOperator.class);
 
         CliHandler cliHandler = builder.create();
         cliHandler.startUserSelect();
