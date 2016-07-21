@@ -7,6 +7,8 @@ import com.google.inject.Key;
 import commandline.CliHandler;
 import filehandler.algorithm.*;
 import filehandler.operations.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import utils.files.DecryptionFilesManager;
 import utils.files.EncryptionFilesManager;
 import utils.files.FilesManagerFactory;
@@ -26,6 +28,7 @@ public class Main {
      *
      * @param args
      */
+
     public static void main(String args[]) {
         CliHandler.Builder builder = new CliHandler.Builder();
         File file = new File(args[0]);
@@ -40,7 +43,7 @@ public class Main {
 //                    .addOption(() -> new EncryptionOperator(file, new EncryptionFilesManager(file)));
 //        }
         Injector injector = Guice.createInjector(new DirectoryModule(), new DecryptModule(file));
-        DirectorySyncOperator operator = injector.getInstance(DirectorySyncOperator.class);
+        DirectoryAsyncOperator operator = injector.getInstance(DirectoryAsyncOperator.class);
 
         CliHandler cliHandler = builder.create();
         cliHandler.startUserSelect();

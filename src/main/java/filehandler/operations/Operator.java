@@ -3,6 +3,8 @@ package filehandler.operations;
 import com.google.inject.Inject;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
+import lombok.extern.log4j.Log4j2;
+import utils.LogFileManager;
 import utils.StreamManager;
 import utils.Timer;
 import filehandler.algorithm.Algorithm;
@@ -18,7 +20,7 @@ import java.util.Observable;
 /**
  * Created by mzeus on 29/05/16.
  */
-//sync
+@Log4j2
 public class Operator extends Observable implements Operation<Algorithm<Integer>> {
 
     private
@@ -44,8 +46,10 @@ public class Operator extends Observable implements Operation<Algorithm<Integer>
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
+            LogFileManager.getInstance().started(toString(), keyFilesManager.getInputFile());
             runSync(in, out, algorithm);
             Timer.getInstance().end();
+            LogFileManager.getInstance().ended(keyFilesManager.getInputFile());
             setChanged();
             notifyObservers(CommandsEnum.END);
         } catch (IOException | KeyException | ClassNotFoundException e) {

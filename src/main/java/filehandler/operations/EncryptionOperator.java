@@ -2,6 +2,7 @@ package filehandler.operations;
 
 import com.google.inject.Inject;
 import filehandler.algorithm.Algorithm;
+import lombok.extern.log4j.Log4j2;
 import utils.StreamManager;
 import utils.files.DirectoryFilesManager;
 import utils.files.EncryptionFilesManager;

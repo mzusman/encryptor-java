@@ -5,6 +5,10 @@ import com.google.inject.name.Named;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import utils.LogFileManager;
 import utils.Timer;
 import utils.files.DirectoryFilesManager;
 import utils.files.FilesManager;
@@ -15,15 +19,21 @@ import java.util.Observable;
 /**
  * Created by mzeus on 7/11/16.
  */
+@Log4j2
 public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Integer>> {
     private Operator operator;
     private DirectoryFilesManager manager;
     public static final String BASE = "DirectorySync.base";
+    Logger logger = LogManager.getLogger(DirectorySyncOperator.class);
 
     @Inject
     public DirectorySyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager manager) {
+
         this.operator = operator;
         this.manager = manager;
+        for (int i = 0; i < 1000; i++) {
+            logger.debug("hello");
+        }
 //            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
     }
 
@@ -39,7 +49,9 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
                 File out = manager.getOutputFile(i);
                 setChanged();
                 notifyObservers("file: " + in.getName());
+                LogFileManager.getInstance().started(toString(), in);
                 runSync(new FileInputStream(in), new FileOutputStream(out), algorithm);
+                LogFileManager.getInstance().ended(in);
             }
             Timer.getInstance().end();
             setChanged();

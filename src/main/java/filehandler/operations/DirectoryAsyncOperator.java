@@ -5,6 +5,8 @@ import com.google.inject.name.Named;
 import commandline.CommandsEnum;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
+import lombok.extern.log4j.Log4j2;
+import utils.LogFileManager;
 import utils.Timer;
 import utils.xml.XmlReportManager;
 import utils.files.DirectoryFilesManager;
@@ -21,6 +23,7 @@ import java.util.concurrent.locks.StampedLock;
  * Created by mzeus on 7/6/16.
  */
 //async
+@Log4j2
 public class DirectoryAsyncOperator extends Observable implements Operation<Algorithm<Integer>> {
 
     private Operator operator;
@@ -54,24 +57,19 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             Timer.getInstance().start();
             int size = manager.size();
             int filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
-            System.out.println(size);
             if (filesPerThreads < 1)
                 filesPerThreads = 1;
             int finalFilesPerThreads = filesPerThreads;
-            System.out.println(finalFilesPerThreads);
             for (int i = 0; i < THREADS; i++) {
                 service.execute(() -> {
                     try {
                         while (getCounter() >= 0) {
                             lock.lock();
-                            System.out.println(Thread.currentThread().getName());
                             ArrayList<File> inArray = new ArrayList<>();
                             ArrayList<File> outArray = new ArrayList<>();
                             for (int j = 0; j < finalFilesPerThreads && getCounter() >= 0; j++) {
                                 File in = manager.getInputFile(counter);
                                 File out = manager.getOutputFile(counter);
-                                setChanged();
-                                notifyObservers("file: " + in.getName());
                                 inArray.add(in);
                                 outArray.add(out);
                                 counterDown();
@@ -139,6 +137,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             for (int i = 0; i < in.size(); i++) {
                 inputStreams.add(new FileInputStream(in.get(i)));
                 outputStreams.add(new FileOutputStream(out.get(i)));
+                LogFileManager.getInstance().started(toString(), in.get(i));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -155,7 +154,9 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                         OutputStream outputStream = outputStreams.get(i);
                         outputStream.write(operate(algorithm, raw, index));
                     } else {
-                        XmlReportManager.getInstance().writeFileDone(in.get(inputStreams.indexOf(inputStream)));
+                        File file = in.get(inputStreams.indexOf(inputStream));
+                        XmlReportManager.getInstance().writeFileDone(file);
+                        LogFileManager.getInstance().ended(file);
                         outputStreams.remove(inputStreams.indexOf(inputStream)).close();
                         in.remove(inputStreams.indexOf(inputStream));
                         inputStream.close();
