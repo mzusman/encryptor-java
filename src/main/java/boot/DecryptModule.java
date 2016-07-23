@@ -23,6 +23,7 @@ public class DecryptModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new KeyModule(file));
+        install(new DirectoryModule());
         bind(StreamManager.class).to(DecryptionFilesManager.class);
         bind(DecryptionFilesManager.class).toInstance(new DecryptionFilesManager(file));
 
@@ -38,4 +39,5 @@ public class DecryptModule extends AbstractModule {
                 .annotatedWith(Names.named("decorator"))
                 .to(DecryptionFilesManager.class);
     }
+
 }

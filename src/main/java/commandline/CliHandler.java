@@ -1,8 +1,14 @@
 package commandline;
 
 
+import boot.DecryptModule;
+import boot.DirectoryModule;
+import boot.EncryptModule;
+import com.google.common.base.Strings;
+import com.google.inject.Module;
 import filehandler.algorithm.Algorithm;
-import filehandler.operations.Operation;
+import filehandler.operations.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import utils.Timer;
@@ -10,9 +16,13 @@ import utils.xml.XmlFilesManager;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.regex.MatchResult;
 
 /**
  * Created by Mor on 5/19/2016.
@@ -23,15 +33,63 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     private ArrayList<Operation> operations;
     private ArrayList<Algorithm> algorithms;
     @Getter
-    private Operation selectedOperation;
-    @Getter
     private Algorithm selectedAlgorithm;
-    private Class<? extends Operation> selectedSuperOperation;
+    @Getter
+    private ArrayList<Module> modules;
+    @Getter
+    private Class<? extends Operation> selectOperation;
 
 
-    private CliHandler(Builder builder) {
-        this.operations = builder.operations;
-        this.algorithms = builder.algorithms;
+    public CliHandler() {
+        modules = new ArrayList<>();
+    }
+
+    private int checkIfThereIsFile(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            File file = new File(args[i]);
+            if (file.isFile() || file.isDirectory())
+                return i;
+        }
+        return 0;
+    }
+
+    public boolean scanForOperation(String args[]) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String s : args) {
+            stringBuilder.append(s);
+        }
+        String arg = stringBuilder.toString();
+        System.out.println(arg);
+        return arg.matches("^(enc|dec)(s|a)(\\S+)");
+    }
+
+    public boolean start(String[] args) {
+        if (!scanForOperation(args)) {
+            showOptions();
+            return false;
+        }
+
+        selectOperation = processArgs(args);
+        return true;
+    }
+
+    private Class<? extends Operation> processArgs(String[] args) {
+        File file = new File(args[2]);
+        if (file.canRead()) {
+            if (args[0].equals("enc"))
+                modules.add(new EncryptModule(file));
+            else modules.add(new DecryptModule(file));
+        }
+        if (file.isDirectory()) {
+            if (args[1].equals("a"))
+                return DirectoryAsyncOperator.class;
+            else return DirectorySyncOperator.class;
+        } else {
+            if (args[0].equals("enc"))
+                return EncryptionOperator.class;
+            else return DecryptionOperator.class;
+        }
+
     }
 
     /**
@@ -62,26 +120,20 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
 
     public void startUserSelect() {
         try {
-//            selectedOperation = selectOperation();
-            if (askIfUseDefaultAlgorithm()) {
+            if (askIf("Would you like to use the default algorithm?")) {
                 selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml();
             } else {
-                if (askIfImport())
+                if (askIf("would you like to import an algorithm xml?"))
                     selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml(getFileFromUser(File::isFile));
                 else {
                     selectedAlgorithm = selectAlgorithmClass();
-                    if (askIfExport())
+                    if (askIf("Would you like to export the built algorithm?"))
                         XmlFilesManager.getInstance().writeAlgorithmToXml(selectedAlgorithm, getFileFromUser(File::isDirectory));
                 }
             }
         } catch (IOException | InstantiationException | IllegalAccessException | JAXBException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean askIfImport() throws IOException {
-        System.out.println("would you like to import an algorithm xml? y/n");
-        return yesOrNo();
     }
 
     private File getFileFromUser(Predicate<File> predicate) throws IOException {
@@ -96,13 +148,8 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         return file;
     }
 
-    private boolean askIfExport() throws IOException {
-        System.out.println("would you want to export the algorithm?");
-        return yesOrNo();
-    }
-
-    private boolean askIfUseDefaultAlgorithm() throws IOException {
-        System.out.println("would you like to use the default algorithm? y/n");
+    private boolean askIf(String message) throws IOException {
+        System.out.println(message + "(y/n)");
         return yesOrNo();
     }
 
@@ -124,17 +171,7 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     }
 
     public void showOptions() {
-        System.out.println("usage: ... <file>\n");
-    }
-
-    public Algorithm selectAlgorithm() throws IOException {
-        System.out.println("Select an algorithm:");
-        printDescriptions(algorithms);
-        Algorithm algorithm = (Algorithm) getUserChoice(algorithms);
-        for (int i = 0; i < algorithm.numberOfAlgorithms(); i++) {
-            algorithm.pushAlgorithm(selectAlgorithm());
-        }
-        return algorithm;
+        System.out.println("usage: encryptor <enc|dec> <s|a> <file|dir>");
     }
 
     private Algorithm selectAlgorithmClass() throws IOException, IllegalAccessException, InstantiationException {
@@ -165,12 +202,6 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
 
     private void printDescriptions(List list) {
         list.forEach(c -> System.out.printf("%s - %s\n", list.indexOf(c) + 1, c.toString()));
-    }
-
-    private Operation selectOperation() throws IOException {
-        System.out.println("Select an operation:");
-        printDescriptions(operations);
-        return (Operation) getUserChoice(operations);
     }
 
 
@@ -210,48 +241,6 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
             ((Observable) o).addObserver(this);
         } else if (o instanceof String) {
             System.out.println(o);
-        }
-
-
-    }
-
-
-    public static class Builder {
-        private ArrayList<Operation> operations = new ArrayList<>();
-        private ArrayList<Algorithm> algorithms = new ArrayList<>();
-        private ArrayList<Class> classes = new ArrayList<>();
-        private ArrayList<Class> superOperations = new ArrayList<>();
-
-        public Builder addOption(Supplier<Operation> abstractOperation) {
-            if (abstractOperation == null)
-                return this;
-            operations.add(abstractOperation.get());
-            return this;
-        }
-
-        public Builder addAlgorithm(Supplier<Algorithm> algorithm) {
-            if (algorithm == null)
-                return this;
-            algorithms.add(algorithm.get());
-            return this;
-        }
-
-        public Builder addAlgorithmClass(Class<? extends Algorithm> aClass) {
-            if (aClass == null)
-                return this;
-            classes.add(aClass);
-            return this;
-        }
-
-        public CliHandler create() {
-            return new CliHandler(this);
-        }
-
-        public Builder addSuperOption(Class<? extends Operation> aClass) {
-            if (aClass == null)
-                return this;
-            superOperations.add(aClass);
-            return this;
         }
     }
 

@@ -6,7 +6,9 @@ import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
 import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import lombok.Cleanup;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
 import java.io.*;
@@ -22,13 +24,30 @@ public class CliHandlerTest {
 
 
     CliHandler cliHandler;
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     @Before
     public void start() {
-        CliHandler.Builder builder = new CliHandler.Builder();
-        cliHandler = builder.addAlgorithm(XorAlgorithm::new)
-                .addAlgorithm(DoubleAlgorithm::new)
-                .addAlgorithm(CaesarAlgorithm::new).create();
+        cliHandler = new CliHandler();
+
+    }
+
+    @Test
+    public void scanForOperationTest() throws IOException {
+        folder.create();
+        File file = folder.newFile();
+        assertTrue(cliHandler.scanForOperation(new String[]{"enc", "a", file.getPath()}));
+        assertTrue(cliHandler.scanForOperation(new String[]{"dec", "a", file.getPath()}));
+        assertFalse(cliHandler.scanForOperation(new String[]{"enc", "b", "asdadws"}));
+        assertFalse(cliHandler.scanForOperation(new String[]{"enc", "c", "asdadws"}));
+        assertFalse(cliHandler.scanForOperation(new String[]{"enc", "d", "asdadws"}));
+    }
+
+    @Test
+    public void startTest() throws IOException {
+        folder.create();
+        assertTrue(folder.newFolder().canRead());
     }
 
     @Test

@@ -9,6 +9,8 @@ import filehandler.algorithm.*;
 import filehandler.operations.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.SyslogAppender;
+import org.apache.logging.log4j.core.pattern.ArrayPatternConverter;
 import utils.files.DecryptionFilesManager;
 import utils.files.EncryptionFilesManager;
 import utils.files.FilesManagerFactory;
@@ -30,28 +32,16 @@ public class Main {
      */
 
     public static void main(String args[]) {
-        CliHandler.Builder builder = new CliHandler.Builder();
-        File file = new File(args[0]);
-
-//        if (file.isDirectory()) {
-//            builder.addOption(() -> new DirectoryAsyncOperator(new DecryptionOperator(file, new DecryptionFilesManager(file))))
-//                    .addOption(() -> new DirectoryAsyncOperator(new EncryptionOperator(file, new EncryptionFilesManager(file))))
-//                    .addOption(() -> new DirectorySyncOperator(new EncryptionOperator(file, new EncryptionFilesManager(file))))
-//                    .addOption(() -> new DirectorySyncOperator(new DecryptionOperator(file, new DecryptionFilesManager(file))));
-//        } else {
-//            builder.addOption(() -> new DecryptionOperator(file, new DecryptionFilesManager(file)))
-//                    .addOption(() -> new EncryptionOperator(file, new EncryptionFilesManager(file)));
-//        }
-        Injector injector = Guice.createInjector(new DirectoryModule(), new DecryptModule(file));
-        DirectoryAsyncOperator operator = injector.getInstance(DirectoryAsyncOperator.class);
-
-        CliHandler cliHandler = builder.create();
+        CliHandler cliHandler = new CliHandler();
+        if (!cliHandler.start(args))
+            return;
         cliHandler.startUserSelect();
-
-
-//        Operation operation = cliHandler.getSelectedOperation();
+//
+        Injector injector = Guice.createInjector(cliHandler.getModules());
+        Operation operator = injector.getInstance(cliHandler.getSelectOperation());
+//
         Algorithm algorithm = cliHandler.getSelectedAlgorithm();
-
+//
         ((Observable) operator).addObserver(cliHandler);
 
         operator.run(algorithm);

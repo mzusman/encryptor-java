@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by mzeus on 29/05/16.
  */
 
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class CaesarAlgorithm extends SingleAlgorithm {
 

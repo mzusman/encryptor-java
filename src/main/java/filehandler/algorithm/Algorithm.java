@@ -13,7 +13,6 @@ import java.io.Serializable;
  * Created by mzeus on 7/2/16.
  */
 
-@XmlSeeAlso({SplitAlgorithms.class,ReverseAlgorithm.class})
 public interface Algorithm<T> extends Serializable {
     T getKey();
 

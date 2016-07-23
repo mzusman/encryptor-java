@@ -23,6 +23,7 @@ public class EncryptModule extends AbstractModule {
     @Override
     protected void configure() {
         install(new KeyModule(file));
+        install(new DirectoryModule());
         bind(StreamManager.class).to(EncryptionFilesManager.class);
         bind(EncryptionFilesManager.class).toInstance(new EncryptionFilesManager(file));
         bind(FilesManager.class)

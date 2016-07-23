@@ -11,7 +11,6 @@ import java.util.Random;
 /**
  * Created by mzeus on 29/05/16.
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     private int key = 0;
