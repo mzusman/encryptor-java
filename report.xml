@@ -4,12 +4,17 @@
         <file>
             <fileName>desktop.ini</fileName>
             <status>success</status>
-            <time>49</time>
+            <time>22</time>
+        </file>
+        <file>
+            <fileName>key.bin</fileName>
+            <status>success</status>
+            <time>27</time>
         </file>
         <file>
             <fileName>ספר פרוייקטים.docx</fileName>
             <status>success</status>
-            <time>25987</time>
+            <time>26258</time>
         </file>
     </files>
 </Report>

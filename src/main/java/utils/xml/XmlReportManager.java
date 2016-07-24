@@ -41,12 +41,12 @@ public class XmlReportManager {
     }
 
 
-    public void writeFileDone(File file) throws InterruptedException {
+    public void writeFileDone(File file) {
         SuccFileReport report = new SuccFileReport(file, Timer.getInstance().current());
         queue.add(report);
     }
 
-    public void writeFileError(File file, Exception e) throws InterruptedException {
+    public void writeFileError(File file, Exception e) {
         FailedFileReport report = new FailedFileReport(file, e);
         queue.add(report);
     }

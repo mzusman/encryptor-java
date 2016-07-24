@@ -56,20 +56,17 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
     public boolean scanForOperation(String args[]) {
         StringBuilder stringBuilder = new StringBuilder();
         for (String s : args) {
-            stringBuilder.append(s);
+            stringBuilder.append(s).append(" ");
         }
         String arg = stringBuilder.toString();
-        System.out.println(arg);
-        return arg.matches("^(enc|dec)(s|a)(\\S+)");
+        return arg.matches("^(enc|dec)(\\s)(s|a)(\\s)(\\S+)(\\s)$");
     }
 
     public boolean start(String[] args) {
-        if (!scanForOperation(args)) {
+        if (!scanForOperation(args) || (selectOperation = processArgs(args)) == null) {
             showOptions();
             return false;
         }
-
-        selectOperation = processArgs(args);
         return true;
     }
 
@@ -79,17 +76,16 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
             if (args[0].equals("enc"))
                 modules.add(new EncryptModule(file));
             else modules.add(new DecryptModule(file));
-        }
-        if (file.isDirectory()) {
-            if (args[1].equals("a"))
-                return DirectoryAsyncOperator.class;
-            else return DirectorySyncOperator.class;
-        } else {
-            if (args[0].equals("enc"))
-                return EncryptionOperator.class;
-            else return DecryptionOperator.class;
-        }
-
+            if (file.isDirectory()) {
+                if (args[1].equals("a"))
+                    return DirectoryAsyncOperator.class;
+                else return DirectorySyncOperator.class;
+            } else {
+                if (args[0].equals("enc"))
+                    return EncryptionOperator.class;
+                else return DecryptionOperator.class;
+            }
+        } else return null;
     }
 
     /**

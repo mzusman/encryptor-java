@@ -48,9 +48,6 @@
     </xs:complexType>
 
     <xs:complexType name="singleAlgorithm">
-        <xs:sequence>
-            <xs:element name="key" type="xs:int"/>
-        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="multiplicationAlgorithm">

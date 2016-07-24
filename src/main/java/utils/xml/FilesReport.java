@@ -27,7 +27,9 @@ class FilesReport {
         if (status)
             this.status = "success";
         else this.status = "failed";
-        this.fileName = file.getName();
+        if (file != null)
+            this.fileName = file.getName();
+        else fileName = "unknown";
     }
 
 }

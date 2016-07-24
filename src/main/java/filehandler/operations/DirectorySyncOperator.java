@@ -12,6 +12,7 @@ import utils.LogFileManager;
 import utils.Timer;
 import utils.files.DirectoryFilesManager;
 import utils.files.FilesManager;
+import utils.xml.XmlReportManager;
 
 import java.io.*;
 import java.util.Observable;
@@ -28,13 +29,8 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
 
     @Inject
     public DirectorySyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager manager) {
-
         this.operator = operator;
         this.manager = manager;
-        for (int i = 0; i < 1000; i++) {
-            logger.debug("hello");
-        }
-//            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
     }
 
     @Override
@@ -44,18 +40,33 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
-            for (int i = 0; i < manager.size() - 1; i++) {
-                File in = manager.getInputFile(i);
-                File out = manager.getOutputFile(i);
+            for (int i = 0; i < manager.size(); i++) {
+                File in;
+                File out;
+                try {
+                    in = manager.getInputFile(i);
+                    out = manager.getOutputFile(i);
+                } catch (IOException e) {
+                    setChanged();
+                    notifyObservers(e);
+                    return;
+                }
                 setChanged();
                 notifyObservers("file: " + in.getName());
-                LogFileManager.getInstance().started(toString(), in);
-                runSync(new FileInputStream(in), new FileOutputStream(out), algorithm);
-                LogFileManager.getInstance().ended(in);
+                try {
+                    LogFileManager.getInstance().started(this.toString(), in);
+                    runSync(new FileInputStream(in), new FileOutputStream(out), algorithm);
+                    XmlReportManager.getInstance().writeFileDone(in);
+                    LogFileManager.getInstance().ended(in);
+                } catch (IOException e) {
+                    LogFileManager.getInstance().error(in, e);
+                    XmlReportManager.getInstance().writeFileError(in, e);
+                }
             }
             Timer.getInstance().end();
             setChanged();
             notifyObservers(CommandsEnum.END);
+            XmlReportManager.getInstance().writeReport();
         } catch (IOException | ClassNotFoundException | KeyException e) {
             setChanged();
             notifyObservers(e);

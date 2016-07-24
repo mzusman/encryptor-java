@@ -36,14 +36,9 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
 
     @Inject
     public DirectoryAsyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager directoryFilesManager) {
-        try {
-            this.operator = operator;
-            this.manager = directoryFilesManager;
-//            this.manager = new DirectoryFilesManager((FilesManager) operator.getStreamManager());
-            this.counter = manager.size() - 1;
-        } catch (IOException e) {
-            //ignored
-        }
+        this.operator = operator;
+        this.manager = directoryFilesManager;
+        this.counter = manager.size() - 1;
     }
 
 
@@ -162,7 +157,8 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                         inputStream.close();
                         inputStreams.remove(inputStream);
                     }
-                } catch (IOException | InterruptedException e) {
+                } catch (IOException e) {
+                    LogFileManager.getInstance().error(in.get(inputStreams.indexOf(inputStream)), e);
                     XmlReportManager.getInstance().writeFileError(in.get(inputStreams.indexOf(inputStream)), e);
                 }
             }

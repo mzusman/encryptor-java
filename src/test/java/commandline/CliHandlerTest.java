@@ -40,6 +40,9 @@ public class CliHandlerTest {
         assertTrue(cliHandler.scanForOperation(new String[]{"enc", "a", file.getPath()}));
         assertTrue(cliHandler.scanForOperation(new String[]{"dec", "a", file.getPath()}));
         assertFalse(cliHandler.scanForOperation(new String[]{"enc", "b", "asdadws"}));
+        assertFalse(cliHandler.scanForOperation(new String[]{"enc", "b", "asdadws"}));
+        assertFalse(cliHandler.scanForOperation(new String[]{"enc", "ab", "asdadws"}));
+        assertFalse(cliHandler.scanForOperation(new String[]{"enc", "b", "asdadws"}));
         assertFalse(cliHandler.scanForOperation(new String[]{"enc", "c", "asdadws"}));
         assertFalse(cliHandler.scanForOperation(new String[]{"enc", "d", "asdadws"}));
     }

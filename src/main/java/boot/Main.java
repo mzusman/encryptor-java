@@ -36,12 +36,9 @@ public class Main {
         if (!cliHandler.start(args))
             return;
         cliHandler.startUserSelect();
-//
         Injector injector = Guice.createInjector(cliHandler.getModules());
         Operation operator = injector.getInstance(cliHandler.getSelectOperation());
-//
         Algorithm algorithm = cliHandler.getSelectedAlgorithm();
-//
         ((Observable) operator).addObserver(cliHandler);
 
         operator.run(algorithm);

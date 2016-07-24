@@ -77,7 +77,7 @@ public class DirectoryFilesManager extends FilesManager {
         return fileHashMap.get(i).getValue();
     }
 
-    public int size() throws IOException {
+    public int size() {
         return inFiles.size();
     }
 
