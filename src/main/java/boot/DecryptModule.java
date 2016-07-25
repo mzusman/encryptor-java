@@ -9,7 +9,7 @@ import filehandler.operations.Operator;
 import lombok.AllArgsConstructor;
 import utils.StreamManager;
 import utils.files.DecryptionFilesManager;
-import utils.files.FilesManager;
+import utils.files.AbstractFilesManager;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ public class DecryptModule extends AbstractModule {
                 .annotatedWith(Names.named(DirectorySyncOperator.BASE))
                 .to(DecryptionOperator.class);
 
-        bind(FilesManager.class)
+        bind(AbstractFilesManager.class)
                 .annotatedWith(Names.named("decorator"))
                 .to(DecryptionFilesManager.class);
     }

@@ -7,14 +7,11 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 import utils.files.EncryptionFilesManager;
-import utils.files.FilesManager;
 import utils.files.KeyFilesManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by mzeus on 7/3/16.

@@ -1,5 +1,7 @@
 package utils;
 
+import exceptions.EmptyDirectoryException;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,5 +13,5 @@ import java.io.OutputStream;
 public interface StreamManager {
     OutputStream getOutputStream() throws IOException;
 
-    InputStream getInputStream() throws FileNotFoundException;
+    InputStream getInputStream() throws IOException;
 }

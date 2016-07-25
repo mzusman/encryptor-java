@@ -10,7 +10,7 @@ import java.io.StringWriter;
 /**
  * Created by mzeus on 7/21/16.
  */
-@Log4j2
+@Log4j2()
 public class LogFileManager {
 
     private final static LogFileManager instance = new LogFileManager();

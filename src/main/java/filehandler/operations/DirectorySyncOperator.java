@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import utils.LogFileManager;
 import utils.Timer;
 import utils.files.DirectoryFilesManager;
-import utils.files.FilesManager;
 import utils.xml.XmlReportManager;
 
 import java.io.*;

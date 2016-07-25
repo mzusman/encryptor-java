@@ -1,6 +1,7 @@
 package utils.files;
 
 import com.google.inject.Inject;
+import exceptions.EmptyDirectoryException;
 import utils.StreamManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,14 +11,14 @@ import java.io.*;
 /**
  * Created by mzeus on 7/2/16.
  */
-public abstract class FilesManager implements StreamManager {
+public abstract class AbstractFilesManager implements StreamManager {
     @Getter
     @Setter
-    File inputFile;
+    private File inputFile;
     @Setter
-    File outFile;
+    private File outFile;
 
-    FilesManager(File inputFile) {
+    AbstractFilesManager(File inputFile) {
         this.inputFile = inputFile;
     }
 
@@ -29,7 +30,7 @@ public abstract class FilesManager implements StreamManager {
     }
 
     @Override
-    public InputStream getInputStream() throws FileNotFoundException {
+    public InputStream getInputStream() throws IOException{
         return new FileInputStream(inputFile);
     }
 

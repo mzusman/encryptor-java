@@ -10,14 +10,12 @@ import utils.LogFileManager;
 import utils.Timer;
 import utils.xml.XmlReportManager;
 import utils.files.DirectoryFilesManager;
-import utils.files.FilesManager;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.StampedLock;
 
 /**
  * Created by mzeus on 7/6/16.

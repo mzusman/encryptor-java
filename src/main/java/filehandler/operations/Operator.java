@@ -9,12 +9,9 @@ import utils.StreamManager;
 import utils.Timer;
 import filehandler.algorithm.Algorithm;
 import lombok.*;
-import utils.files.FilesManager;
-import utils.files.FilesManagerFactory;
 import utils.files.KeyFilesManager;
 
 import java.io.*;
-import java.security.Key;
 import java.util.Observable;
 
 /**

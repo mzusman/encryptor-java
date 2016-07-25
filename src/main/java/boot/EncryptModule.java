@@ -9,7 +9,7 @@ import filehandler.operations.Operator;
 import lombok.AllArgsConstructor;
 import utils.StreamManager;
 import utils.files.EncryptionFilesManager;
-import utils.files.FilesManager;
+import utils.files.AbstractFilesManager;
 
 import java.io.File;
 
@@ -26,7 +26,7 @@ public class EncryptModule extends AbstractModule {
         install(new DirectoryModule());
         bind(StreamManager.class).to(EncryptionFilesManager.class);
         bind(EncryptionFilesManager.class).toInstance(new EncryptionFilesManager(file));
-        bind(FilesManager.class)
+        bind(AbstractFilesManager.class)
                 .annotatedWith(Names.named("decorator"))
                 .to(EncryptionFilesManager.class);
 

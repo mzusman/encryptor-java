@@ -2,19 +2,19 @@
 <Report>
     <files>
         <file>
-            <fileName>desktop.ini</fileName>
-            <status>success</status>
-            <time>22</time>
-        </file>
-        <file>
             <fileName>key.bin</fileName>
             <status>success</status>
-            <time>27</time>
+            <time>97</time>
         </file>
         <file>
-            <fileName>ספר פרוייקטים.docx</fileName>
+            <fileName>google-chrome-stable_current_amd64_decrypted.deb</fileName>
             <status>success</status>
-            <time>26258</time>
+            <time>87805</time>
+        </file>
+        <file>
+            <fileName>ideaIU-2016.2.tar.gz</fileName>
+            <status>success</status>
+            <time>716282</time>
         </file>
     </files>
 </Report>
