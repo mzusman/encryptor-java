@@ -64,7 +64,7 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
             Timer.getInstance().end();
             setChanged();
             notifyObservers(CommandsEnum.END);
-            XmlReportManager.getInstance().writeReport();
+            XmlReportManager.getInstance().writeReport(manager.getInputFile());
         } catch (IOException | ClassNotFoundException | KeyException e) {
             setChanged();
             notifyObservers(e);

@@ -88,32 +88,6 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
         } else return null;
     }
 
-    /**
-     * This method handles the arguments came from the cli
-     *
-     * @param args - cli args
-     */
-    public void handleArguments(String[] args) {
-        if (args.length != 1) {
-            showOptions();
-            return;
-        }
-        File file = new File(args[0]);
-        checkForFileError(file);
-        startUserSelect();
-    }
-
-    private void checkForFileError(@NonNull File file) {
-        if (!file.exists() || !file.isFile()) try {
-            handleNotFoundFile(file.getPath());
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
-        else if (!file.isFile()) System.err.println("error: not a file");
-        else if (!file.canRead()) System.err.println("don't have permission to read");
-        else if (!file.canWrite()) System.err.println("don't have permission to write");
-    }
-
     public void startUserSelect() {
         try {
             if (askIf("Would you like to use the default algorithm?")) {
@@ -155,15 +129,6 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
             System.out.println("wrong input");
         }
         return in.equals("y");
-    }
-
-    private String handleNotFoundFile(String message) throws IOException {
-        if (message != null)
-            System.out.println(message);
-        else
-            System.out.println("Error with files!");
-        System.out.println("Enter the path again:");
-        return getStringFromUser();
     }
 
     public void showOptions() {

@@ -16,10 +16,10 @@ public enum AlgorithmsEnum {
 
     Caesar(CaesarAlgorithm.class, "Caesar Algorithm"),
     Xor(XorAlgorithm.class, "Xor Algorithm"),
-    Double(DoubleAlgorithm.class, "Double Algorithm"),
     Multiplication(MultiplicationAlgorithm.class, "Multiplication Algorithm"),
-    Split(SplitAlgorithms.class, "Split Algorithm"),
-    Reverse(ReverseAlgorithm.class, "Reverse Algorithm");
+    Double(DoubleAlgorithm.class, "Double Algorithm - run another 2 different algorithms (back to back)"),
+    Split(SplitAlgorithms.class, "Split Algorithm - run the next algorithm with 2 keys instead of 1"),
+    Reverse(ReverseAlgorithm.class, "Reverse Algorithm - run the next algorithm in reverse");
 
 
     @Getter

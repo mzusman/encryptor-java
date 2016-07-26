@@ -91,7 +91,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             notifyObservers(e);
         }
         Timer.getInstance().end();
-        XmlReportManager.getInstance().writeReport();
+        XmlReportManager.getInstance().writeReport(manager.getInputFile());
         setChanged();
         notifyObservers(CommandsEnum.END);
 

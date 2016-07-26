@@ -51,11 +51,11 @@ public class XmlReportManager {
         queue.add(report);
     }
 
-    public void writeReport() {
+    public void writeReport(File dirFile) {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(this, new File("report.xml"));
+            marshaller.marshal(this, new File(dirFile, "report.xml"));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
