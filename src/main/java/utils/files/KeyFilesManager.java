@@ -21,7 +21,7 @@ public class KeyFilesManager extends AbstractFilesManager {
         if (!getInputFile().isDirectory())
             file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
         else file = new File(getInputFile().getPath() + File.separator + KEY_FILE_NAME);
-        if (file.exists() && file.isFile() && file.canWrite())
+        if (file.exists() )
             file.delete();
         if (file.createNewFile())
             return file;

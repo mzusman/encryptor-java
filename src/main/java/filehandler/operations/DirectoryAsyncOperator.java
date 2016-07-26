@@ -3,6 +3,7 @@ package filehandler.operations;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import commandline.CommandsEnum;
+import exceptions.EmptyDirectoryException;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import lombok.extern.log4j.Log4j2;
@@ -22,9 +23,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 //async
 @Log4j2
-public class DirectoryAsyncOperator extends Observable implements Operation<Algorithm<Integer>> {
+public class DirectoryAsyncOperator extends Observable implements Operation<Algorithm<Byte>, Byte> {
 
-    private Operator operator;
+    private AbstractOperation operator;
     private DirectoryFilesManager manager;
     private ExecutorService service = Executors.newFixedThreadPool(THREADS);
     private volatile int counter;
@@ -33,18 +34,22 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
     public static final String BASE = "DirectoryAsync.base";
 
     @Inject
-    public DirectoryAsyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager directoryFilesManager) {
+    public DirectoryAsyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager directoryFilesManager) {
         this.operator = operator;
         this.manager = directoryFilesManager;
-        this.counter = manager.size() - 1;
+        try {
+            this.counter = manager.size() - 1;
+        } catch (EmptyDirectoryException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @Override
-    public void run(Algorithm<Integer> algorithm) {
+    public void run(Algorithm<Byte> algorithm) {
         try {
             algorithm = operator.fillKeys(algorithm);
-            Algorithm<Integer> finalAlgorithm = algorithm;
+            Algorithm finalAlgorithm = algorithm;
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
@@ -101,26 +106,18 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
     }
 
     @Override
-    public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
+    public Byte operate(Algorithm<Byte> algorithm, Byte raw, int index) {
         return operator.operate(algorithm, raw, index);
     }
 
     @Override
-    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
+    public Algorithm<Byte> fillKeys(Algorithm<Byte> algorithm) throws IOException, ClassNotFoundException, KeyException {
         return operator.fillKeys(fillKeys(algorithm));
     }
 
     @Override
     public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
-        int raw;
-        byte enc;
-        int index = 0;
-//        byte[] bytes = Files.readAllBytes()
-        if ((raw = in.read()) != -1) {
-            enc = operate(algorithm, raw, index);
-            index++;
-            out.write(enc);
-        }
+        operator.runSync(in, out, algorithm);
     }
 
     private void readAndWriteFromFiles(ArrayList<File> in, ArrayList<File> out, Algorithm algorithm) throws InterruptedException {
@@ -145,7 +142,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                 try {
                     if ((raw = inputStream.read()) != -1) {
                         OutputStream outputStream = outputStreams.get(i);
-                        outputStream.write(operate(algorithm, raw, index));
+                        outputStream.write(operate(algorithm, (byte) raw, index));
                     } else {
                         File file = in.get(inputStreams.indexOf(inputStream));
                         XmlReportManager.getInstance().writeFileDone(file);

@@ -1,37 +1,28 @@
 package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.Algorithm;
+import lombok.EqualsAndHashCode;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Random;
 
 /**
  * Created by mzeus on 29/05/16.
  */
+@EqualsAndHashCode
 @XmlRootElement
-public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
-    private int key = 0;
+public abstract class AbstractAlgorithm implements Algorithm<Integer>, Serializable {
+    private Integer key = 0;
 
-    public SingleAlgorithm() {
+    public AbstractAlgorithm() {
 
     }
 
     @Override
     public int numberOfKeys() {
         return 1;
-    }
-
-    @Override
-    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
-        return 0;
-    }
-
-    @Override
-    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        return 0;
     }
 
     @Override
@@ -74,28 +65,7 @@ public class SingleAlgorithm implements Algorithm<Integer>, Serializable {
     }
 
     @Override
-    public boolean checkIfKeyIsValid(Integer key) {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "run a " + getClass().getSimpleName();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SingleAlgorithm)) return false;
-
-        SingleAlgorithm that = (SingleAlgorithm) o;
-
-        return key == that.key;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return key;
     }
 }

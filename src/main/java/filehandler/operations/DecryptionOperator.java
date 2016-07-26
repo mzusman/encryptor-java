@@ -1,13 +1,9 @@
 package filehandler.operations;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
-import lombok.ToString;
 import utils.StreamManager;
-import utils.files.DecryptionFilesManager;
-import utils.files.DirectoryFilesManager;
 import utils.files.KeyFilesManager;
 
 import java.io.*;
@@ -15,7 +11,7 @@ import java.io.*;
 /**
  * Created by Mor on 5/19/2016.
  */
-public class DecryptionOperator extends Operator {
+public class DecryptionOperator extends AbstractOperation {
 
     @Inject
     public DecryptionOperator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
@@ -24,13 +20,13 @@ public class DecryptionOperator extends Operator {
 
 
     @Override
-    public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
-        return algorithm.decrypt(raw, 0, index).byteValue();
+    public Byte operate(Algorithm<Byte> algorithm, Byte raw, int index) {
+        return algorithm.decrypt(raw, (byte) 0, index);
     }
 
     @Override
-    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
-        Algorithm<Integer> tmpAlgorithm = getKeyFilesManager().readAlgorithmsFromFile();
+    public Algorithm<Byte> fillKeys(Algorithm<Byte> algorithm) throws IOException, ClassNotFoundException, KeyException {
+        Algorithm tmpAlgorithm = getKeyFilesManager().readAlgorithmsFromFile();
         if (tmpAlgorithm.getClass().equals(algorithm.getClass()))
             return tmpAlgorithm;
         else throw new KeyException("file was not encrypted with selected algorithm");

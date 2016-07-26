@@ -18,24 +18,24 @@ import java.util.Observable;
  * Created by mzeus on 29/05/16.
  */
 @Log4j2
-public class Operator extends Observable implements Operation<Algorithm<Integer>> {
+public abstract class AbstractOperation extends Observable implements Operation<Algorithm<Byte>, Byte> {
 
     private
     @Getter
     @Setter
     StreamManager streamManager;
     @Getter
-    private KeyFilesManager keyFilesManager;
+    private final KeyFilesManager keyFilesManager;
 
     @Inject
-    Operator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
+    AbstractOperation(StreamManager streamManager, KeyFilesManager keyFilesManager) {
         this.keyFilesManager = keyFilesManager;
         this.streamManager = streamManager;
     }
 
 
     @Override
-    public void run(Algorithm<Integer> algorithm) {
+    public void run(Algorithm algorithm) {
         try {
             algorithm = fillKeys(algorithm);
             @Cleanup InputStream in = streamManager.getInputStream();
@@ -56,23 +56,22 @@ public class Operator extends Observable implements Operation<Algorithm<Integer>
     }
 
     @Override
-    public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
+    public Byte operate(Algorithm<Byte> algorithm, Byte raw, int index) {
         return 0;
     }
 
     @Override
-    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
+    public Algorithm<Byte> fillKeys(Algorithm<Byte> algorithm) throws IOException, ClassNotFoundException, KeyException {
         return algorithm;
     }
 
     @Override
     public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
         int raw;
-        byte enc;
+        Byte enc;
         int index = 0;
-
         while ((raw = in.read()) != -1) {
-            enc = operate(algorithm, raw, index);
+            enc = operate(algorithm, (byte) raw, index);
             index++;
             out.write(enc);
         }

@@ -23,15 +23,11 @@ public class DecryptionFilesManager extends AbstractFilesManager {
     public File getOutFile() throws IOException {
         String[] filename = getInputFile().getPath().split("\\.", 2);
         StringBuilder sp;
-        sp = new StringBuilder(filename[0]) .append(decrypted);
+        sp = new StringBuilder(filename[0]).append(decrypted);
         if (filename.length > 1)
             sp.append(".").append(filename[1]);
         File outputFile = new File(sp.toString());
-        if (outputFile.exists())
-            throw new FileAlreadyExistsException(outputFile.getName());
-        if (outputFile.createNewFile())
-            return outputFile;
-        throw new IOException("cannot create new file for decryption");
+        return createNewFile(outputFile);
     }
 
     @Override

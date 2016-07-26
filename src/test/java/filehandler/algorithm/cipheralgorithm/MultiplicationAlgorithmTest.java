@@ -13,20 +13,21 @@ public class MultiplicationAlgorithmTest {
     MultiplicationAlgorithm algorithm = new MultiplicationAlgorithm();
 
     @Test
-    public void encryptEqualsDecrypt(){
+    public void encryptEqualsDecrypt() {
         algorithm.generateEncryptKeys();
-        assertEquals(algorithm.encrypt(algorithm.decrypt(20,0,0),0,0),new Integer(20));
+        assertEquals(algorithm.encrypt(algorithm.decrypt(20, 0, 0), 0, 0).byteValue(), new Integer(20).byteValue());
     }
+
     @Test
     public void decrypt() throws Exception {
         algorithm.generateEncryptKeys();
-        assertNotEquals(algorithm.decrypt(20, 20, 0), new Integer(20));
+        assertNotEquals(algorithm.decrypt(20, 20, 0).byteValue(), new Integer(20).byteValue());
     }
 
     @Test
     public void encrypt() throws Exception {
         algorithm.generateEncryptKeys();
-        assertNotEquals(algorithm.encrypt(20, 20, 0), new Integer(20));
+        assertNotEquals(algorithm.encrypt(20, 20, 0).byteValue(), new Integer(20).byteValue());
     }
 
     @Test

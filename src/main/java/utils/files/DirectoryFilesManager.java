@@ -5,20 +5,21 @@ import com.google.inject.name.Named;
 import exceptions.CannotCreateFileException;
 import exceptions.EmptyDirectoryException;
 import exceptions.FileAlreadyExistsException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.io.*;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by mzeus on 7/6/16.
  */
 public class DirectoryFilesManager extends AbstractFilesManager {
 
-    private final ArrayList<File> inFiles = new ArrayList<>();
-    private final ArrayList<File> outFiles = new ArrayList<>();
-    private final ArrayList<Map.Entry<File, File>> inToOutMap = new ArrayList<>();
+    private ArrayList<File> inFiles = new ArrayList<>();
+    private final ArrayList<Pair> inToOutMap = new ArrayList<>();
     private final AbstractFilesManager filesManager;
     private File opDir;
 
@@ -28,15 +29,13 @@ public class DirectoryFilesManager extends AbstractFilesManager {
         this.filesManager = filesManager;
     }
 
-    private void initInFiles() {
+    private void initInFiles() throws EmptyDirectoryException {
         if (inFiles.isEmpty()) {
             File[] inFiles = filesManager.getInputFile().listFiles();
-            if (inFiles != null) {
-                for (File inFile : inFiles) {
-                    if (inFile.isFile())
-                        this.inFiles.add(inFile);
-                }
-            }
+            if (inFiles != null && inFiles.length > 0)
+                this.inFiles = Arrays.stream(inFiles).filter(f -> f.isFile() && f.canRead())
+                        .collect(Collectors.toCollection(ArrayList::new));
+            else throw new EmptyDirectoryException();
         }
     }
 
@@ -59,7 +58,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
                 File outFile = new File(opDir, inFile.getName());
                 if (!outFile.createNewFile())
                     throw new CannotCreateFileException(opDir.getName());
-                inToOutMap.add(new AbstractMap.SimpleEntry<>(inFile, outFile));
+                inToOutMap.add(new Pair(inFile, outFile));
             }
             if (inToOutMap.isEmpty())
                 throw new EmptyDirectoryException();
@@ -73,9 +72,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
      */
     @Override
     public synchronized OutputStream getOutputStream() throws IOException {
-        if (!outFiles.isEmpty())
-            return new FileOutputStream(outFiles.get(0));
-        throw new EmptyDirectoryException();
+        return new FileOutputStream(getOutputFile(0));
     }
 
     /***
@@ -84,10 +81,8 @@ public class DirectoryFilesManager extends AbstractFilesManager {
      * @throws FileNotFoundException
      */
     @Override
-    public synchronized InputStream getInputStream() throws FileNotFoundException, EmptyDirectoryException {
-        if (!outFiles.isEmpty())
-            return new FileInputStream(inFiles.get(0));
-        throw new EmptyDirectoryException();
+    public synchronized InputStream getInputStream() throws IOException {
+        return new FileInputStream(getInputFile(0));
     }
 
     /**
@@ -99,7 +94,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
      */
     public synchronized File getInputFile(int i) throws IOException {
         createOutputFiles();
-        return inToOutMap.get(i).getKey();
+        return inToOutMap.get(i).getInputFile();
     }
 
     /**
@@ -111,10 +106,10 @@ public class DirectoryFilesManager extends AbstractFilesManager {
      */
     public synchronized File getOutputFile(int i) throws IOException {
         createOutputFiles();
-        return inToOutMap.get(i).getValue();
+        return inToOutMap.get(i).getOutputFile();
     }
 
-    public int size() {
+    public synchronized int size() throws EmptyDirectoryException {
         initInFiles();
         return inFiles.size();
     }
@@ -125,4 +120,12 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     }
 
 
+    @Data
+    @AllArgsConstructor
+    private class Pair {
+        File inputFile;
+        File outputFile;
+    }
+
 }
+

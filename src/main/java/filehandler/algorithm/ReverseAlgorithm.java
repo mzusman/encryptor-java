@@ -1,21 +1,20 @@
 package filehandler.algorithm;
 
 
-import filehandler.algorithm.cipheralgorithm.SingleAlgorithm;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.*;
-import java.util.ArrayList;
 
 /**
  * Created by mzeus on 01/06/16.
  */
+@EqualsAndHashCode
 @XmlRootElement
-public class ReverseAlgorithm implements Algorithm<Integer> {
+@NoArgsConstructor
+public class ReverseAlgorithm<T> implements Algorithm<T> {
 
-    private Algorithm<Integer> algorithm;
-
-    public ReverseAlgorithm() {
-    }
+    private Algorithm<T> algorithm;
 
     @Override
     public int numberOfAlgorithms() {
@@ -28,7 +27,7 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
     }
 
     @XmlElement(type = Object.class)
-    public Algorithm<Integer> getAlgorithm() {
+    public Algorithm<T> getAlgorithm() {
         return algorithm;
     }
 
@@ -44,7 +43,7 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
 
 
     @Override
-    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
+    public T decrypt(T raw, T key, int streamIndex) {
         return algorithm.encrypt(raw, key, streamIndex);
     }
 
@@ -53,7 +52,7 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
      * This method is similar to {@link #decryptionOperation(int, int)}
      */
     @Override
-    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
+    public T encrypt(T raw, T key, int streamIndex) {
         return algorithm.decrypt(raw, key, streamIndex);
     }
 
@@ -63,17 +62,17 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
     }
 
     @Override
-    public Integer getKey() {
+    public T getKey() {
         return algorithm.getKey();
     }
 
     @Override
-    public Integer getKey(Algorithm algorithm, int index) {
+    public T getKey(Algorithm algorithm, int index) {
         return this.algorithm.getKey(algorithm, index);
     }
 
     @Override
-    public Integer getKey(int index) {
+    public T getKey(int index) {
         return algorithm.getKey(index);
     }
 
@@ -83,12 +82,12 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
     }
 
     @Override
-    public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
+    public void setDecryptionKey(T key, int index, Algorithm algorithm) {
         this.algorithm.setDecryptionKey(key, index, algorithm);
     }
 
     @Override
-    public boolean checkIfKeyIsValid(Integer key) {
+    public boolean checkIfKeyIsValid(T key) {
         return algorithm.checkIfKeyIsValid(key);
     }
 
@@ -97,19 +96,4 @@ public class ReverseAlgorithm implements Algorithm<Integer> {
         return "run a " + getClass().getSimpleName();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ReverseAlgorithm)) return false;
-
-        ReverseAlgorithm that = (ReverseAlgorithm) o;
-
-        return algorithm != null ? algorithm.equals(that.algorithm) : that.algorithm == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        return algorithm != null ? algorithm.hashCode() : 0;
-    }
 }

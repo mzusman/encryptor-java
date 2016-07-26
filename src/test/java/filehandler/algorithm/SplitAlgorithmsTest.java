@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  * Created by mzeus on 7/3/16.
  */
 public class SplitAlgorithmsTest {
-    SplitAlgorithms algorithm = new SplitAlgorithms();
+    SplitAlgorithms<Integer> algorithm = new SplitAlgorithms();
 
     @Before
     public void warmUp() {

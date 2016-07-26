@@ -17,13 +17,8 @@ public class EncryptionFilesManager extends AbstractFilesManager {
 
     @Override
     public File getOutFile() throws IOException {
-        String exception = "cannot create a new file for encryption";
         File outputFile = new File(getInputFile().getPath() + encrypted);
-        if (outputFile.exists())
-            outputFile.delete();
-        if (outputFile.createNewFile())
-            return outputFile;
-        throw new IOException(exception);
+        return createNewFile(outputFile);
     }
 
     @Override

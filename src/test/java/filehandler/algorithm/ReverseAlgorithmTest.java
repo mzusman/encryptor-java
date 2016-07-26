@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Created by mzeus on 7/3/16.
  */
 public class ReverseAlgorithmTest {
-    ReverseAlgorithm algorithm = new ReverseAlgorithm();
+    ReverseAlgorithm<Integer> algorithm = new ReverseAlgorithm<>();
      @Before
     public void WarmUp(){
         algorithm.pushAlgorithm(new XorAlgorithm());

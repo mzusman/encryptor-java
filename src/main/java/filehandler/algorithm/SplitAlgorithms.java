@@ -1,5 +1,8 @@
 package filehandler.algorithm;
 
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +10,14 @@ import java.util.List;
 /**
  * Created by mzeus on 01/06/16.
  */
+@EqualsAndHashCode
 @XmlRootElement
-public class SplitAlgorithms implements Algorithm<Integer> {
+@NoArgsConstructor
+public class SplitAlgorithms<T> implements Algorithm<T> {
 
-    private Algorithm<Integer> algorithm;
+    private Algorithm<T> algorithm;
 
-    private List<Integer> keys;
+    private List<T> keys = new ArrayList<T>();
 
     @Override
     public String toString() {
@@ -20,12 +25,8 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     }
 
 
-    public SplitAlgorithms() {
-        keys = new ArrayList<>();
-    }
-
     @XmlElement(type = Object.class)
-    public Algorithm<Integer> getAlgorithm() {
+    public Algorithm<T> getAlgorithm() {
         return algorithm;
     }
 
@@ -40,7 +41,7 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     }
 
     @Override
-    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
+    public T decrypt(T raw, T key, int streamIndex) {
         if (streamIndex % 2 == 1)
             algorithm.setDecryptionKey(keys.get(0), 0, algorithm);
         else
@@ -49,7 +50,7 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     }
 
     @Override
-    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
+    public T encrypt(T raw, T key, int streamIndex) {
         if (streamIndex % 2 == 1)
             algorithm.setDecryptionKey(keys.get(0), 0, algorithm);
         else
@@ -63,17 +64,17 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     }
 
     @Override
-    public Integer getKey() {
+    public T getKey() {
         return keys.get(0);
     }
 
     @Override
-    public Integer getKey(Algorithm algorithm, int index) {
+    public T getKey(Algorithm algorithm, int index) {
         return keys.get(index);
     }
 
     @Override
-    public Integer getKey(int index) {
+    public T getKey(int index) {
         return keys.get(index);
     }
 
@@ -88,33 +89,14 @@ public class SplitAlgorithms implements Algorithm<Integer> {
     }
 
     @Override
-    public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
+    public void setDecryptionKey(T key, int index, Algorithm algorithm) {
         keys.add(index, key);
     }
 
 
     @Override
-    public boolean checkIfKeyIsValid(Integer key) {
+    public boolean checkIfKeyIsValid(T key) {
         return keys.stream().allMatch((k) -> algorithm.checkIfKeyIsValid(k));
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SplitAlgorithms)) return false;
-
-        SplitAlgorithms that = (SplitAlgorithms) o;
-
-        if (algorithm != null ? !algorithm.equals(that.algorithm) : that.algorithm != null) return false;
-        if (keys != null ? !keys.equals(that.keys) : that.keys != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = algorithm != null ? algorithm.hashCode() : 0;
-        result = 31 * result + (keys != null ? keys.hashCode() : 0);
-        return result;
-    }
 }

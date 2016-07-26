@@ -1,12 +1,6 @@
 package filehandler.algorithm;
 
 
-import filehandler.algorithm.cipheralgorithm.SingleAlgorithm;
-
-import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
 /**

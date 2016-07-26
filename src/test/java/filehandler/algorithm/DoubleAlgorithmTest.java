@@ -14,7 +14,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
  */
 public class DoubleAlgorithmTest {
 
-    DoubleAlgorithm algorithm = new DoubleAlgorithm();
+    DoubleAlgorithm<Integer> algorithm = new DoubleAlgorithm<>();
     @Before
     public void WarmUp(){
         algorithm.pushAlgorithm(new XorAlgorithm());

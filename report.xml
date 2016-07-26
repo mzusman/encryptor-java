@@ -4,17 +4,17 @@
         <file>
             <fileName>key.bin</fileName>
             <status>success</status>
-            <time>97</time>
+            <time>39</time>
         </file>
         <file>
             <fileName>google-chrome-stable_current_amd64_decrypted.deb</fileName>
             <status>success</status>
-            <time>87805</time>
+            <time>71123</time>
         </file>
         <file>
             <fileName>ideaIU-2016.2.tar.gz</fileName>
             <status>success</status>
-            <time>716282</time>
+            <time>621142</time>
         </file>
     </files>
 </Report>

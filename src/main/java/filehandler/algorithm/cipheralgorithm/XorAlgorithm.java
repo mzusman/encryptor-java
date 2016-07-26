@@ -1,8 +1,6 @@
 package filehandler.algorithm.cipheralgorithm;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -10,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
-public class XorAlgorithm extends SingleAlgorithm {
+public class XorAlgorithm extends AbstractAlgorithm {
 
     public XorAlgorithm() {
 

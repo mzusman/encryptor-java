@@ -2,19 +2,15 @@ package filehandler.operations;
 
 import com.google.inject.Inject;
 import filehandler.algorithm.Algorithm;
-import lombok.extern.log4j.Log4j2;
 import utils.StreamManager;
-import utils.files.DirectoryFilesManager;
-import utils.files.EncryptionFilesManager;
 import utils.files.KeyFilesManager;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
  * Created by Mor on 5/19/2016.
  */
-public class EncryptionOperator extends Operator {
+public class EncryptionOperator extends AbstractOperation {
 
 
     @Inject
@@ -24,12 +20,12 @@ public class EncryptionOperator extends Operator {
 
 
     @Override
-    public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
-        return algorithm.encrypt(raw, 0, index).byteValue();
+    public Byte operate(Algorithm<Byte> algorithm, Byte raw, int index) {
+        return algorithm.encrypt(raw, (byte) 0, index);
     }
 
     @Override
-    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException {
+    public Algorithm<Byte> fillKeys(Algorithm algorithm) throws IOException {
         algorithm.generateEncryptKeys();
         getKeyFilesManager().writeAlgorithmsToFile(algorithm);
         return algorithm;

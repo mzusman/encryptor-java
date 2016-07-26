@@ -10,12 +10,12 @@ import java.io.OutputStream;
 /**
  * Created by mzeus on 04/06/16.
  */
-public interface Operation<E extends Algorithm<Integer>> {
+public interface Operation<E extends Algorithm<T>,T> {
     void run(E algorithm);
 
-    byte operate(Algorithm<Integer> algorithm, int raw, int index);
+    T operate(Algorithm<T> algorithm, T raw, int index);
 
-    Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException;
+    Algorithm<T> fillKeys(Algorithm<T> algorithm) throws IOException, ClassNotFoundException, KeyException;
 
     void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException;
 }

@@ -1,8 +1,6 @@
 package filehandler.algorithm.cipheralgorithm;
 
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -10,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by mzeus on 30/05/16.
  */
 @XmlRootElement
-public class MultiplicationAlgorithm extends SingleAlgorithm {
+public class MultiplicationAlgorithm extends AbstractAlgorithm {
 
     public MultiplicationAlgorithm(){
 

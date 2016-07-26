@@ -5,7 +5,7 @@ import com.google.inject.name.Names;
 import filehandler.operations.DirectoryAsyncOperator;
 import filehandler.operations.DirectorySyncOperator;
 import filehandler.operations.EncryptionOperator;
-import filehandler.operations.Operator;
+import filehandler.operations.AbstractOperation;
 import lombok.AllArgsConstructor;
 import utils.StreamManager;
 import utils.files.EncryptionFilesManager;
@@ -30,11 +30,11 @@ public class EncryptModule extends AbstractModule {
                 .annotatedWith(Names.named("decorator"))
                 .to(EncryptionFilesManager.class);
 
-        bind(Operator.class)
+        bind(AbstractOperation.class)
                 .annotatedWith(Names.named(DirectoryAsyncOperator.BASE))
                 .to(EncryptionOperator.class);
 
-        bind(Operator.class)
+        bind(AbstractOperation.class)
                 .annotatedWith(Names.named(DirectorySyncOperator.BASE))
                 .to(EncryptionOperator.class);
     }

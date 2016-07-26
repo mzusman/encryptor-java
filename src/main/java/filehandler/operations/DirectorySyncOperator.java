@@ -20,20 +20,20 @@ import java.util.Observable;
  * Created by mzeus on 7/11/16.
  */
 @Log4j2
-public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Integer>> {
-    private Operator operator;
+public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Byte>,Byte> {
+    private AbstractOperation operator;
     private DirectoryFilesManager manager;
     public static final String BASE = "DirectorySync.base";
     Logger logger = LogManager.getLogger(DirectorySyncOperator.class);
 
     @Inject
-    public DirectorySyncOperator(@Named(BASE) Operator operator, DirectoryFilesManager manager) {
+    public DirectorySyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager manager) {
         this.operator = operator;
         this.manager = manager;
     }
 
     @Override
-    public void run(Algorithm<Integer> algorithm) {
+    public void run(Algorithm algorithm) {
         try {
             algorithm = operator.fillKeys(algorithm);
             setChanged();
@@ -74,12 +74,12 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
     }
 
     @Override
-    public byte operate(Algorithm<Integer> algorithm, int raw, int index) {
+    public Byte operate(Algorithm<Byte> algorithm, Byte raw, int index) {
         return operator.operate(algorithm, raw, index);
     }
 
     @Override
-    public Algorithm<Integer> fillKeys(Algorithm<Integer> algorithm) throws IOException, ClassNotFoundException, KeyException {
+    public Algorithm<Byte> fillKeys(Algorithm<Byte> algorithm) throws IOException, ClassNotFoundException, KeyException {
         return operator.fillKeys(algorithm);
     }
 

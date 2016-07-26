@@ -1,21 +1,11 @@
 package boot;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Key;
 import commandline.CliHandler;
 import filehandler.algorithm.*;
 import filehandler.operations.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.appender.SyslogAppender;
-import org.apache.logging.log4j.core.pattern.ArrayPatternConverter;
-import utils.files.DecryptionFilesManager;
-import utils.files.EncryptionFilesManager;
-import utils.files.FilesManagerFactory;
 
-import java.io.File;
 import java.util.Observable;
 
 /**
