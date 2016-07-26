@@ -25,7 +25,7 @@ public class EncryptionOperator extends AbstractOperation {
     }
 
     @Override
-    public Algorithm<Byte> fillKeys(Algorithm algorithm) throws IOException {
+    public Algorithm<Byte> fillKeys(Algorithm<Byte> algorithm) throws IOException {
         algorithm.generateEncryptKeys();
         getKeyFilesManager().writeAlgorithmsToFile(algorithm);
         return algorithm;

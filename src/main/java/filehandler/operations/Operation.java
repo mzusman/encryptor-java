@@ -17,5 +17,4 @@ public interface Operation<E extends Algorithm<T>,T> {
 
     Algorithm<T> fillKeys(Algorithm<T> algorithm) throws IOException, ClassNotFoundException, KeyException;
 
-    void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException;
 }

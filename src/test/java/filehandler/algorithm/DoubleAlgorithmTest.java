@@ -14,27 +14,29 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
  */
 public class DoubleAlgorithmTest {
 
-    DoubleAlgorithm<Integer> algorithm = new DoubleAlgorithm<>();
+    DoubleAlgorithm<Byte> algorithm = new DoubleAlgorithm<>();
+
     @Before
-    public void WarmUp(){
+    public void WarmUp() {
         algorithm.pushAlgorithm(new XorAlgorithm());
         algorithm.pushAlgorithm(new CaesarAlgorithm());
         algorithm.generateEncryptKeys();
     }
+
     @Test
     public void decrypt() throws Exception {
-        assertNotEquals(algorithm.decrypt(20,0,0).byteValue(),new Integer(20).byteValue());
+        assertNotEquals(algorithm.decrypt((byte) 20, (byte) 0, 0).byteValue(), new Integer(20).byteValue());
 
     }
 
     @Test
-    public void encryptEqualsDecrypt(){
-        assertEquals(algorithm.encrypt(algorithm.decrypt(20,0,0),0,0).byteValue(),new Integer(20).byteValue());
+    public void encryptEqualsDecrypt() {
+        assertEquals(algorithm.encrypt(algorithm.decrypt((byte) 20, (byte) 0, 0), (byte) 0, 0).byteValue(), new Integer(20).byteValue());
     }
 
     @Test
     public void encrypt() throws Exception {
-        assertNotEquals(algorithm.encrypt(20,0,0),new Integer(20));
+        assertNotEquals(algorithm.encrypt((byte) 20, (byte) 0, 0), new Integer(20));
     }
 
     @Test
@@ -55,8 +57,8 @@ public class DoubleAlgorithmTest {
         doubleAlgorithm.pushAlgorithm(xorAlgorithm);
         doubleAlgorithm.pushAlgorithm(caesarAlgorithm);
         assertTrue(doubleAlgorithm.generateEncryptKeys());
-        Mockito.verify(xorAlgorithm,times(1)).generateEncryptKeys();
-        Mockito.verify(caesarAlgorithm,times(1)).generateEncryptKeys();
+        Mockito.verify(xorAlgorithm, times(1)).generateEncryptKeys();
+        Mockito.verify(caesarAlgorithm, times(1)).generateEncryptKeys();
 
     }
 

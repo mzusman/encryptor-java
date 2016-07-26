@@ -1,6 +1,8 @@
 package filehandler.algorithm.cipheralgorithm;
 
 
+import lombok.NoArgsConstructor;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -8,30 +10,23 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
+@NoArgsConstructor
 public class CaesarAlgorithm extends AbstractAlgorithm {
 
-    public CaesarAlgorithm() {
-
-    }
-
 
     @Override
-    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
-        return raw - getKey().byteValue();
+    public Byte decrypt(Byte raw, Byte key, int streamIndex) {
+        return (byte) (raw - getKey());
     }
 
     @Override
-    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        return raw + getKey().byteValue();
+    public Byte encrypt(Byte raw, Byte key, int streamIndex) {
+        return (byte) (raw + getKey());
     }
 
     @Override
-    public boolean checkIfKeyIsValid(Integer key) {
+    public boolean checkIfKeyIsValid(Byte key) {
         return (byte) key.intValue() != 0;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }

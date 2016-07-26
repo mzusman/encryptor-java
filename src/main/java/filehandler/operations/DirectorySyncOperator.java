@@ -20,11 +20,10 @@ import java.util.Observable;
  * Created by mzeus on 7/11/16.
  */
 @Log4j2
-public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Byte>,Byte> {
+public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Byte>, Byte> {
     private AbstractOperation operator;
     private DirectoryFilesManager manager;
     public static final String BASE = "DirectorySync.base";
-    Logger logger = LogManager.getLogger(DirectorySyncOperator.class);
 
     @Inject
     public DirectorySyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager manager) {
@@ -33,7 +32,7 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
     }
 
     @Override
-    public void run(Algorithm algorithm) {
+    public void run(Algorithm<Byte> algorithm) {
         try {
             algorithm = operator.fillKeys(algorithm);
             setChanged();
@@ -54,7 +53,7 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
                 notifyObservers("file: " + in.getName());
                 try {
                     LogFileManager.getInstance().started(this.toString(), in);
-                    runSync(new FileInputStream(in), new FileOutputStream(out), algorithm);
+                    operator.runSync(new FileInputStream(in), new FileOutputStream(out), algorithm);
                     XmlReportManager.getInstance().writeFileDone(in);
                     LogFileManager.getInstance().ended(in);
                 } catch (IOException e) {
@@ -83,10 +82,6 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
         return operator.fillKeys(algorithm);
     }
 
-    @Override
-    public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
-        operator.runSync(in, out, algorithm);
-    }
 
     @Override
     public String toString() {

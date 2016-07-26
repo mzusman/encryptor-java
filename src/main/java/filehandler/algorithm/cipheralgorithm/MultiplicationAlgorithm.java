@@ -1,6 +1,8 @@
 package filehandler.algorithm.cipheralgorithm;
 
 
+import lombok.NoArgsConstructor;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 
@@ -8,11 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Created by mzeus on 30/05/16.
  */
 @XmlRootElement
+@NoArgsConstructor
 public class MultiplicationAlgorithm extends AbstractAlgorithm {
-
-    public MultiplicationAlgorithm(){
-
-    }
 
     private byte procedureMwo(int raw, int key) {
         return (byte) (raw * key);
@@ -20,7 +19,7 @@ public class MultiplicationAlgorithm extends AbstractAlgorithm {
 
 
     @Override
-    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
+    public Byte decrypt(Byte raw, Byte key, int streamIndex) {
         byte decKey = 0;
         for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i++) {
             if (((byte) (i * getKey())) == 1) {
@@ -28,21 +27,16 @@ public class MultiplicationAlgorithm extends AbstractAlgorithm {
                 break;
             }
         }
-        return (int) procedureMwo(raw, decKey);
+        return procedureMwo(raw, decKey);
     }
 
     @Override
-    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        return (int) procedureMwo(raw, getKey());
+    public Byte encrypt(Byte raw, Byte key, int streamIndex) {
+        return procedureMwo(raw, getKey());
     }
 
     @Override
-    public boolean checkIfKeyIsValid(Integer key) {
+    public boolean checkIfKeyIsValid(Byte key) {
         return !((byte) key.intValue() == 0 || key % 2 == 0);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
     }
 }

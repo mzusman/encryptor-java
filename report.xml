@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Report>
-    <files>
-        <file>
-            <fileName>key.bin</fileName>
-            <status>success</status>
-            <time>39</time>
-        </file>
-        <file>
-            <fileName>google-chrome-stable_current_amd64_decrypted.deb</fileName>
-            <status>success</status>
-            <time>71123</time>
-        </file>
-        <file>
-            <fileName>ideaIU-2016.2.tar.gz</fileName>
-            <status>success</status>
-            <time>621142</time>
-        </file>
-    </files>
+    <files/>
 </Report>

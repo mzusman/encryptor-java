@@ -49,7 +49,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
     public void run(Algorithm<Byte> algorithm) {
         try {
             algorithm = operator.fillKeys(algorithm);
-            Algorithm finalAlgorithm = algorithm;
+            Algorithm<Byte> finalAlgorithm = algorithm;
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
@@ -112,15 +112,12 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
 
     @Override
     public Algorithm<Byte> fillKeys(Algorithm<Byte> algorithm) throws IOException, ClassNotFoundException, KeyException {
-        return operator.fillKeys(fillKeys(algorithm));
+        return operator.fillKeys(algorithm);
     }
 
-    @Override
-    public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
-        operator.runSync(in, out, algorithm);
-    }
 
-    private void readAndWriteFromFiles(ArrayList<File> in, ArrayList<File> out, Algorithm algorithm) throws InterruptedException {
+    private void readAndWriteFromFiles(ArrayList<File> in, ArrayList<File> out, Algorithm<Byte> algorithm) throws InterruptedException {
+
         ArrayList<InputStream> inputStreams = new ArrayList<>();
         ArrayList<OutputStream> outputStreams = new ArrayList<>();
         try {

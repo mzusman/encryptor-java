@@ -13,27 +13,27 @@ public class XorAlgorithmTest {
     @Test
     public void encryptEqualsDecrypt() {
         algorithm.generateEncryptKeys();
-        assertEquals(algorithm.encrypt(algorithm.decrypt(20, 0, 0), 0, 0), new Integer(20));
+        assertEquals(algorithm.encrypt(algorithm.decrypt((byte) 20, (byte) 0, 0), (byte) 0, 0), new Byte((byte) 20));
     }
 
     @Test
     public void decrypt() throws Exception {
 
         algorithm.generateEncryptKeys();
-        assertNotEquals(algorithm.decrypt(20, 20, 0), new Integer(20));
+        assertNotEquals(algorithm.decrypt((byte) 20, (byte) 20, 0), new Byte((byte) 20));
     }
 
     @Test
     public void encrypt() throws Exception {
         algorithm.generateEncryptKeys();
-        assertNotEquals(algorithm.decrypt(20, 20, 0), new Integer(20));
+        assertNotEquals(algorithm.decrypt((byte) 20, (byte) 20, 0), new Byte((byte) 20));
 
     }
 
     @Test
     public void checkIfKeyIsValid() throws Exception {
-        assertFalse(algorithm.checkIfKeyIsValid(0));
-        assertTrue(algorithm.checkIfKeyIsValid(1));
+        assertFalse(algorithm.checkIfKeyIsValid((byte) 0));
+        assertTrue(algorithm.checkIfKeyIsValid((byte) 1));
 
     }
 

@@ -1,6 +1,8 @@
 package filehandler.algorithm.cipheralgorithm;
 
 
+import lombok.NoArgsConstructor;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -8,31 +10,22 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement
+@NoArgsConstructor
 public class XorAlgorithm extends AbstractAlgorithm {
 
-    public XorAlgorithm() {
-
+    @Override
+    public Byte decrypt(Byte raw, Byte key, int streamIndex) {
+        return (byte) ((raw ^ getKey()) & 0xff);
     }
 
     @Override
-    public Integer decrypt(Integer raw, Integer key, int streamIndex) {
-        return (Integer) ((byte) (raw ^ getKey()) & 0xff);
+    public Byte encrypt(Byte raw, Byte key, int streamIndex) {
+        return (byte) ((raw ^ getKey()) & 0xff);
     }
 
     @Override
-    public Integer encrypt(Integer raw, Integer key, int streamIndex) {
-        return (Integer) ((byte) (raw ^ getKey()) & 0xff);
-    }
-
-    @Override
-    public boolean checkIfKeyIsValid(Integer key) {
+    public boolean checkIfKeyIsValid(Byte key) {
         return (byte) key.intValue() != 0;
     }
-
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
 
 }

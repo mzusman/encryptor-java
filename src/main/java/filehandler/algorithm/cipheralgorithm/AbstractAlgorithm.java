@@ -2,6 +2,7 @@ package filehandler.algorithm.cipheralgorithm;
 
 import filehandler.algorithm.Algorithm;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -13,12 +14,9 @@ import java.util.Random;
  */
 @EqualsAndHashCode
 @XmlRootElement
-public abstract class AbstractAlgorithm implements Algorithm<Integer>, Serializable {
-    private Integer key = 0;
-
-    public AbstractAlgorithm() {
-
-    }
+@NoArgsConstructor
+public abstract class AbstractAlgorithm implements Algorithm<Byte>, Serializable {
+    private int key = 0;
 
     @Override
     public int numberOfKeys() {
@@ -36,31 +34,31 @@ public abstract class AbstractAlgorithm implements Algorithm<Integer>, Serializa
     }
 
     @Override
-    public Integer getKey() {
-        return key;
+    public Byte getKey() {
+        return (byte) key;
     }
 
     @Override
-    public Integer getKey(Algorithm algorithm, int index) {
-        return key;
+    public Byte getKey(Algorithm algorithm, int index) {
+        return (byte) key;
     }
 
     @Override
-    public Integer getKey(int index) {
-        return key;
+    public Byte getKey(int index) {
+        return (byte) key;
     }
 
     @Override
     public boolean generateEncryptKeys() {
         Random random = new Random();
         key = random.nextInt(255) + 1;
-        while (!checkIfKeyIsValid(key))
+        while (!checkIfKeyIsValid((byte) key))
             key = random.nextInt(255) + 1;
         return true;
     }
 
     @Override
-    public void setDecryptionKey(Integer key, int index, Algorithm algorithm) {
+    public void setDecryptionKey(Byte key, int index, Algorithm algorithm) {
         this.key = key;
     }
 

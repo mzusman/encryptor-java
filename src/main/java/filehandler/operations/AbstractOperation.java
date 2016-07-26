@@ -35,7 +35,7 @@ public abstract class AbstractOperation extends Observable implements Operation<
 
 
     @Override
-    public void run(Algorithm algorithm) {
+    public void run(Algorithm<Byte> algorithm) {
         try {
             algorithm = fillKeys(algorithm);
             @Cleanup InputStream in = streamManager.getInputStream();
@@ -65,8 +65,7 @@ public abstract class AbstractOperation extends Observable implements Operation<
         return algorithm;
     }
 
-    @Override
-    public void runSync(InputStream in, OutputStream out, Algorithm algorithm) throws IOException {
+    public void runSync(InputStream in, OutputStream out, Algorithm<Byte> algorithm) throws IOException {
         int raw;
         Byte enc;
         int index = 0;
