@@ -12,7 +12,6 @@ import java.util.List;
 public interface UserInterface<C extends Algorithm, O extends Operation> {
 
 
-    void showOptions();
-
+    void start(String args[]);
 
 }

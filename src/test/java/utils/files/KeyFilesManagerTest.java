@@ -43,6 +43,7 @@ public class KeyFilesManagerTest {
     @Test
     public void readAlgorithmsFromFile() throws Exception {
         //tested in #writeAlgorithmsToFile()
+        System.out.println(3%5);
     }
 
 }

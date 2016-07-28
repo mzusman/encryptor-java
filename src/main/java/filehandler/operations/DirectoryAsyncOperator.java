@@ -4,9 +4,11 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import commandline.CommandsEnum;
 import exceptions.EmptyDirectoryException;
+import exceptions.FileErrorException;
 import exceptions.KeyException;
 import filehandler.algorithm.Algorithm;
 import lombok.extern.log4j.Log4j2;
+import lombok.val;
 import utils.LogFileManager;
 import utils.Timer;
 import utils.xml.XmlReportManager;
@@ -73,10 +75,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
 
     private void runOnThreads(Algorithm<Byte> algorithm) throws EmptyDirectoryException, InterruptedException {
         int size = manager.size();
-        int filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
-        if (filesPerThreads < 1)
-            filesPerThreads = 1;
-        int finalFilesPerThreads = filesPerThreads;
+        val filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
         for (int i = 0; i < THREADS; i++) {
             service.execute(() -> {
                 try {
@@ -84,7 +83,7 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                         lock.lock();
                         ArrayList<File> inArray = new ArrayList<>();
                         ArrayList<File> outArray = new ArrayList<>();
-                        for (int j = 0; j < finalFilesPerThreads && counter >= 0; j++) {
+                        for (int j = 0; j < filesPerThreads && counter >= 0; j++) {
                             File in = manager.getInputFile(counter);
                             File out = manager.getOutputFile(counter);
                             inArray.add(in);
@@ -125,15 +124,20 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
             try {
                 inputStreams.add(new FileInputStream(file));
                 LogFileManager.getInstance().started(toString(), file);
+                setChanged();
+                notifyObservers(FILE_START);
             } catch (FileNotFoundException e) {
-                LogFileManager.getInstance().error(file, e);
+//                LogFileManager.getInstance().error(file, e);
+                notifyObservers(new FileErrorException(e, file, ""));
             }
         });
         out.forEach(file -> {
             try {
                 outputStreams.add(new FileOutputStream(file));
             } catch (FileNotFoundException e) {
-                LogFileManager.getInstance().error(file, e);
+                setChanged();
+                notifyObservers(new FileErrorException(e, file, ""));
+//                LogFileManager.getInstance().error(file, e);
             }
         });
 
@@ -150,8 +154,13 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                     } else {
                         File file = in.get(inputStreams.indexOf(inputStream));
                         //logs
-                        XmlReportManager.getInstance().writeFileDone(file);
-                        LogFileManager.getInstance().ended(file);
+
+//                        XmlReportManager.getInstance().writeFileDone(file);
+//                        LogFileManager.getInstance().ended(file);
+
+                        setChanged();
+                        notifyObservers(FILE_END);
+
                         // removing streams and files that their treatment is done
                         outputStreams.remove(inputStreams.indexOf(inputStream)).close();
                         in.remove(inputStreams.indexOf(inputStream));
@@ -161,8 +170,10 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                     }
                 } catch (IOException e) {
                     //logs
-                    LogFileManager.getInstance().error(in.get(inputStreams.indexOf(inputStream)), e);
-                    XmlReportManager.getInstance().writeFileError(in.get(inputStreams.indexOf(inputStream)), e);
+                    setChanged();
+                    notifyObservers(new FileErrorException(e, in.get(inputStreams.indexOf(inputStream)), ""));
+//                    LogFileManager.error(in.get(inputStreams.indexOf(inputStream)), e);
+//                    XmlReportManager.getInstance().writeFileError(in.get(inputStreams.indexOf(inputStream)), e);
                 }
             }
             index++;

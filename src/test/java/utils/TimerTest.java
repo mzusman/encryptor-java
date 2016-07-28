@@ -20,4 +20,5 @@ public class TimerTest {
         assertNotEquals(Timer.getInstance().getEnd(), Timer.getInstance().getStart());
     }
 
+
 }

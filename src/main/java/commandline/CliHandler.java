@@ -5,6 +5,7 @@ import boot.DecryptModule;
 import boot.DirectoryModule;
 import boot.EncryptModule;
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import com.google.inject.Module;
 import filehandler.algorithm.Algorithm;
 import filehandler.operations.*;
@@ -31,161 +32,28 @@ public class CliHandler implements Observer, UserInterface<Algorithm, Operation>
 
 
     @Getter
-    private Algorithm selectedAlgorithm;
-    @Getter
-    private ArrayList<Module> modules;
-    @Getter
     private Class<? extends Operation> selectOperation;
+    private CommandlineScanner scanner;
+    private CommandlineSelector selector;
+    private CommandlineProcessor processor;
 
 
-    public CliHandler() {
-        modules = new ArrayList<>();
+    @Inject
+    public CliHandler(CommandlineScanner scanner, CommandlineSelector selector, CommandlineProcessor processor) {
+        this.scanner = scanner;
+        this.selector = selector;
+        this.processor = processor;
     }
 
-    private int checkIfThereIsFile(String[] args) {
-        for (int i = 0; i < args.length; i++) {
-            File file = new File(args[i]);
-            if (file.isFile() || file.isDirectory())
-                return i;
-        }
-        return 0;
-    }
-
-    public boolean scanForOperation(String args[]) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String s : args) {
-            stringBuilder.append(s).append(" ");
-        }
-        String arg = stringBuilder.toString();
-        return arg.matches("^(enc|dec)(\\s)(s|a)(\\s)(\\S+)(\\s)$");
-    }
-
-    public boolean start(String[] args) {
-        if (!scanForOperation(args) || (selectOperation = processArgs(args)) == null) {
+    public void start(String[] args) {
+        if (!scanner.scanForPattern(args) || (selectOperation = processor.processArgs(args)) == null) {
             showOptions();
             return false;
         }
         return true;
     }
 
-    private Class<? extends Operation> processArgs(String[] args) {
-        File file = new File(args[2]);
-        if (file.canRead()) {
-            if (args[0].equals("enc"))
-                modules.add(new EncryptModule(file));
-            else modules.add(new DecryptModule(file));
-            if (file.isDirectory()) {
-                if (args[1].equals("a"))
-                    return DirectoryAsyncOperator.class;
-                else return DirectorySyncOperator.class;
-            } else {
-                if (args[0].equals("enc"))
-                    return EncryptionOperator.class;
-                else return DecryptionOperator.class;
-            }
-        } else return null;
-    }
 
-    public void startUserSelect() {
-        try {
-            if (askIf("Would you like to use the default algorithm?")) {
-                selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml();
-            } else {
-                if (askIf("would you like to import an algorithm xml?"))
-                    selectedAlgorithm = XmlFilesManager.getInstance().readAlgorithmFromXml(getFileFromUser(File::isFile));
-                else {
-                    selectedAlgorithm = selectAlgorithmClass();
-                    if (askIf("Would you like to export the built algorithm?"))
-                        XmlFilesManager.getInstance().writeAlgorithmToXml(selectedAlgorithm, getFileFromUser(File::isDirectory));
-                }
-            }
-        } catch (IOException | InstantiationException | IllegalAccessException | JAXBException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private File getFileFromUser(Predicate<File> predicate) throws IOException {
-        System.out.println("enter path:");
-        String in = getStringFromUser();
-        File file = new File(in);
-        while (!predicate.test(file)) {
-            in = getStringFromUser();
-            file = new File(in);
-            System.out.println("wrong input");
-        }
-        return file;
-    }
-
-    private boolean askIf(String message) throws IOException {
-        System.out.println(message + "(y/n)");
-        return yesOrNo();
-    }
-
-    private boolean yesOrNo() throws IOException {
-        String in;
-        while (!(in = getStringFromUser()).matches("^(n|y)$")) {
-            System.out.println("wrong input");
-        }
-        return in.equals("y");
-    }
-
-    public void showOptions() {
-        System.out.println("usage: encryptor <enc|dec> <s|a> <file|dir>");
-    }
-
-    private Algorithm selectAlgorithmClass() throws IOException, IllegalAccessException, InstantiationException {
-        System.out.println("Select an algorithm:");
-        ArrayList<AlgorithmsEnum> classes = new ArrayList<>();
-        Collections.addAll(classes, AlgorithmsEnum.values());
-        printDescriptions(classes);
-        AlgorithmsEnum anEnum = (AlgorithmsEnum) getUserChoice(classes);
-        Algorithm algorithm = anEnum.getAlgorithmClass().newInstance();
-        for (int i = 0; i < algorithm.numberOfAlgorithms(); i++) {
-            algorithm.pushAlgorithm(selectAlgorithmClass());
-        }
-        return algorithm;
-    }
-
-    private Object getUserChoice(List list) throws IOException {
-        System.out.printf("enter(%d-%d) :", 1, list.size());
-        String input = getStringFromUser();
-        while (!input.matches("\\d$")) {
-            System.out.println("Wrong input");
-            printDescriptions(list);
-            System.out.printf("enter(%d-%d) :", 1, list.size());
-            input = getStringFromUser();
-        }
-        return list.get(Integer.parseInt(input) - 1);// todo: have to make it more safety
-    }
-
-
-    private void printDescriptions(List list) {
-        list.forEach(c -> System.out.printf("%s - %s\n", list.indexOf(c) + 1, c.toString()));
-    }
-
-
-    public int getKey() throws IOException {
-        System.out.println("Enter the key that used for encryption:");
-        String key = getStringFromUser();
-        if (key.matches("\\d+$") && Integer.parseInt(key) < 256
-                && Integer.parseInt(key) > 0)
-            return Integer.parseInt(key);
-        else {
-            return getKey();
-        }
-    }
-
-    private String getStringFromUser() throws IOException {
-        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            String in = console.readLine();
-            if (in == null)
-                return "";
-            return in;
-        } catch (IOException e) {
-            throw new IOException("cannot read from console");
-        }
-    }
 
     @Override
     public void update(Observable observable, Object o) {
