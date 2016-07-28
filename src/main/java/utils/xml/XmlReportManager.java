@@ -10,12 +10,14 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by mzeus on 7/20/16.
  */
 @XmlRootElement(name = "Report")
-public class XmlReportManager {
+public class XmlReportManager implements Observer{
     private static XmlReportManager instance = new XmlReportManager();
 
     public static XmlReportManager getInstance() {
@@ -62,4 +64,8 @@ public class XmlReportManager {
     }
 
 
+    @Override
+    public void update(Observable observable, Object o) {
+
+    }
 }

@@ -10,21 +10,18 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by mzeus on 7/11/16.
  */
-public class XmlFilesManager {
-    private static XmlFilesManager instance = new XmlFilesManager();
-
-    public static XmlFilesManager getInstance() {
-        return instance;
-    }
+public class XmlFilesManager implements AlgorithmIO {
 
     private JAXBContext jaxbContext;
     private Schema schema;
 
-    private XmlFilesManager() {
+    public XmlFilesManager() {
 
         Class[] classes = new Class[AlgorithmsEnum.values().length];
         for (int i = 0; i < classes.length; i++) {
@@ -40,14 +37,7 @@ public class XmlFilesManager {
         }
     }
 
-    public void writeAlgorithmToXml(Algorithm algorithm) throws JAXBException {
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setSchema(schema);
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(algorithm, new File("default-algorithm.xml"));
-    }
-
-    public void writeAlgorithmToXml(Algorithm algorithm, File directory) throws JAXBException, IOException {
+    private void writeAlgorithmToXml(Algorithm algorithm, File directory) throws JAXBException, IOException {
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setSchema(schema);
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -58,13 +48,13 @@ public class XmlFilesManager {
             marshaller.marshal(algorithm, file);
     }
 
-    public Algorithm readAlgorithmFromXml() throws JAXBException {
+    private Algorithm readAlgorithmFromXml() throws JAXBException {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         unmarshaller.setSchema(schema);
         return (Algorithm) unmarshaller.unmarshal(new File("default-algorithm.xml"));
     }
 
-    public Algorithm readAlgorithmFromXml(File file) throws JAXBException {
+    private Algorithm readAlgorithmFromXml(File file) throws JAXBException {
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         unmarshaller.setSchema(schema);
         unmarshaller.setListener(new Unmarshaller.Listener() {
@@ -83,5 +73,15 @@ public class XmlFilesManager {
         return (Algorithm) unmarshaller.unmarshal(file);
     }
 
+    @Override
+    public void writeAlgorithm(Algorithm algorithm, File file) throws JAXBException, IOException {
+        writeAlgorithmToXml(algorithm,file);
+    }
 
+    @Override
+    public Algorithm readAlgorithm(File file) throws JAXBException {
+        if (file == null)
+            return readAlgorithmFromXml();
+        else return readAlgorithmFromXml(file);
+    }
 }

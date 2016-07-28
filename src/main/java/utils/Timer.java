@@ -4,12 +4,14 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.Clock;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by mzeus on 7/3/16.
  */
 @ToString
-public class Timer {
+public class Timer implements Observer{
 
 
     private static Timer instance = new Timer();
@@ -44,4 +46,8 @@ public class Timer {
     }
 
 
+    @Override
+    public void update(Observable observable, Object o) {
+
+    }
 }

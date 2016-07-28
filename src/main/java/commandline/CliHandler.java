@@ -30,8 +30,6 @@ import java.util.regex.MatchResult;
 public class CliHandler implements Observer, UserInterface<Algorithm, Operation> {
 
 
-    private ArrayList<Operation> operations;
-    private ArrayList<Algorithm> algorithms;
     @Getter
     private Algorithm selectedAlgorithm;
     @Getter

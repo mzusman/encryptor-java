@@ -14,9 +14,12 @@ import utils.files.DirectoryFilesManager;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.*;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 
 /**
  * Created by mzeus on 7/6/16.
@@ -49,43 +52,10 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
     public void run(Algorithm<Byte> algorithm) {
         try {
             algorithm = operator.fillKeys(algorithm);
-            Algorithm<Byte> finalAlgorithm = algorithm;
             setChanged();
             notifyObservers(CommandsEnum.START);
             Timer.getInstance().start();
-            int size = manager.size();
-            int filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
-            if (filesPerThreads < 1)
-                filesPerThreads = 1;
-            int finalFilesPerThreads = filesPerThreads;
-            for (int i = 0; i < THREADS; i++) {
-                service.execute(() -> {
-                    try {
-                        while (getCounter() >= 0) {
-                            lock.lock();
-                            ArrayList<File> inArray = new ArrayList<>();
-                            ArrayList<File> outArray = new ArrayList<>();
-                            for (int j = 0; j < finalFilesPerThreads && getCounter() >= 0; j++) {
-                                File in = manager.getInputFile(counter);
-                                File out = manager.getOutputFile(counter);
-                                inArray.add(in);
-                                outArray.add(out);
-                                counterDown();
-                            }
-                            lock.unlock();
-                            if (inArray.isEmpty()) {
-                                break;
-                            }
-                            readAndWriteFromFiles(inArray, outArray, finalAlgorithm);
-                        }
-                    } catch (IOException | InterruptedException e) {
-                        setChanged();
-                        notifyObservers(e);
-                    }
-                });
-            }
-            service.shutdown();
-            service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+            runOnThreads(algorithm);
         } catch (InterruptedException | KeyException | ClassNotFoundException | IOException e) {
             setChanged();
             notifyObservers(e);
@@ -97,12 +67,44 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
 
     }
 
-    private synchronized int getCounter() {
-        return counter;
+    private void counterDown() {
+        counter--;
     }
 
-    private synchronized void counterDown() {
-        counter--;
+    private void runOnThreads(Algorithm<Byte> algorithm) throws EmptyDirectoryException, InterruptedException {
+        int size = manager.size();
+        int filesPerThreads = size / THREADS + ((size % THREADS == 0) ? 0 : 1);
+        if (filesPerThreads < 1)
+            filesPerThreads = 1;
+        int finalFilesPerThreads = filesPerThreads;
+        for (int i = 0; i < THREADS; i++) {
+            service.execute(() -> {
+                try {
+                    while (counter >= 0) {
+                        lock.lock();
+                        ArrayList<File> inArray = new ArrayList<>();
+                        ArrayList<File> outArray = new ArrayList<>();
+                        for (int j = 0; j < finalFilesPerThreads && counter >= 0; j++) {
+                            File in = manager.getInputFile(counter);
+                            File out = manager.getOutputFile(counter);
+                            inArray.add(in);
+                            outArray.add(out);
+                            counterDown();
+                        }
+                        lock.unlock();
+                        if (inArray.isEmpty()) {
+                            break;
+                        }
+                        readAndWriteFromFiles(inArray, outArray, algorithm);
+                    }
+                } catch (IOException | InterruptedException e) {
+                    setChanged();
+                    notifyObservers(e);
+                }
+            });
+        }
+        service.shutdown();
+        service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
     }
 
     @Override
@@ -115,20 +117,25 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
         return operator.fillKeys(algorithm);
     }
 
-
-    private void readAndWriteFromFiles(ArrayList<File> in, ArrayList<File> out, Algorithm<Byte> algorithm) throws InterruptedException {
+    private void readAndWriteFromFiles(ArrayList<File> in, ArrayList<File> out, Algorithm<Byte> algorithm) throws InterruptedException, FileNotFoundException {
 
         ArrayList<InputStream> inputStreams = new ArrayList<>();
         ArrayList<OutputStream> outputStreams = new ArrayList<>();
-        try {
-            for (int i = 0; i < in.size(); i++) {
-                inputStreams.add(new FileInputStream(in.get(i)));
-                outputStreams.add(new FileOutputStream(out.get(i)));
-                LogFileManager.getInstance().started(toString(), in.get(i));
+        in.forEach(file -> {
+            try {
+                inputStreams.add(new FileInputStream(file));
+                LogFileManager.getInstance().started(toString(), file);
+            } catch (FileNotFoundException e) {
+                LogFileManager.getInstance().error(file, e);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        });
+        out.forEach(file -> {
+            try {
+                outputStreams.add(new FileOutputStream(file));
+            } catch (FileNotFoundException e) {
+                LogFileManager.getInstance().error(file, e);
+            }
+        });
 
 
         int raw;
@@ -142,14 +149,18 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
                         outputStream.write(operate(algorithm, (byte) raw, index));
                     } else {
                         File file = in.get(inputStreams.indexOf(inputStream));
+                        //logs
                         XmlReportManager.getInstance().writeFileDone(file);
                         LogFileManager.getInstance().ended(file);
+                        // removing streams and files that their treatment is done
                         outputStreams.remove(inputStreams.indexOf(inputStream)).close();
                         in.remove(inputStreams.indexOf(inputStream));
                         inputStream.close();
                         inputStreams.remove(inputStream);
+                        //
                     }
                 } catch (IOException e) {
+                    //logs
                     LogFileManager.getInstance().error(in.get(inputStreams.indexOf(inputStream)), e);
                     XmlReportManager.getInstance().writeFileError(in.get(inputStreams.indexOf(inputStream)), e);
                 }

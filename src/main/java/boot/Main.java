@@ -5,6 +5,9 @@ import com.google.inject.Injector;
 import commandline.CliHandler;
 import filehandler.algorithm.*;
 import filehandler.operations.*;
+import sun.rmi.log.ReliableLog;
+import utils.LogFileManager;
+import utils.xml.XmlFilesManager;
 
 import java.util.Observable;
 
@@ -30,6 +33,10 @@ public class Main {
         Operation operator = injector.getInstance(cliHandler.getSelectOperation());
         Algorithm algorithm = cliHandler.getSelectedAlgorithm();
         ((Observable) operator).addObserver(cliHandler);
+        ((Observable) operator).addObserver(new LogFileManager());
+        ((Observable) operator).addObserver(new XmlFilesManager());
+        ((Observable) operator).addObserver(new XmlFilesManager());
+
 
         operator.run(algorithm);
 
