@@ -1,5 +1,6 @@
 package utils.xml;
 
+import com.google.inject.Inject;
 import utils.Timer;
 
 import javax.xml.bind.JAXBContext;
@@ -17,12 +18,7 @@ import java.util.Observer;
  * Created by mzeus on 7/20/16.
  */
 @XmlRootElement(name = "Report")
-public class XmlReportManager implements Observer{
-    private static XmlReportManager instance = new XmlReportManager();
-
-    public static XmlReportManager getInstance() {
-        return instance;
-    }
+public class XmlReportManager implements ReportManager {
 
     private JAXBContext jaxbContext;
 
@@ -30,8 +26,14 @@ public class XmlReportManager implements Observer{
     @XmlAnyElement(lax = true)
     private ArrayList<FilesReport> queue = new ArrayList<>();
 
+    File dirFile;
 
-    private XmlReportManager() {
+    @Inject
+    public XmlReportManager(File dirFile) {
+        this.dirFile = dirFile;
+    }
+
+    public XmlReportManager() {
 
         try {
             jaxbContext = JAXBContext.newInstance(XmlReportManager.class, SuccFileReport.class
@@ -43,17 +45,20 @@ public class XmlReportManager implements Observer{
     }
 
 
+    @Override
     public void writeFileDone(File file) {
         SuccFileReport report = new SuccFileReport(file, Timer.getInstance().current());
         queue.add(report);
     }
 
-    public void writeFileError(File file, Exception e) {
-        FailedFileReport report = new FailedFileReport(file, e);
+    @Override
+    public void writeFileError(File file, Throwable throwable) {
+        FailedFileReport report = new FailedFileReport(file, throwable);
         queue.add(report);
     }
 
-    public void writeReport(File dirFile) {
+    @Override
+    public void writeReport() {
         try {
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -63,9 +68,4 @@ public class XmlReportManager implements Observer{
         }
     }
 
-
-    @Override
-    public void update(Observable observable, Object o) {
-
-    }
 }

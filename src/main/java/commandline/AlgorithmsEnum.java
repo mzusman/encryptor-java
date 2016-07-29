@@ -1,12 +1,12 @@
 package commandline;
 
-import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.DoubleAlgorithm;
-import filehandler.algorithm.ReverseAlgorithm;
-import filehandler.algorithm.SplitAlgorithms;
-import filehandler.algorithm.cipheralgorithm.CaesarAlgorithm;
-import filehandler.algorithm.cipheralgorithm.MultiplicationAlgorithm;
-import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
+import domain.algorithm.Algorithm;
+import domain.algorithm.DoubleAlgorithm;
+import domain.algorithm.ReverseAlgorithm;
+import domain.algorithm.SplitAlgorithms;
+import domain.algorithm.cipheralgorithm.CaesarAlgorithm;
+import domain.algorithm.cipheralgorithm.MultiplicationAlgorithm;
+import domain.algorithm.cipheralgorithm.XorAlgorithm;
 import lombok.Getter;
 
 /**

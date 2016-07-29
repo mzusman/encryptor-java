@@ -1,7 +1,5 @@
 package utils.files;
 
-import filehandler.algorithm.Algorithm;
-import filehandler.algorithm.cipheralgorithm.XorAlgorithm;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -9,8 +7,6 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

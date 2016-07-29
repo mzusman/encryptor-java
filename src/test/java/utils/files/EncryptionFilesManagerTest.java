@@ -1,6 +1,5 @@
 package utils.files;
 
-import filehandler.operations.EncryptionOperator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

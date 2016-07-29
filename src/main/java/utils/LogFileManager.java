@@ -2,6 +2,7 @@ package utils;
 
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
+import utils.xml.Logging;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,24 +15,24 @@ import java.util.Observer;
  * Created by mzeus on 7/21/16.
  */
 @Log4j2()
-public class LogFileManager implements Observer {
+public class LogFileManager implements Logging {
 
     public LogFileManager() {
 
     }
 
-    public void started(String desc, File file) {
-        log.info("operation: " + desc + " started on file: " +
+    private void started(File file) {
+        log.info("operation: started on file: " +
                 file.getName());
     }
 
-    public void ended(File file) {
+    private void ended(File file) {
         log.info("operation on file : " + file.getName()
                 + " ended, took : " + Timer.getInstance().current());
 
     }
 
-    public void error(File in, Throwable e) {
+    private void error(File in, Throwable e) {
         StringWriter errors = new StringWriter();
         e.printStackTrace(new PrintWriter(errors));
         String stackTrace = errors.toString();
@@ -42,7 +43,18 @@ public class LogFileManager implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-
+    public void fileStarted(File file) {
+        started(file);
     }
+
+    @Override
+    public void fileFinished(File file) {
+        ended(file);
+    }
+
+    @Override
+    public void fileError(File file, Throwable throwable) {
+        error(file, throwable);
+    }
+
 }

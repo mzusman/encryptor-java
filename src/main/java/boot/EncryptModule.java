@@ -2,10 +2,10 @@ package boot;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
-import filehandler.operations.DirectoryAsyncOperator;
-import filehandler.operations.DirectorySyncOperator;
-import filehandler.operations.EncryptionOperator;
-import filehandler.operations.AbstractOperation;
+import domain.operations.DirectoryAsyncOperator;
+import domain.operations.DirectorySyncOperator;
+import domain.operations.EncryptionOperator;
+import domain.operations.AbstractOperation;
 import lombok.AllArgsConstructor;
 import utils.StreamManager;
 import utils.files.EncryptionFilesManager;
@@ -24,6 +24,7 @@ public class EncryptModule extends AbstractModule {
     protected void configure() {
         install(new KeyModule(file));
         install(new DirectoryModule());
+        install(new LoggingModule(file));
         bind(StreamManager.class).to(EncryptionFilesManager.class);
         bind(EncryptionFilesManager.class).toInstance(new EncryptionFilesManager(file));
         bind(AbstractFilesManager.class)

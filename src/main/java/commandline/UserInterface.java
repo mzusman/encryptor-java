@@ -1,10 +1,7 @@
 package commandline;
 
-import filehandler.algorithm.Algorithm;
-import filehandler.operations.Operation;
-
-import java.io.IOException;
-import java.util.List;
+import domain.algorithm.Algorithm;
+import domain.operations.Operation;
 
 /**
  * Created by mzeus on 01/06/16.
@@ -12,6 +9,6 @@ import java.util.List;
 public interface UserInterface<C extends Algorithm, O extends Operation> {
 
 
-    void start(String args[]);
+    boolean start(String args[]);
 
 }

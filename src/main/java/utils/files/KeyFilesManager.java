@@ -1,6 +1,6 @@
 package utils.files;
 
-import filehandler.algorithm.Algorithm;
+import domain.algorithm.Algorithm;
 import lombok.Cleanup;
 
 import java.io.*;

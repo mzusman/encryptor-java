@@ -5,4 +5,9 @@ package commandline;
  */
 public interface CommandlineProcessor<T> {
     Class<? extends T> processArgs(String[] args);
+
+    boolean scanForPattern(String args[]);
+
+    void showOptions();
+
 }

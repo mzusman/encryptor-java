@@ -21,12 +21,12 @@ public class FailedFileReport extends FilesReport {
     @XmlElement
     String stackTrace;
 
-    public FailedFileReport(File file, Exception e) {
+    public FailedFileReport(File file, Throwable throwable) {
         super(file, false);
-        eName = e.getClass().getName();
-        eMsg = e.getMessage();
+        eName = throwable.getClass().getName();
+        eMsg = throwable.getMessage();
         StringWriter errors = new StringWriter();
-        e.printStackTrace(new PrintWriter(errors));
+        throwable.printStackTrace(new PrintWriter(errors));
         stackTrace = errors.toString();
 
     }

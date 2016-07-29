@@ -1,14 +1,19 @@
 package boot;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
-import commandline.CliHandler;
-import filehandler.algorithm.*;
-import filehandler.operations.*;
-import sun.rmi.log.ReliableLog;
+import com.google.inject.Module;
+import commandline.CommandlineHandler;
+import commandline.OperationProcessor;
+import domain.algorithm.*;
+import domain.operations.Operation;
 import utils.LogFileManager;
-import utils.xml.XmlFilesManager;
+import utils.XmlAlgorithm;
+import utils.xml.Manager;
 
+import java.io.File;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -25,18 +30,16 @@ public class Main {
      */
 
     public static void main(String args[]) {
-        CliHandler cliHandler = new CliHandler();
-        if (!cliHandler.start(args))
+        Injector injector = Guice.createInjector(new CommandlineModule());
+        CommandlineHandler handler = injector.getInstance(CommandlineHandler.class);
+        Algorithm algorithm = injector.getInstance(Algorithm.class);
+        if (!handler.start(args))
             return;
-        cliHandler.startUserSelect();
-        Injector injector = Guice.createInjector(cliHandler.getModules());
-        Operation operator = injector.getInstance(cliHandler.getSelectOperation());
-        Algorithm algorithm = cliHandler.getSelectedAlgorithm();
-        ((Observable) operator).addObserver(cliHandler);
-        ((Observable) operator).addObserver(new LogFileManager());
-        ((Observable) operator).addObserver(new XmlFilesManager());
-        ((Observable) operator).addObserver(new XmlFilesManager());
-
+        injector = Guice.createInjector(((OperationProcessor) handler.getProcessor()).getModule());
+        Operation operator = injector.getInstance(handler.getSelectOperation());
+        Manager manager = injector.getInstance(Manager.class);
+        ((Observable) operator).addObserver(handler);
+        ((Observable) operator).addObserver(manager);
 
         operator.run(algorithm);
 
