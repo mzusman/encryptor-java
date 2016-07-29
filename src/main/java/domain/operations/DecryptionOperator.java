@@ -3,7 +3,7 @@ package domain.operations;
 import com.google.inject.Inject;
 import exceptions.KeyException;
 import domain.algorithm.Algorithm;
-import utils.StreamManager;
+import utils.files.StreamManager;
 import utils.files.KeyFilesManager;
 
 import java.io.*;

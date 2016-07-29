@@ -1,28 +1,22 @@
 package utils.files;
 
-import boot.EncryptModule;
+import modules.EncryptModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.hamcrest.Matcher;
 import org.hamcrest.core.Is;
-import org.hamcrest.core.IsNot;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.mockito.internal.matchers.Equals;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.hamcrest.core.Every.*;
 import static org.hamcrest.core.IsNot.*;
 import static org.junit.Assert.*;
 

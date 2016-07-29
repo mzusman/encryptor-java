@@ -1,7 +1,6 @@
-package boot;
+package modules;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Module;
 import commandline.CommandlineProcessor;
 import commandline.OperationProcessor;
 

@@ -1,13 +1,12 @@
 package commandline;
 
-import boot.DecryptModule;
-import boot.EncryptModule;
+import modules.DecryptModule;
+import modules.EncryptModule;
 import com.google.inject.Module;
 import domain.operations.*;
 import lombok.Getter;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by mzeus on 28/07/16.
@@ -29,7 +28,7 @@ public class OperationProcessor implements CommandlineProcessor<Operation> {
 
         if (args[0].equals("enc"))
             this.module = new EncryptModule(file);
-        else if (args[1].equals("dec"))
+        else if (args[0].equals("dec"))
             this.module = new DecryptModule(file);
 
         if (file.canRead()) {

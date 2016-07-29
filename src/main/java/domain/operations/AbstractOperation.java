@@ -3,7 +3,7 @@ package domain.operations;
 import com.google.inject.Inject;
 import exceptions.KeyException;
 import lombok.extern.log4j.Log4j2;
-import utils.StreamManager;
+import utils.files.StreamManager;
 import domain.algorithm.Algorithm;
 import lombok.*;
 import utils.Timer;

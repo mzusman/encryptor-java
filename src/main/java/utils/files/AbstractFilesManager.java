@@ -1,9 +1,6 @@
 package utils.files;
 
-import com.google.inject.Inject;
-import exceptions.EmptyDirectoryException;
 import exceptions.FileAlreadyExistsException;
-import utils.StreamManager;
 import lombok.Getter;
 import lombok.Setter;
 

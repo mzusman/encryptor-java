@@ -1,4 +1,4 @@
-package boot;
+package modules;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
@@ -7,7 +7,7 @@ import domain.operations.DirectorySyncOperator;
 import domain.operations.EncryptionOperator;
 import domain.operations.AbstractOperation;
 import lombok.AllArgsConstructor;
-import utils.StreamManager;
+import utils.files.StreamManager;
 import utils.files.EncryptionFilesManager;
 import utils.files.AbstractFilesManager;
 

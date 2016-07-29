@@ -1,11 +1,11 @@
-package boot;
+package modules;
 
 import com.google.inject.AbstractModule;
 import lombok.AllArgsConstructor;
-import utils.LogFileManager;
-import utils.xml.Logging;
-import utils.xml.ReportManager;
-import utils.xml.XmlReportManager;
+import utils.log.LogFileManager;
+import utils.log.Logging;
+import utils.xml.report.ReportManager;
+import utils.xml.report.XmlReportManager;
 
 import java.io.File;
 
@@ -20,6 +20,6 @@ public class LoggingModule extends AbstractModule {
     protected void configure() {
         bind(Logging.class).to(LogFileManager.class);
         bind(ReportManager.class).to(XmlReportManager.class);
-        bind(File.class).toInstance(file.getParentFile());
+        bind(XmlReportManager.class).toInstance(new XmlReportManager(file));
     }
 }

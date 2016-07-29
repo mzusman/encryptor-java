@@ -1,19 +1,14 @@
 package boot;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import commandline.CommandlineHandler;
 import commandline.OperationProcessor;
 import domain.algorithm.*;
 import domain.operations.Operation;
-import utils.LogFileManager;
-import utils.XmlAlgorithm;
+import modules.CommandlineModule;
 import utils.xml.Manager;
 
-import java.io.File;
-import java.util.List;
 import java.util.Observable;
 
 /**

@@ -1,15 +1,11 @@
-package utils;
+package utils.log;
 
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import utils.xml.Logging;
+import utils.Timer;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by mzeus on 7/21/16.

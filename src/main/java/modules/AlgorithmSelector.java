@@ -1,8 +1,9 @@
-package commandline;
+package modules;
 
+import commandline.AlgorithmsEnum;
+import commandline.Selector;
 import domain.algorithm.Algorithm;
-import lombok.Getter;
-import utils.XmlAlgorithm;
+import modules.XmlAlgorithm;
 
 import javax.inject.Provider;
 import javax.xml.bind.JAXBException;

@@ -4,9 +4,10 @@ import com.google.inject.Inject;
 import domain.operations.CommandsEnum;
 import exceptions.FileErrorException;
 import lombok.AllArgsConstructor;
-import utils.XmlAlgorithm;
+import utils.log.Logging;
 import utils.status.FileEnd;
 import utils.status.FileStart;
+import utils.xml.report.XmlReportManager;
 
 import java.util.Observable;
 import java.util.Observer;

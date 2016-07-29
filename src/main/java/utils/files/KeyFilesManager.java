@@ -21,7 +21,7 @@ public class KeyFilesManager extends AbstractFilesManager {
         if (!getInputFile().isDirectory())
             file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
         else file = new File(getInputFile().getPath() + File.separator + KEY_FILE_NAME);
-        if (file.exists() )
+        if (file.exists())
             file.delete();
         if (file.createNewFile())
             return file;
@@ -40,7 +40,6 @@ public class KeyFilesManager extends AbstractFilesManager {
 
     public Algorithm readAlgorithmsFromFile() throws IOException, ClassNotFoundException {
         File file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
-        System.out.println(file.getPath());
         if (!file.exists())
             throw new IOException();
         @Cleanup ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));

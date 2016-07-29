@@ -11,9 +11,7 @@ import java.util.Observer;
  * Created by mzeus on 7/3/16.
  */
 @ToString
-public class Timer implements Observer{
-
-
+public class Timer {
     private static Timer instance = new Timer();
 
     @Getter
@@ -46,8 +44,4 @@ public class Timer implements Observer{
     }
 
 
-    @Override
-    public void update(Observable observable, Object o) {
-
-    }
 }

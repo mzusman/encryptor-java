@@ -1,6 +1,5 @@
-package utils.xml;
+package utils.xml.report;
 
-import com.google.inject.Inject;
 import utils.Timer;
 
 import javax.xml.bind.JAXBContext;
@@ -11,8 +10,6 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Created by mzeus on 7/20/16.
@@ -26,15 +23,10 @@ public class XmlReportManager implements ReportManager {
     @XmlAnyElement(lax = true)
     private ArrayList<FilesReport> queue = new ArrayList<>();
 
-    File dirFile;
+    private File dirFile;
 
-    @Inject
     public XmlReportManager(File dirFile) {
         this.dirFile = dirFile;
-    }
-
-    public XmlReportManager() {
-
         try {
             jaxbContext = JAXBContext.newInstance(XmlReportManager.class, SuccFileReport.class
                     , FailedFileReport.class, FilesReport.class);
@@ -44,6 +36,9 @@ public class XmlReportManager implements ReportManager {
 
     }
 
+    public XmlReportManager() {
+
+    }
 
     @Override
     public void writeFileDone(File file) {

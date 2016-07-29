@@ -1,4 +1,4 @@
-package utils;
+package modules;
 
 import commandline.AlgorithmsEnum;
 import domain.algorithm.Algorithm;

@@ -1,7 +1,6 @@
-package boot;
+package modules;
 
 import com.google.inject.AbstractModule;
-import commandline.AlgorithmSelector;
 import domain.algorithm.Algorithm;
 
 /**
