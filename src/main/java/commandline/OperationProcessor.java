@@ -13,13 +13,13 @@ import java.io.File;
  */
 
 public class OperationProcessor implements CommandlineProcessor<Operation> {
-    private final String pattern = "^(enc|dec)(\\s)(s|a)(\\s)(\\S+)(\\s+)$";
+    private final String pattern;
     @Getter
     private Module module;
 
 
-    OperationProcessor() {
-
+    public OperationProcessor(String pattern) {
+        this.pattern = pattern;
     }
 
     @Override

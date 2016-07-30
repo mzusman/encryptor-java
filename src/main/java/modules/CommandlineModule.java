@@ -12,5 +12,7 @@ public class CommandlineModule extends AbstractModule {
     protected void configure() {
         install(new AlgorithmModule());
         bind(CommandlineProcessor.class).to(OperationProcessor.class);
+        bind(OperationProcessor.class).toInstance(
+                new OperationProcessor("^(enc|dec)(\\s)(s|a)(\\s)(\\S+)(\\s+)$"));
     }
 }

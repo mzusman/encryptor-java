@@ -27,9 +27,9 @@ public class Main {
     public static void main(String args[]) {
         Injector injector = Guice.createInjector(new CommandlineModule());
         CommandlineHandler handler = injector.getInstance(CommandlineHandler.class);
-        Algorithm algorithm = injector.getInstance(Algorithm.class);
         if (!handler.start(args))
             return;
+        Algorithm algorithm = injector.getInstance(Algorithm.class);
         injector = Guice.createInjector(((OperationProcessor) handler.getProcessor()).getModule());
         Operation operator = injector.getInstance(handler.getSelectOperation());
         Manager manager = injector.getInstance(Manager.class);
