@@ -30,6 +30,11 @@ public abstract class MultiAlgorithm<T> implements Algorithm<T> {
     }
 
     @Override
+    public int numberOfKeys() {
+        return numberOfAlgorithms();
+    }
+
+    @Override
     public T decrypt(T raw, T key, int streamIndex) {
         T dec = raw;
         for (int i = algorithms.size() - 1; i >= 0; i--) {

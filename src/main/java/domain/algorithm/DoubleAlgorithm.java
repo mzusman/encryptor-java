@@ -14,16 +14,11 @@ import java.util.Optional;
  */
 @XmlRootElement
 @NoArgsConstructor
-public class DoubleAlgorithm extends MultiAlgorithm {
-
+public class DoubleAlgorithm<T> extends MultiAlgorithm<T> {
 
     @Override
     public int numberOfAlgorithms() {
         return 2;
     }
 
-    @Override
-    public int numberOfKeys() {
-        return 2;
-    }
 }

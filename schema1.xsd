@@ -42,7 +42,7 @@
       <xs:element name="algorithms" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:any processContents="lax" namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by mzeus on 01/06/16.
  *
  * @param <T> the type parameter
  */

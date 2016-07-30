@@ -26,10 +26,10 @@ import java.util.concurrent.locks.ReentrantLock;
 @Log4j2
 public class DirectoryAsyncOperator extends Observable implements Operation<Algorithm<Byte>, Byte> {
 
-    private AbstractOperation operator;
-    private DirectoryFilesManager manager;
-    private ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
-    private static final int NTHREADS = 5;
+    private final AbstractOperation operator;
+    private final DirectoryFilesManager manager;
+    private final int NTHREADS;
+    private final ExecutorService service;
     /**
      * The constant BASE.
      */
@@ -43,7 +43,10 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
      * @param directoryFilesManager the directory files manager
      */
     @Inject
-    public DirectoryAsyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager directoryFilesManager) {
+    public DirectoryAsyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager directoryFilesManager,
+                                  @Named("NTHREADS") int threads) {
+        this.NTHREADS = threads;
+        this.service = Executors.newFixedThreadPool(NTHREADS);
         this.operator = operator;
         this.manager = directoryFilesManager;
     }

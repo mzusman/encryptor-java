@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
- * Created by mzeus on 30/05/16.
+ * Multiplication algorithm - preforms a mwo procedure on the key with the raw byte.
  */
 @XmlRootElement
 @NoArgsConstructor

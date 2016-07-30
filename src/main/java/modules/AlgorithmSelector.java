@@ -77,11 +77,18 @@ public class AlgorithmSelector implements Selector<AlgorithmsEnum>, Provider<Alg
                 else {
                     algorithm = selectAlgorithmClass();
                     if (askIf("Would you like to export the built algorithm?"))
-                        XmlAlgorithm.getInstance().writeAlgorithm(algorithm, getFileFromUser(File::isDirectory));
+                        try {
+                            XmlAlgorithm.getInstance().writeAlgorithm(algorithm, getFileFromUser(File::isDirectory));
+                        } catch (JAXBException e) {
+                            System.err.println("Error while exporting");
+                        }
                 }
             }
             return algorithm;
-        } catch (IOException | JAXBException e) {
+        } catch (IOException e) {
+            return null;
+        } catch (JAXBException e) {
+            System.err.println("Error while importing - starting over");
             return startUserSelect();
         }
     }

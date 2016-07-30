@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.xml.bind.annotation.*;
 
 /**
- * Created by mzeus on 01/06/16.
+ * runs a given algorithm in reverse - encrypt instead of decrypt
+ * and decrypt instead of encrypt
  *
  * @param <T> the type parameter
  */

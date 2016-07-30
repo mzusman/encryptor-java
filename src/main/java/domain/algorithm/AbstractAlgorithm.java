@@ -30,6 +30,7 @@ public abstract class AbstractAlgorithm implements Algorithm<Byte>, Serializable
 
     @Override
     public void pushAlgorithm(Algorithm algorithm) {
+        //does nothing
     }
 
     @Override

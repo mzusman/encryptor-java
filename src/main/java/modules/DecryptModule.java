@@ -34,6 +34,7 @@ public class DecryptModule extends AbstractModule {
                 .annotatedWith(Names.named(DirectoryAsyncOperator.BASE))
                 .to(DecryptionOperator.class);
 
+
         bind(AbstractOperation.class)
                 .annotatedWith(Names.named(DirectorySyncOperator.BASE))
                 .to(DecryptionOperator.class);

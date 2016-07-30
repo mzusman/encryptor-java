@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by mzeus on 30/05/16.
+ * Preforms a Xor operation on the key and the raw byte
  */
 @XmlRootElement
 @NoArgsConstructor
@@ -26,5 +26,4 @@ public class XorAlgorithm extends AbstractAlgorithm {
     public boolean checkIfKeyIsValid(Byte key) {
         return (byte) key.intValue() != 0;
     }
-
 }
