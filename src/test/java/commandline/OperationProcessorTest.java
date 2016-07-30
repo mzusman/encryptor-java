@@ -29,6 +29,12 @@ public class OperationProcessorTest {
     public void scanForPattern() throws Exception {
         assertTrue(processor.scanForPattern(new String[]{"enc", "a", "asdasd"}));
         assertTrue(processor.scanForPattern(new String[]{"enc", "s", "asdasd"}));
+        assertTrue(processor.scanForPattern(new String[]{"dec", "a", "asdasd"}));
+        assertTrue(processor.scanForPattern(new String[]{"dec", "a", "asdasd"}));
+        assertFalse(processor.scanForPattern(new String[]{"enc", "s"}));
+        assertFalse(processor.scanForPattern(new String[]{"asd", "s", "asdasd"}));
+        assertFalse(processor.scanForPattern(new String[]{"enc", "123", "asdasd"}));
+        assertFalse(processor.scanForPattern(new String[]{"enc", "as", "asdasd123"}));
 
     }
 

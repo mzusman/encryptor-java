@@ -5,12 +5,10 @@ import com.google.inject.name.Named;
 import exceptions.CannotCreateFileException;
 import exceptions.EmptyDirectoryException;
 import exceptions.FileAlreadyExistsException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import utils.immutables.PairOf;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -19,7 +17,7 @@ import java.util.stream.Collectors;
 public class DirectoryFilesManager extends AbstractFilesManager {
 
     private ArrayList<File> inFiles = new ArrayList<>();
-    private final ArrayList<Pair> inToOutMap = new ArrayList<>();
+    private final ArrayList<PairOf<File, File>> inToOutMap = new ArrayList<>();
     private final AbstractFilesManager filesManager;
     private File opDir;
 
@@ -40,7 +38,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     }
 
     @Override
-    public File getOutFile() throws IOException {
+    public synchronized File getOutFile() throws IOException {
         return filesManager.getOutFile();
     }
 
@@ -58,7 +56,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
                 File outFile = new File(opDir, inFile.getName());
                 if (!outFile.createNewFile())
                     throw new CannotCreateFileException(opDir.getName());
-                inToOutMap.add(new Pair(inFile, outFile));
+                inToOutMap.add(new PairOf<>(inFile, outFile));
             }
             if (inToOutMap.isEmpty())
                 throw new EmptyDirectoryException();
@@ -67,21 +65,23 @@ public class DirectoryFilesManager extends AbstractFilesManager {
 
     /***
      * should'nt be used - gives back the first file
+     *
      * @return
      * @throws IOException
      */
     @Override
-    public synchronized OutputStream getOutputStream() throws IOException {
+    public OutputStream getOutputStream() throws IOException {
         return new FileOutputStream(getOutputFile(0));
     }
 
     /***
      * should'nt be used - gives back only the first file in the directory
+     *
      * @return
      * @throws FileNotFoundException
      */
     @Override
-    public synchronized InputStream getInputStream() throws IOException {
+    public InputStream getInputStream() throws IOException {
         return new FileInputStream(getInputFile(0));
     }
 
@@ -94,7 +94,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
      */
     public synchronized File getInputFile(int i) throws IOException {
         createOutputFiles();
-        return inToOutMap.get(i).getInputFile();
+        return inToOutMap.get(i).getKey();
     }
 
     /**
@@ -106,7 +106,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
      */
     public synchronized File getOutputFile(int i) throws IOException {
         createOutputFiles();
-        return inToOutMap.get(i).getOutputFile();
+        return inToOutMap.get(i).getVal();
     }
 
     public synchronized int size() throws EmptyDirectoryException {
@@ -119,13 +119,6 @@ public class DirectoryFilesManager extends AbstractFilesManager {
         return filesManager.getFileExtension().substring(1);
     }
 
-
-    @Data
-    @AllArgsConstructor
-    private class Pair {
-        File inputFile;
-        File outputFile;
-    }
 
 }
 

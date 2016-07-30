@@ -40,7 +40,8 @@ public class Manager implements Observer {
         }
         if (o.equals(CommandsEnum.END_OPT))
             reportManager.writeReport();
-
+        if (o instanceof Observable)
+            ((Observable) o).addObserver(this);
 
     }
 }

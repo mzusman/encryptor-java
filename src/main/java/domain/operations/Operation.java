@@ -2,6 +2,7 @@ package domain.operations;
 
 import exceptions.KeyException;
 import domain.algorithm.Algorithm;
+import javafx.beans.Observable;
 
 import java.io.IOException;
 

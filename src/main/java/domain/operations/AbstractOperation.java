@@ -8,6 +8,7 @@ import domain.algorithm.Algorithm;
 import lombok.*;
 import utils.Timer;
 import utils.files.KeyFilesManager;
+import utils.immutables.PairOf;
 
 import java.io.*;
 import java.util.Observable;
@@ -31,26 +32,33 @@ public abstract class AbstractOperation extends Observable implements Operation<
         this.streamManager = streamManager;
     }
 
+    private PairOf<InputStream, OutputStream> warmUp(Algorithm algorithm) throws KeyException, IOException, ClassNotFoundException {
+        algorithm = fillKeys(algorithm);
+        @Cleanup InputStream in = streamManager.getInputStream();
+        @Cleanup OutputStream out = streamManager.getOutputStream();
+        PairOf<InputStream, OutputStream> streamPair = new PairOf<>(in, out);
+        setChanged();
+        notifyObservers(CommandsEnum.START_OPT);
+        Timer.getInstance().start();
+        return streamPair;
+    }
 
     @Override
     public void run(Algorithm<Byte> algorithm) {
         try {
-            algorithm = fillKeys(algorithm);
-            @Cleanup InputStream in = streamManager.getInputStream();
-            @Cleanup OutputStream out = streamManager.getOutputStream();
-            setChanged();
-            notifyObservers(CommandsEnum.START_OPT);
-            Timer.getInstance().start();
-//            LogFileManager.getInstance().started(toString(), keyFilesManager.getInputFile());
-            runSync(in, out, algorithm);
-            Timer.getInstance().end();
-//            LogFileManager.getInstance().ended(keyFilesManager.getInputFile());
-            setChanged();
-            notifyObservers(CommandsEnum.START_OPT);
+            PairOf<InputStream, OutputStream> streamPair = warmUp(algorithm);
+            runSync(streamPair, algorithm);
+            beforeFinish();
         } catch (IOException | KeyException | ClassNotFoundException e) {
             setChanged();
             notifyObservers(e);
         }
+    }
+
+    private void beforeFinish() {
+        Timer.getInstance().end();
+        setChanged();
+        notifyObservers(CommandsEnum.START_OPT);
     }
 
     @Override
@@ -63,14 +71,14 @@ public abstract class AbstractOperation extends Observable implements Operation<
         return algorithm;
     }
 
-    public void runSync(InputStream in, OutputStream out, Algorithm<Byte> algorithm) throws IOException {
+    public void runSync(PairOf<InputStream, OutputStream> streamPair, Algorithm<Byte> algorithm) throws IOException {
         int raw;
         Byte enc;
         int index = 0;
-        while ((raw = in.read()) != -1) {
+        while ((raw = streamPair.getKey().read()) != -1) {
             enc = operate(algorithm, (byte) raw, index);
             index++;
-            out.write(enc);
+            streamPair.getVal().write(enc);
         }
 
     }

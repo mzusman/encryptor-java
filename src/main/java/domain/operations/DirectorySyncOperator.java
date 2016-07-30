@@ -8,6 +8,7 @@ import domain.algorithm.Algorithm;
 import lombok.extern.log4j.Log4j2;
 import utils.Timer;
 import utils.files.DirectoryFilesManager;
+import utils.immutables.PairOf;
 import utils.status.FileEnd;
 import utils.status.FileStart;
 
@@ -51,8 +52,10 @@ public class DirectorySyncOperator extends Observable implements Operation<Algor
                 }
                 setChanged();
                 notifyObservers(new FileStart(in));
+                PairOf<InputStream, OutputStream> pairOfStreams
+                        = new PairOf<>(new FileInputStream(in), new FileOutputStream(out));
                 try {
-                    operator.runSync(new FileInputStream(in), new FileOutputStream(out), algorithm);
+                    operator.runSync(pairOfStreams, algorithm);
                     setChanged();
                     notifyObservers(new FileEnd(in));
                 } catch (IOException e) {
