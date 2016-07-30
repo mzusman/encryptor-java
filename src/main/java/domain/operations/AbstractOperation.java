@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.Observable;
 
 /**
- * Created by mzeus on 29/05/16.
+ *
  */
 public abstract class AbstractOperation extends Observable implements Operation<Algorithm<Byte>, Byte> {
 
