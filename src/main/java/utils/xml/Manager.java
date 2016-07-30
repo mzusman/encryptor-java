@@ -15,12 +15,17 @@ import java.util.Observer;
 /**
  * Created by mzeus on 29/07/16.
  */
-
 @AllArgsConstructor(onConstructor = @__({@Inject}))
 public class Manager implements Observer {
 
 
+    /**
+     * The Logging.
+     */
     Logging logging;
+    /**
+     * The Report manager.
+     */
     XmlReportManager reportManager;
 
     @Override

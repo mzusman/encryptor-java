@@ -13,6 +13,12 @@ import java.io.*;
  */
 public class DecryptionOperator extends AbstractOperation {
 
+    /**
+     * Instantiates a new Decryption operator.
+     *
+     * @param streamManager   the stream manager
+     * @param keyFilesManager the key files manager
+     */
     @Inject
     public DecryptionOperator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
         super(streamManager, keyFilesManager);

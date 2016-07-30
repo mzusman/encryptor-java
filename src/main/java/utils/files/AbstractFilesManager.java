@@ -16,10 +16,21 @@ public abstract class AbstractFilesManager implements StreamManager {
     @Setter
     private File outFile;
 
+    /**
+     * Instantiates a new Abstract files manager.
+     *
+     * @param inputFile the input file
+     */
     AbstractFilesManager(File inputFile) {
         this.inputFile = inputFile;
     }
 
+    /**
+     * Gets out file.
+     *
+     * @return the out file
+     * @throws IOException the io exception
+     */
     abstract public File getOutFile() throws IOException;
 
     @Override
@@ -32,8 +43,20 @@ public abstract class AbstractFilesManager implements StreamManager {
         return new FileInputStream(inputFile);
     }
 
+    /**
+     * Gets file extension.
+     *
+     * @return the file extension
+     */
     abstract public String getFileExtension();
 
+    /**
+     * Create new file file.
+     *
+     * @param file the file
+     * @return the file
+     * @throws IOException the io exception
+     */
     File createNewFile(File file) throws IOException {
         if (file.exists())
             throw new FileAlreadyExistsException(file.getName());

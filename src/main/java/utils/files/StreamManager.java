@@ -11,7 +11,19 @@ import java.io.OutputStream;
  * Created by mzeus on 6/25/16.
  */
 public interface StreamManager {
+    /**
+     * Gets output stream.
+     *
+     * @return the output stream
+     * @throws IOException the io exception
+     */
     OutputStream getOutputStream() throws IOException;
 
+    /**
+     * Gets input stream.
+     *
+     * @return the input stream
+     * @throws IOException the io exception
+     */
     InputStream getInputStream() throws IOException;
 }

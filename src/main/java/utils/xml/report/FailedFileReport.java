@@ -14,13 +14,28 @@ import java.io.StringWriter;
 @XmlRootElement(name = "file")
 @NoArgsConstructor
 public class FailedFileReport extends FilesReport {
+    /**
+     * The E name.
+     */
     @XmlElement
     String eName;
+    /**
+     * The E msg.
+     */
     @XmlElement
     String eMsg;
+    /**
+     * The Stack trace.
+     */
     @XmlElement
     String stackTrace;
 
+    /**
+     * Instantiates a new Failed file report.
+     *
+     * @param file      the file
+     * @param throwable the throwable
+     */
     public FailedFileReport(File file, Throwable throwable) {
         super(file, false);
         eName = throwable.getClass().getName();

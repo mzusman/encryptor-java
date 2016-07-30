@@ -14,6 +14,11 @@ public class DecryptionFilesManager extends AbstractFilesManager {
 
     private final static String decrypted = "_decrypted";
 
+    /**
+     * Instantiates a new Decryption files manager.
+     *
+     * @param inputFile the input file
+     */
     public DecryptionFilesManager(File inputFile) {
         super(inputFile);
     }

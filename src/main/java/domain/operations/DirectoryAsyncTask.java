@@ -26,6 +26,14 @@ public class DirectoryAsyncTask extends Observable implements Runnable {
     private final DirectoryFilesManager manager;
     private final Algorithm algorithm;
 
+    /**
+     * Instantiates a new Directory async task.
+     *
+     * @param filesPerThread the files per thread
+     * @param manager        the manager
+     * @param operation      the operation
+     * @param algorithm      the algorithm
+     */
     DirectoryAsyncTask(int filesPerThread, DirectoryFilesManager manager, Operation<Algorithm<Byte>, Byte> operation, Algorithm algorithm) {
         this.algorithm = algorithm;
         this.filesPerThreads = filesPerThread;

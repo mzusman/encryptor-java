@@ -11,6 +11,11 @@ import java.io.*;
 public class KeyFilesManager extends AbstractFilesManager {
     private final static String KEY_FILE_NAME = "key.bin";
 
+    /**
+     * Instantiates a new Key files manager.
+     *
+     * @param inputFile the input file
+     */
     public KeyFilesManager(File inputFile) {
         super(inputFile);
     }
@@ -33,11 +38,24 @@ public class KeyFilesManager extends AbstractFilesManager {
         return KEY_FILE_NAME;
     }
 
+    /**
+     * Write algorithms to file.
+     *
+     * @param algorithms the algorithms
+     * @throws IOException the io exception
+     */
     public void writeAlgorithmsToFile(Algorithm algorithms) throws IOException {
         @Cleanup ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(getOutFile()));
         oos.writeObject(algorithms);
     }
 
+    /**
+     * Read algorithms from file algorithm.
+     *
+     * @return the algorithm
+     * @throws IOException            the io exception
+     * @throws ClassNotFoundException the class not found exception
+     */
     public Algorithm readAlgorithmsFromFile() throws IOException, ClassNotFoundException {
         File file = new File(getInputFile().getParentFile().getPath() + File.separator + KEY_FILE_NAME);
         if (!file.exists())

@@ -1,6 +1,5 @@
 package domain.algorithm;
 
-import domain.algorithm.cipheralgorithm.XorAlgorithm;
 import org.junit.Before;
 import org.junit.Test;
 

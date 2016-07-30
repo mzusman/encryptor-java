@@ -17,6 +17,11 @@ import java.io.IOException;
 public class XmlAlgorithm implements XmlFileManager<Algorithm> {
     private static XmlAlgorithm instance = new XmlAlgorithm();
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static XmlAlgorithm getInstance() {
         return instance;
     }

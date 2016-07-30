@@ -1,4 +1,4 @@
-package domain.algorithm.cipheralgorithm;
+package domain.algorithm;
 
 import domain.algorithm.Algorithm;
 import lombok.EqualsAndHashCode;

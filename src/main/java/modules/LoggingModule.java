@@ -14,6 +14,9 @@ import java.io.File;
  */
 @AllArgsConstructor
 public class LoggingModule extends AbstractModule {
+    /**
+     * The File.
+     */
     File file;
 
     @Override

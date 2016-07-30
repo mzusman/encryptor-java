@@ -22,8 +22,17 @@ import java.util.Observable;
 public class DirectorySyncOperator extends Observable implements Operation<Algorithm<Byte>, Byte> {
     private AbstractOperation operator;
     private DirectoryFilesManager manager;
+    /**
+     * The constant BASE.
+     */
     public static final String BASE = "DirectorySync.base";
 
+    /**
+     * Instantiates a new Directory sync operator.
+     *
+     * @param operator the operator
+     * @param manager  the manager
+     */
     @Inject
     public DirectorySyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager manager) {
         this.operator = operator;

@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.*;
 
 /**
  * Created by mzeus on 01/06/16.
+ *
+ * @param <T> the type parameter
  */
 @EqualsAndHashCode
 @XmlRootElement
@@ -26,6 +28,11 @@ public class ReverseAlgorithm<T> implements Algorithm<T> {
         return 0;
     }
 
+    /**
+     * Gets algorithm.
+     *
+     * @return the algorithm
+     */
     @XmlElement(type = Object.class)
     public Algorithm<T> getAlgorithm() {
         return algorithm;

@@ -10,7 +10,7 @@ import utils.Timer;
 import java.util.*;
 
 /**
- * Created by Mor on 5/19/2016.
+ * Class used for handling prints to console
  */
 public class CommandlineHandler implements Observer, UserInterface<Algorithm, Operation> {
 
@@ -21,6 +21,11 @@ public class CommandlineHandler implements Observer, UserInterface<Algorithm, Op
     private CommandlineProcessor<Operation> processor;
 
 
+    /**
+     * Instantiates a new Commandline handler.
+     *
+     * @param processor the processor
+     */
     @Inject
     public CommandlineHandler(CommandlineProcessor processor) {
         this.processor = processor;

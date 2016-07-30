@@ -13,6 +13,9 @@ import java.io.StringWriter;
 @Log4j2()
 public class LogFileManager implements Logging {
 
+    /**
+     * Instantiates a new Log file manager.
+     */
     public LogFileManager() {
 
     }

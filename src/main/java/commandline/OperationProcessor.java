@@ -11,13 +11,17 @@ import java.io.File;
 /**
  * Created by mzeus on 28/07/16.
  */
-
 public class OperationProcessor implements CommandlineProcessor<Operation> {
     private final String pattern;
     @Getter
     private Module module;
 
 
+    /**
+     * Instantiates a new Operation processor.
+     *
+     * @param pattern the pattern
+     */
     public OperationProcessor(String pattern) {
         this.pattern = pattern;
     }

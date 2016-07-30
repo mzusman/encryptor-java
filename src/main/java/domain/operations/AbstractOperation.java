@@ -16,7 +16,6 @@ import java.util.Observable;
 /**
  * Created by mzeus on 29/05/16.
  */
-@Log4j2
 public abstract class AbstractOperation extends Observable implements Operation<Algorithm<Byte>, Byte> {
 
     private
@@ -26,6 +25,12 @@ public abstract class AbstractOperation extends Observable implements Operation<
     @Getter
     private final KeyFilesManager keyFilesManager;
 
+    /**
+     * Instantiates a new Abstract operation.
+     *
+     * @param streamManager   the stream manager
+     * @param keyFilesManager the key files manager
+     */
     @Inject
     AbstractOperation(StreamManager streamManager, KeyFilesManager keyFilesManager) {
         this.keyFilesManager = keyFilesManager;
@@ -71,6 +76,13 @@ public abstract class AbstractOperation extends Observable implements Operation<
         return algorithm;
     }
 
+    /**
+     * Run sync.
+     *
+     * @param streamPair the stream pair
+     * @param algorithm  the algorithm
+     * @throws IOException the io exception
+     */
     public void runSync(PairOf<InputStream, OutputStream> streamPair, Algorithm<Byte> algorithm) throws IOException {
         int raw;
         Byte enc;

@@ -18,6 +18,9 @@ import java.io.File;
  */
 @AllArgsConstructor
 public class DecryptModule extends AbstractModule {
+    /**
+     * The File.
+     */
     File file;
 
     @Override

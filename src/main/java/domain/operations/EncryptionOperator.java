@@ -13,6 +13,12 @@ import java.io.IOException;
 public class EncryptionOperator extends AbstractOperation {
 
 
+    /**
+     * Instantiates a new Encryption operator.
+     *
+     * @param streamManager   the stream manager
+     * @param keyFilesManager the key files manager
+     */
     @Inject
     public EncryptionOperator(StreamManager streamManager, KeyFilesManager keyFilesManager) {
         super(streamManager, keyFilesManager);

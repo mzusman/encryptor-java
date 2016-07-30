@@ -1,7 +1,7 @@
 package utils.files;
 
 import domain.algorithm.Algorithm;
-import domain.algorithm.cipheralgorithm.XorAlgorithm;
+import domain.algorithm.XorAlgorithm;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

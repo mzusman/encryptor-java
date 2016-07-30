@@ -12,9 +12,18 @@ import java.io.File;
 @XmlRootElement(name = "file")
 @NoArgsConstructor
 public class SuccFileReport extends FilesReport {
+    /**
+     * The Time.
+     */
     @XmlElement
     long time;
 
+    /**
+     * Instantiates a new Succ file report.
+     *
+     * @param file the file
+     * @param time the time
+     */
     public SuccFileReport(File file, long time) {
         super(file, true);
         this.time = time;

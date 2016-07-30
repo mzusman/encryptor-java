@@ -1,5 +1,6 @@
 package domain.algorithm.cipheralgorithm;
 
+import domain.algorithm.CaesarAlgorithm;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;

@@ -21,6 +21,11 @@ public class Timer {
     @Getter
     private long lastTime = 0;
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static Timer getInstance() {
         return instance;
     }
@@ -29,16 +34,29 @@ public class Timer {
     }
 
 
+    /**
+     * Start.
+     */
     public void start() {
         start = Clock.systemDefaultZone().millis();
     }
 
+    /**
+     * End long.
+     *
+     * @return the long
+     */
     public long end() {
         end = Clock.systemDefaultZone().millis();
         lastTime = end - start;
         return lastTime;
     }
 
+    /**
+     * Current long.
+     *
+     * @return the long
+     */
     public long current() {
         return Clock.systemDefaultZone().millis() - start;
     }

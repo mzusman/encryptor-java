@@ -1,69 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <xs:element name="caesarAlgorithm" type="caesarAlgorithm"/>
+  <xs:element name="abstractAlgorithm" type="abstractAlgorithm"/>
 
-    <xs:element name="doubleAlgorithm" type="doubleAlgorithm"/>
+  <xs:element name="caesarAlgorithm" type="caesarAlgorithm"/>
 
-    <xs:element name="multiplicationAlgorithm" type="multiplicationAlgorithm"/>
+  <xs:element name="doubleAlgorithm" type="doubleAlgorithm"/>
 
-    <xs:element name="reverseAlgorithm" type="reverseAlgorithm"/>
+  <xs:element name="multiAlgorithm" type="multiAlgorithm"/>
 
-    <xs:element name="singleAlgorithm" type="singleAlgorithm"/>
+  <xs:element name="multiplicationAlgorithm" type="multiplicationAlgorithm"/>
 
-    <xs:element name="splitAlgorithms" type="splitAlgorithms"/>
+  <xs:element name="reverseAlgorithm" type="reverseAlgorithm"/>
 
-    <xs:element name="xorAlgorithm" type="xorAlgorithm"/>
+  <xs:element name="splitAlgorithms" type="splitAlgorithms"/>
 
-    <xs:complexType name="doubleAlgorithm">
-        <xs:sequence>
-            <xs:element name="algorithms" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
+  <xs:element name="xorAlgorithm" type="xorAlgorithm"/>
 
-    <xs:complexType name="reverseAlgorithm">
-        <xs:sequence>
-            <xs:element name="algorithm" type="xs:anyType" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
+  <xs:complexType name="abstractAlgorithm" abstract="true">
+    <xs:sequence/>
+  </xs:complexType>
 
-    <xs:complexType name="splitAlgorithms">
-        <xs:sequence>
-            <xs:element name="algorithm" type="xs:anyType" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
+  <xs:complexType name="caesarAlgorithm">
+    <xs:complexContent>
+      <xs:extension base="abstractAlgorithm">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
-    <xs:complexType name="caesarAlgorithm">
-        <xs:complexContent>
-            <xs:extension base="singleAlgorithm">
-                <xs:sequence/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+  <xs:complexType name="doubleAlgorithm">
+    <xs:complexContent>
+      <xs:extension base="multiAlgorithm">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
-    <xs:complexType name="singleAlgorithm">
-    </xs:complexType>
+  <xs:complexType name="multiAlgorithm" abstract="true">
+    <xs:sequence>
+      <xs:element name="algorithms" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any processContents="lax" namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
 
-    <xs:complexType name="multiplicationAlgorithm">
-        <xs:complexContent>
-            <xs:extension base="singleAlgorithm">
-                <xs:sequence/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+  <xs:complexType name="multiplicationAlgorithm">
+    <xs:complexContent>
+      <xs:extension base="abstractAlgorithm">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 
-    <xs:complexType name="xorAlgorithm">
-        <xs:complexContent>
-            <xs:extension base="singleAlgorithm">
-                <xs:sequence/>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+  <xs:complexType name="reverseAlgorithm">
+    <xs:sequence>
+      <xs:element name="algorithm" type="xs:anyType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="splitAlgorithms">
+    <xs:sequence>
+      <xs:element name="algorithm" type="xs:anyType" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="xorAlgorithm">
+    <xs:complexContent>
+      <xs:extension base="abstractAlgorithm">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 </xs:schema>
 

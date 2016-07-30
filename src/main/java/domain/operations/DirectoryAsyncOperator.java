@@ -30,9 +30,18 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
     private DirectoryFilesManager manager;
     private ExecutorService service = Executors.newFixedThreadPool(NTHREADS);
     private static final int NTHREADS = 5;
+    /**
+     * The constant BASE.
+     */
     public static final String BASE = "DirectoryAsync.base";
     private DirectoryAsyncTask asyncTask;
 
+    /**
+     * Instantiates a new Directory async operator.
+     *
+     * @param operator              the operator
+     * @param directoryFilesManager the directory files manager
+     */
     @Inject
     public DirectoryAsyncOperator(@Named(BASE) AbstractOperation operator, DirectoryFilesManager directoryFilesManager) {
         this.operator = operator;

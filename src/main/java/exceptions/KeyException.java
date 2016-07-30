@@ -12,6 +12,11 @@ import lombok.NoArgsConstructor;
 public class KeyException extends Exception {
 
 
+    /**
+     * Instantiates a new Key exception.
+     *
+     * @param s the s
+     */
     public KeyException(String s) {
         super(s);
     }

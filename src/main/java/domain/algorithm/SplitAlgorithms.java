@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by mzeus on 01/06/16.
+ *
+ * @param <T> the type parameter
  */
 @EqualsAndHashCode
 @XmlRootElement
@@ -25,6 +27,11 @@ public class SplitAlgorithms<T> implements Algorithm<T> {
     }
 
 
+    /**
+     * Gets algorithm.
+     *
+     * @return the algorithm
+     */
     @XmlElement(type = Object.class)
     public Algorithm<T> getAlgorithm() {
         return algorithm;

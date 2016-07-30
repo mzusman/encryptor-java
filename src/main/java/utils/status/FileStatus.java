@@ -10,6 +10,9 @@ import java.io.File;
  */
 @AllArgsConstructor
 public class FileStatus {
+    /**
+     * The File.
+     */
     @Getter
     File file;
 }

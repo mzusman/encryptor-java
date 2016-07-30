@@ -21,6 +21,12 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     private final AbstractFilesManager filesManager;
     private File opDir;
 
+    /**
+     * Instantiates a new Directory files manager.
+     *
+     * @param filesManager the files manager
+     * @throws IOException the io exception
+     */
     @Inject
     public DirectoryFilesManager(@Named("decorator") AbstractFilesManager filesManager) throws IOException {
         super(filesManager.getInputFile());
@@ -88,9 +94,9 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     /**
      * lazy initiation
      *
-     * @param i
-     * @return
-     * @throws IOException
+     * @param i the
+     * @return input file
+     * @throws IOException the io exception
      */
     public synchronized File getInputFile(int i) throws IOException {
         createOutputFiles();
@@ -100,15 +106,21 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     /**
      * lazy initiation
      *
-     * @param i
-     * @return
-     * @throws IOException
+     * @param i the
+     * @return output file
+     * @throws IOException the io exception
      */
     public synchronized File getOutputFile(int i) throws IOException {
         createOutputFiles();
         return inToOutMap.get(i).getVal();
     }
 
+    /**
+     * Size int.
+     *
+     * @return the int
+     * @throws EmptyDirectoryException the empty directory exception
+     */
     public synchronized int size() throws EmptyDirectoryException {
         initInFiles();
         return inFiles.size();

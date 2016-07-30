@@ -1,5 +1,6 @@
 package domain.algorithm.cipheralgorithm;
 
+import domain.algorithm.MultiplicationAlgorithm;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

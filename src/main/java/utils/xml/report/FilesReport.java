@@ -23,6 +23,12 @@ class FilesReport {
     private
     String status;
 
+    /**
+     * Instantiates a new Files report.
+     *
+     * @param file   the file
+     * @param status the status
+     */
     FilesReport(File file, boolean status) {
         if (status)
             this.status = "success";

@@ -11,6 +11,9 @@ import java.io.File;
  */
 @AllArgsConstructor
 public class KeyModule extends AbstractModule{
+    /**
+     * The File.
+     */
     File file;
     @Override
     protected void configure() {

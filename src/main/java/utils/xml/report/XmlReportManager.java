@@ -25,6 +25,11 @@ public class XmlReportManager implements ReportManager {
 
     private File dirFile;
 
+    /**
+     * Instantiates a new Xml report manager.
+     *
+     * @param dirFile the dir file
+     */
     public XmlReportManager(File dirFile) {
         this.dirFile = dirFile;
         try {
@@ -36,6 +41,9 @@ public class XmlReportManager implements ReportManager {
 
     }
 
+    /**
+     * Instantiates a new Xml report manager.
+     */
     public XmlReportManager() {
 
     }

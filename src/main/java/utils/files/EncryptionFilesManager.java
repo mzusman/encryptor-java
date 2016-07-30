@@ -10,6 +10,11 @@ public class EncryptionFilesManager extends AbstractFilesManager {
 
     private static final String encrypted = ".encrypted";
 
+    /**
+     * Instantiates a new Encryption files manager.
+     *
+     * @param inputFile the input file
+     */
     public EncryptionFilesManager(File inputFile) {
         super(inputFile);
     }

@@ -1,5 +1,6 @@
 package domain.algorithm.cipheralgorithm;
 
+import domain.algorithm.XorAlgorithm;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
