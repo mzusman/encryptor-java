@@ -75,11 +75,17 @@ public class DirectoryAsyncOperator extends Observable implements Operation<Algo
         //calculate how many files each thread will treat
         val filesPerThreads = size / NTHREADS + ((size % NTHREADS == 0) ? 0 : 1);
         asyncTask = new DirectoryAsyncTask(filesPerThreads, manager, this, algorithm);
+        //set @DirectoryAsyncTask as observable too
         setChanged();
         notifyObservers(asyncTask);
+        //run on threads
         for (int i = 0; i < NTHREADS; i++) {
             service.execute(asyncTask);
         }
+        /**
+         *         tell the thread pull to shutdown after finish.
+         *         thread pool runs a daemon thread and non regular jvm threads.
+         */
         service.shutdown();
         service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
     }

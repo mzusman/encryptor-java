@@ -20,7 +20,7 @@ public class Main {
             return;
         Algorithm algorithm = injector.getInstance(Algorithm.class);
         injector = Guice.createInjector(((OperationProcessor) handler.getProcessor()).getModule());
-        Operation operator = injector.getInstance(handler.getSelectOperation());
+        Operation operator = (Operation) injector.getInstance(handler.getSelectOperation());
         LogManager logManager = injector.getInstance(LogManager.class);
         ((Observable) operator).addObserver(handler);
         ((Observable) operator).addObserver(logManager);

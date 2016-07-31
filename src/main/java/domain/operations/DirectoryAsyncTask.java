@@ -14,9 +14,11 @@ import java.util.Observable;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by mzues on 7/30/2016.
+ * The type Directory async task -
+ * Responsible on running the executors
+ * used on the @{@link DirectoryAsyncOperator}
  */
-public class DirectoryAsyncTask extends Observable implements Runnable {
+class DirectoryAsyncTask extends Observable implements Runnable {
 
     private volatile int counter;
     private ReentrantLock lock = new ReentrantLock();
@@ -47,6 +49,11 @@ public class DirectoryAsyncTask extends Observable implements Runnable {
 
     @Override
     public void run() {
+        /**
+         * runs in a while up until there are no files left in the manager
+         * counter var is the size of the directory.
+         * and we decrease it each iteration
+         */
         try {
             while (counter > 0) {
                 ArrayList<PairOf<File, File>> pairArray = new ArrayList<>();
@@ -72,10 +79,16 @@ public class DirectoryAsyncTask extends Observable implements Runnable {
 
 
     private void counterDown() {
+        /**
+         * happens to be synchronized in the run method
+         */
         counter--;
     }
 
     private ArrayList<PairOf<InputStream, OutputStream>> filesToStreams(ArrayList<PairOf<File, File>> pairArray) {
+        /**
+         * converts array of files to array if streams.
+         */
         ArrayList<PairOf<InputStream, OutputStream>> streamsArray = new ArrayList<>();
         pairArray.forEach(p -> {
             try {
@@ -90,6 +103,10 @@ public class DirectoryAsyncTask extends Observable implements Runnable {
     }
 
     private void readAndWriteFromFiles(ArrayList<PairOf<File, File>> pairArray, Algorithm<Byte> algorithm) throws InterruptedException, FileNotFoundException {
+        /**
+         * reads from inputstream, 1 byte at a time , from each file
+         * in circulation and writes to the corresponding outputstream
+         */
         ArrayList<PairOf<InputStream, OutputStream>> streamsArray = filesToStreams(pairArray);
 
         int raw;

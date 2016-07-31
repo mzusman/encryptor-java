@@ -12,13 +12,13 @@ import java.util.*;
 /**
  * Class used for handling prints to console
  */
-public class CommandlineHandler implements Observer, UserInterface<Algorithm, Operation> {
+public class CommandlineHandler<T> implements Observer, UserInterface {
 
 
     @Getter
-    private Class<? extends Operation> selectOperation;
+    private Class<? extends T> selectOperation;
     @Getter
-    private CommandlineProcessor<Operation> processor;
+    private CommandlineProcessor<T> processor;
 
 
     /**
@@ -40,6 +40,12 @@ public class CommandlineHandler implements Observer, UserInterface<Algorithm, Op
     }
 
 
+    /**
+     * handling of events - invoked by the observable
+     *
+     * @param observable
+     * @param o
+     */
     @Override
     public void update(Observable observable, Object o) {
         if (o.equals(CommandsEnum.START_OPT)) {
@@ -47,8 +53,9 @@ public class CommandlineHandler implements Observer, UserInterface<Algorithm, Op
         } else if (o.equals(CommandsEnum.END_OPT)) {
             System.out.println("Operation have ended, took :" + Timer.getInstance().getLastTime());
         } else if (o instanceof Exception) {
-            System.out.println(((Exception) o).getMessage());
-            ((Exception) o).printStackTrace();
+            String message = ((Exception) o).getMessage();
+            if (message != null)
+                System.out.println(((Exception) o).getMessage());
         } else if (o instanceof Observable) {
             ((Observable) o).addObserver(this);
         } else if (o instanceof String) {
