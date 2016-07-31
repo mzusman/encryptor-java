@@ -4,12 +4,8 @@ import domain.algorithm.Algorithm;
 import domain.operations.Operation;
 
 /**
- * Created by mzeus on 01/06/16.
- *
- * @param <C> the type parameter
- * @param <O> the type parameter
  */
-public interface UserInterface<C extends Algorithm, O extends Operation> {
+public interface UserInterface {
 
 
     /**

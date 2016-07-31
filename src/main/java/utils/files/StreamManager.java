@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by mzeus on 6/25/16.
+ * Manages i\o streams
  */
 public interface StreamManager {
     /**

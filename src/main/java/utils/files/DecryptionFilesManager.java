@@ -8,7 +8,7 @@ import java.text.Format;
 import java.text.MessageFormat;
 
 /**
- * Created by mzeus on 7/2/16.
+ * Manages the decryption file
  */
 public class DecryptionFilesManager extends AbstractFilesManager {
 

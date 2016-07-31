@@ -3,7 +3,7 @@ package commandline;
 import domain.algorithm.Algorithm;
 import domain.algorithm.DoubleAlgorithm;
 import domain.algorithm.ReverseAlgorithm;
-import domain.algorithm.SplitAlgorithms;
+import domain.algorithm.SplitAlgorithm;
 import domain.algorithm.CaesarAlgorithm;
 import domain.algorithm.MultiplicationAlgorithm;
 import domain.algorithm.XorAlgorithm;
@@ -34,7 +34,7 @@ public enum AlgorithmsEnum {
     /**
      * The Split.
      */
-    Split(SplitAlgorithms.class, "Split Algorithm - run the next algorithm with 2 keys instead of 1"),
+    Split(SplitAlgorithm.class, "Split Algorithm - run the next algorithm with 2 keys instead of 1"),
     /**
      * The Reverse.
      */

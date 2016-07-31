@@ -14,7 +14,7 @@ import java.io.*;
 import java.util.Observable;
 
 /**
- *
+ * The type Abstract operation - contains basic operation on bytes
  */
 public abstract class AbstractOperation extends Observable implements Operation<Algorithm<Byte>, Byte> {
 

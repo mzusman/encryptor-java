@@ -8,8 +8,8 @@ import static org.junit.Assert.*;
 /**
  * Created by mzeus on 7/3/16.
  */
-public class SplitAlgorithmsTest {
-    SplitAlgorithms<Byte> algorithm = new SplitAlgorithms();
+public class SplitAlgorithmTest {
+    SplitAlgorithm<Byte> algorithm = new SplitAlgorithm();
 
     @Before
     public void warmUp() {

@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * Created by mzues on 7/30/2016.
+ * The type Multi algorithm - contains 1 or more algorithms
+ *
+ * @param <T> the type parameter
  */
 @XmlRootElement
 @NoArgsConstructor

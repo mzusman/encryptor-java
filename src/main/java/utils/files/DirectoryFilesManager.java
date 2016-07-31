@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by mzeus on 7/6/16.
+ * Manages the Directory files
  */
 public class DirectoryFilesManager extends AbstractFilesManager {
 
@@ -92,7 +92,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     }
 
     /**
-     * lazy initiation
+     * lazy initiation - on demand creates outputfiles
      *
      * @param i the
      * @return input file
@@ -116,7 +116,7 @@ public class DirectoryFilesManager extends AbstractFilesManager {
     }
 
     /**
-     * Size int.
+     * Size - number of files inside the directory
      *
      * @return the int
      * @throws EmptyDirectoryException the empty directory exception

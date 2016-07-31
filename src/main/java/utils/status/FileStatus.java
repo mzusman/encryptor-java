@@ -6,7 +6,8 @@ import lombok.Getter;
 import java.io.File;
 
 /**
- * Created by mzeus on 29/07/16.
+ * Class FileStatus - class used as
+ * a utility to notify a file start or file end
  */
 @AllArgsConstructor
 public class FileStatus {

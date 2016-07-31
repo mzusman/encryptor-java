@@ -13,10 +13,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by mzeus on 29/07/16.
+ * Class meant to observe the operation and write logs and reports on demand.
  */
 @AllArgsConstructor(onConstructor = @__({@Inject}))
-public class Manager implements Observer {
+public class LogManager implements Observer {
 
 
     /**

@@ -3,7 +3,7 @@ package utils.status;
 import java.io.File;
 
 /**
- * Created by mzeus on 29/07/16.
+ * notify observers that a file operation has been started
  */
 public class FileStart extends FileStatus {
     /**

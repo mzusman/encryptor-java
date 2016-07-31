@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.io.*;
 
 /**
- * Created by mzeus on 7/2/16.
+ * The type Abstract files manager .
  */
 public abstract class AbstractFilesManager implements StreamManager {
     @Getter

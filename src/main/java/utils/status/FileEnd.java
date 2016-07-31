@@ -3,9 +3,9 @@ package utils.status;
 import java.io.File;
 
 /**
- * Created by mzeus on 29/07/16.
+ * Notify observer that a file operation has been ended.
  */
-public class FileEnd extends FileStatus{
+public class FileEnd extends FileStatus {
     /**
      * Instantiates a new File end.
      *

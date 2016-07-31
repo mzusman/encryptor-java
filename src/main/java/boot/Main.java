@@ -7,7 +7,7 @@ import commandline.OperationProcessor;
 import domain.algorithm.*;
 import domain.operations.Operation;
 import modules.CommandlineModule;
-import utils.xml.Manager;
+import utils.xml.LogManager;
 
 import java.util.Observable;
 
@@ -21,9 +21,9 @@ public class Main {
         Algorithm algorithm = injector.getInstance(Algorithm.class);
         injector = Guice.createInjector(((OperationProcessor) handler.getProcessor()).getModule());
         Operation operator = injector.getInstance(handler.getSelectOperation());
-        Manager manager = injector.getInstance(Manager.class);
+        LogManager logManager = injector.getInstance(LogManager.class);
         ((Observable) operator).addObserver(handler);
-        ((Observable) operator).addObserver(manager);
+        ((Observable) operator).addObserver(logManager);
 
         operator.run(algorithm);
 

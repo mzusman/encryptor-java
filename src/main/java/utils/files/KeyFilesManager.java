@@ -6,7 +6,7 @@ import lombok.Cleanup;
 import java.io.*;
 
 /**
- * Created by mzeus on 7/2/16.
+ * Manages the key file.
  */
 public class KeyFilesManager extends AbstractFilesManager {
     private final static String KEY_FILE_NAME = "key.bin";

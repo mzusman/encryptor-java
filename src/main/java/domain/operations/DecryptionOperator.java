@@ -8,9 +8,6 @@ import utils.files.KeyFilesManager;
 
 import java.io.*;
 
-/**
- * Created by Mor on 5/19/2016.
- */
 public class DecryptionOperator extends AbstractOperation {
 
     /**

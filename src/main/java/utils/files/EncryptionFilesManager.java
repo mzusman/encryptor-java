@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by mzeus on 7/2/16.
+ * Manages the encryption files
  */
 public class EncryptionFilesManager extends AbstractFilesManager {
 

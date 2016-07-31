@@ -6,7 +6,8 @@ import lombok.Value;
 import java.io.File;
 
 /**
- * Created by mzues on 7/30/2016.
+ * An immutable var , made inorder to save in file to out file
+ * or in stream to out stream.
  *
  * @param <T> the type parameter
  * @param <P> the type parameter

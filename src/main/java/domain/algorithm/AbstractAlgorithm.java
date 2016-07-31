@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 /**
- * Created by mzeus on 29/05/16.
+ * The type Abstract algorithm - AbstractAlgorithm that holds 1 key.
  */
 @EqualsAndHashCode
 @XmlRootElement

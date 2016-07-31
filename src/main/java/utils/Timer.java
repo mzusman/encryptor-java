@@ -8,7 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by mzeus on 7/3/16.
+ * Singleton Timer - timer used to calculate the runtime of an operation
  */
 @ToString
 public class Timer {
@@ -42,7 +42,8 @@ public class Timer {
     }
 
     /**
-     * End long.
+     * End .
+     * get the current time from Start with end var change
      *
      * @return the long
      */
@@ -53,7 +54,7 @@ public class Timer {
     }
 
     /**
-     * Current long.
+     * Get the current time from Start without end var change
      *
      * @return the long
      */

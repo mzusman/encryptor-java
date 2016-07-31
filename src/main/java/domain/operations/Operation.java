@@ -6,7 +6,7 @@ import domain.algorithm.Algorithm;
 import java.io.IOException;
 
 /**
- * Created by mzeus on 04/06/16.
+ * Operation - runs the algorithm on each T of the i\o streams
  *
  * @param <E> the type parameter
  * @param <T> the type parameter

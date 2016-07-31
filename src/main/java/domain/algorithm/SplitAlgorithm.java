@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Split Algorithm - 1 algorithm with 2 keys.
  *
  * @param <T> the type parameter
  */
 @EqualsAndHashCode
 @XmlRootElement
 @NoArgsConstructor
-public class SplitAlgorithms<T> implements Algorithm<T> {
+public class SplitAlgorithm<T> implements Algorithm<T> {
 
     private Algorithm<T> algorithm;
 
