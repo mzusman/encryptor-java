@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @param <T> the type parameter
  */
-public interface Selector<T> {
+interface Selector<T> {
     /**
      * Select from list t.
      *

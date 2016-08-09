@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by mzeus on 7/3/16.
  */
 public class DecryptionOperatorTest {
-    DecryptionOperator decryptionOperator;
+    private DecryptionOperator decryptionOperator;
     @Rule
     TemporaryFolder folder = new TemporaryFolder();
 

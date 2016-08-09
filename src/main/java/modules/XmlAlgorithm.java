@@ -46,6 +46,9 @@ public class XmlAlgorithm implements XmlFileManager<Algorithm> {
     }
 
     private void writeAlgorithmToXml(Algorithm algorithm, File directory) throws JAXBException, IOException {
+        /**
+         * write algorithm to a given directory - if exists - replace it.
+         */
         Marshaller marshaller = jaxbContext.createMarshaller();
         marshaller.setSchema(schema);
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
