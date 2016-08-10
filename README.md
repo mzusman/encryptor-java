@@ -1,5 +1,5 @@
 # _Encryptor_
-
+[![Build Status](https://travis-ci.org/mzusman/encryptor-java.svg?branch=master)](https://travis-ci.org/mzusman/encryptor-java)
 #### Prerequisities: 
 - Java + JDK 8
 - Maven 3
