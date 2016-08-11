@@ -19,6 +19,7 @@ import java.util.function.Predicate;
  */
 public class AlgorithmSelector implements Selector<AlgorithmsEnum>, Provider<Algorithm> {
 
+    int algorithmsToGo = 1;
 
     @Override
     public AlgorithmsEnum selectFromList(List list) throws InstantiationException, IllegalAccessException, IOException {
@@ -114,7 +115,7 @@ public class AlgorithmSelector implements Selector<AlgorithmsEnum>, Provider<Alg
     }
 
     private Algorithm selectAlgorithmClass() {
-        System.out.println("Select an algorithm:");
+        System.out.printf("Select an algorithm: (%d ToGo)\n", algorithmsToGo);
         ArrayList<AlgorithmsEnum> classes = new ArrayList<>();
         Collections.addAll(classes, AlgorithmsEnum.values());
         printDescriptions(classes);
@@ -126,6 +127,7 @@ public class AlgorithmSelector implements Selector<AlgorithmsEnum>, Provider<Alg
         } catch (InstantiationException | IllegalAccessException | IOException e) {
             //ignored
         }
+        algorithmsToGo += algorithm.numberOfAlgorithms() - 1;
         for (int i = 0; i < algorithm.numberOfAlgorithms(); i++) {
             algorithm.pushAlgorithm(selectAlgorithmClass());
         }
